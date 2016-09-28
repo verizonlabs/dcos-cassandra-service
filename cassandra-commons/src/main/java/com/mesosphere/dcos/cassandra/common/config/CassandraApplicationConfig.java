@@ -131,6 +131,7 @@ public class CassandraApplicationConfig {
   public static final String SEEDS_URL_KEY = "seeds_url";
 
   public static final String DEFAULT_CLUSTER_NAME = "Test Cluster";
+  public static final String DEFAULT_DISK_DRIVER = "rexray";
   public static final int DEFAULT_NUM_TOKENS = 256;
   public static final boolean DEFAULT_HINTED_HANDOFF_ENABLED = true;
   public static final int DEFAULT_MAX_HINT_WINDOW_IN_MS = 10800000;
@@ -382,7 +383,8 @@ public class CassandraApplicationConfig {
     @JsonProperty(MAX_HINTS_FILE_SIZE_KEY) final int maxHintsFileSizeInMb,
     @JsonProperty(HINTS_FLUSH_PERIOD_KEY) final int hintsFlushPeriodInMs,
     @JsonProperty(CONCURRENT_MATERIALIZED_VIEWS) final int concurrentMaterializedViewWrites,
-    @JsonProperty(COMMIT_LOG_TOTAL_SPACE_KEY) final int commitlogTotalSpaceInMb) {
+    @JsonProperty(COMMIT_LOG_TOTAL_SPACE_KEY) final int commitlogTotalSpaceInMb,
+    @JsonProperty(DEFAULT_DISK_DRIVER) final String diskDriver) {
 
     return new CassandraApplicationConfig(clusterName,
       numTokens,
@@ -462,7 +464,8 @@ public class CassandraApplicationConfig {
       maxHintsFileSizeInMb,
       hintsFlushPeriodInMs,
       concurrentMaterializedViewWrites,
-      commitlogTotalSpaceInMb);
+      commitlogTotalSpaceInMb,
+      diskDriver);
 
   }
 
@@ -628,6 +631,8 @@ public class CassandraApplicationConfig {
   private final int concurrentMaterializedViewWrites;
   @JsonProperty(COMMIT_LOG_TOTAL_SPACE_KEY)
   private final int commitlogTotalSpaceInMb;
+  @JsonProperty(DEFAULT_DISK_DRIVER)
+  private final String diskDriver;
 
 
   public CassandraApplicationConfig(
@@ -709,7 +714,8 @@ public class CassandraApplicationConfig {
     final int maxHintsFileSizeInMb,
     final int hintsFlushPeriodInMs,
     final int concurrentMaterializedViewWrites,
-    final int commitlogTotalSpaceInMb) {
+    final int commitlogTotalSpaceInMb,
+    String diskDriver) {
     this.clusterName = clusterName;
     this.numTokens = numTokens;
     this.hintedHandoffEnabled = hintedHandoffEnabled;
@@ -789,6 +795,7 @@ public class CassandraApplicationConfig {
     this.hintsFlushPeriodInMs = hintsFlushPeriodInMs;
     this.commitlogTotalSpaceInMb = commitlogTotalSpaceInMb;
     this.concurrentMaterializedViewWrites = concurrentMaterializedViewWrites;
+    this.diskDriver = diskDriver;
   }
 
   public String getClusterName() {
@@ -1108,10 +1115,11 @@ public class CassandraApplicationConfig {
     return commitlogTotalSpaceInMb;
   }
 
+  public String getDiskDriver() { return diskDriver; }
+
   public Map<String, Object> toMap() {
 
     Map<String, Object> map = new HashMap<>(100);
-
     map.put(CLUSTER_NAME_KEY, clusterName);
     map.put(NUM_TOKENS_KEY, numTokens);
     map.put(HINTED_HANDOFF_ENABLED_KEY, hintedHandoffEnabled);
@@ -1216,6 +1224,7 @@ public class CassandraApplicationConfig {
     map.put(HINTS_FLUSH_PERIOD_KEY, hintsFlushPeriodInMs);
     map.put(CONCURRENT_MATERIALIZED_VIEWS, concurrentMaterializedViewWrites);
     map.put(COMMIT_LOG_TOTAL_SPACE_KEY, commitlogTotalSpaceInMb);
+    map.put(DEFAULT_DISK_DRIVER, diskDriver);
     return map;
   }
 
@@ -1335,7 +1344,9 @@ public class CassandraApplicationConfig {
       Objects.equals(getConcurrentMaterializedViewWrites(),
         that.getConcurrentMaterializedViewWrites()) &&
       Objects.equals(getCommitlogTotalSpaceInMb(),
-        that.getCommitlogTotalSpaceInMb());
+        that.getCommitlogTotalSpaceInMb()) &&
+      Objects.equals(getDiskDriver(),
+        that.getDiskDriver());
   }
 
   @Override
@@ -1378,7 +1389,8 @@ public class CassandraApplicationConfig {
       getDynamicSnitchBadnessThreshold(), getRequestScheduler(),
       getInternodeCompression(), isInterDcTcpNodelay(),
       getTracetypeQueryTtl(), getTracetypeRepairTtl(),
-      isEnableUserDefinedFunctions(), getWindowsTimerInterval());
+      isEnableUserDefinedFunctions(), getWindowsTimerInterval(),
+      getDiskDriver());
   }
 
   @Override
@@ -1467,10 +1479,12 @@ public class CassandraApplicationConfig {
     private int hintsFlushPeriodInMs;
     private int concurrentMaterializedViewWrites;
     private int commitlogTotalSpaceInMb;
+    private String diskDriver;
 
     private Builder() {
 
       clusterName = DEFAULT_CLUSTER_NAME;
+      diskDriver = DEFAULT_DISK_DRIVER;
       numTokens = DEFAULT_NUM_TOKENS;
       hintedHandoffEnabled = DEFAULT_HINTED_HANDOFF_ENABLED;
       maxHintWindowInMs = DEFAULT_MAX_HINT_WINDOW_IN_MS;
@@ -1549,6 +1563,7 @@ public class CassandraApplicationConfig {
       concurrentMaterializedViewWrites = DEFAULT_CONCURRENT_MATERIALIZED_VIEW_WRITES;
       commitlogTotalSpaceInMb = DEFAULT_COMMIT_LOG_TOTAL_SPACE_IN_MB;
       seedsUrl = DEFAULT_SEEDS_URL;
+      diskDriver = DEFAULT_DISK_DRIVER;
     }
 
     private Builder(CassandraApplicationConfig config) {
@@ -1632,6 +1647,7 @@ public class CassandraApplicationConfig {
       this.hintsFlushPeriodInMs = config.hintsFlushPeriodInMs;
       this.concurrentMaterializedViewWrites = config.concurrentMaterializedViewWrites;
       this.commitlogTotalSpaceInMb = config.commitlogTotalSpaceInMb;
+      this.diskDriver = config.diskDriver;
     }
 
     public String getClusterName() {
@@ -1948,6 +1964,8 @@ public class CassandraApplicationConfig {
     public int getCommitlogTotalSpaceInMb() {
       return commitlogTotalSpaceInMb;
     }
+
+    public String getDiskDriver() { return diskDriver; }
 
     public Builder setClusterName(String clusterName) {
       this.clusterName = clusterName;
@@ -2344,6 +2362,15 @@ public class CassandraApplicationConfig {
       return this;
     }
 
+    public Builder setDiskDriver(String driver) {
+      // Should check for a supported list of drivers.
+      // For now we will only check to see if it supports rexray.
+      if (driver == DEFAULT_DISK_DRIVER){
+        this.diskDriver = driver;
+      }
+      return this;
+    }
+
     public CassandraApplicationConfig build() {
 
       return create(clusterName,
@@ -2424,7 +2451,8 @@ public class CassandraApplicationConfig {
         maxHintsFileSizeInMb,
         hintsFlushPeriodInMs,
         concurrentMaterializedViewWrites,
-        commitlogTotalSpaceInMb);
+        commitlogTotalSpaceInMb,
+        diskDriver);
     }
   }
 
