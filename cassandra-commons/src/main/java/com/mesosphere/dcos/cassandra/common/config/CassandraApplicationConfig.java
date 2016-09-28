@@ -2365,7 +2365,7 @@ public class CassandraApplicationConfig {
     public Builder setDiskDriver(String driver) {
       // Should check for a supported list of drivers.
       // For now we will only check to see if it supports rexray.
-      if (driver == DEFAULT_DISK_DRIVER){
+      if (driver.equals(DEFAULT_DISK_DRIVER)){
         this.diskDriver = driver;
       }
       return this;
