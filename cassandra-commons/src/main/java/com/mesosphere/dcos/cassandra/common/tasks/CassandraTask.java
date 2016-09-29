@@ -205,6 +205,9 @@ public abstract class CassandraTask {
 
         String role = executor.getRole();
         String principal = executor.getPrincipal();
+        String diskDriver = data.getConfig().getApplication().getDiskDriver();
+        // Name the mount path the name of the cluster for testing.
+        String rexRayMountPath = data.getConfig().getApplication().getClusterName().toString();
 
         Protos.TaskInfo.Builder builder = Protos.TaskInfo.newBuilder()
             .setTaskId(createId(name))
@@ -222,11 +225,18 @@ public abstract class CassandraTask {
         builder.setLabels(Protos.Labels.newBuilder().addLabels(label));
 
         if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
-            if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
-                builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
-            } else {
-                builder.addResources(ResourceUtils.getDesiredRootVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
+            if (volumeType.equals(VolumeRequirement.VolumeMode.CREATE) && diskDriver.equals("rexray")){
+                builder.setCommand(Protos.CommandInfo.newBuilder()
+                        .setValue("/opt/mesosphere/bin/dvdcli mount --volumedriver=rexray --volumename=" + rexRayMountPath));
             }
+            else if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
+                builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, rexRayMountPath));
+            } else {
+                builder.addResources(ResourceUtils.getDesiredRootVolume(role, principal, diskMb, rexRayMountPath));
+            }
+        } else if (volumeMode.equals(VolumeRequirement.VolumeMode.NONE) && diskDriver.equals("rexray")) {
+            builder.setCommand(Protos.CommandInfo.newBuilder()
+                    .setValue("/opt/mesosphere/bin/dvdcli unmount --volumedriver=rexray --volumename=" + rexRayMountPath));
         }
 
         if (!ports.isEmpty()) {

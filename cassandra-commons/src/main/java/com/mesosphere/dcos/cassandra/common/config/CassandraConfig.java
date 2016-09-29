@@ -351,7 +351,7 @@ public class CassandraConfig {
 
     /**
      * Factory method for constructing an CassandraConfig
-     * @param version The Cassanra version of the node.
+     * @param version The Cassandra version of the node.
      * @param cpus The cpu shares allocated to the node.
      * @param memoryMb The memory allocated to the node in Mb.
      * @param diskMb The disk allocated to the node in Mb.

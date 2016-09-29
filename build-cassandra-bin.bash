@@ -95,7 +95,7 @@ rm -v "${CONF_DIR}"/cassandra-topology.properties
 echo "##### Disable JMX_PORT in cassandra-env.sh #####"
 
 # "JMX_PORT=???" => "#DISABLED FOR DC/OS\n#JMX_PORT=???"
-sed -i "s/\(^JMX_PORT=.*\)/#DISABLED FOR DC\/OS:\n#\1/g" "${CONF_DIR}"/cassandra-env.sh
+#sed -i "s/\(^JMX_PORT=.*\)/DISABLED\n#\1/g" "${CONF_DIR}"/cassandra-env.sh
 
 _sha1sum "${CONF_DIR}"/* &> confdir-after.txt || true
 

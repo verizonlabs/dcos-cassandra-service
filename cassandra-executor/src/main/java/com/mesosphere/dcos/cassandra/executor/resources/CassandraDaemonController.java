@@ -30,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.Optional;
 
 /**
- * CassandraDaemonController implements the API for remote controll of the
+ * CassandraDaemonController implements the API for remote control of the
  * Cassandra daemon process from the scheduler.
  */
 @Path("/v1/cassandra")

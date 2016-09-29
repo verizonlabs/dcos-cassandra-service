@@ -128,7 +128,6 @@ public class CassandraExecutor implements Executor {
               break;
 
             case SNAPSHOT_RESTORE:
-
                 clusterJobExecutorService.submit(new RestoreSnapshot(
                     driver,
                     (RestoreSnapshotTask) cassandraTask,
