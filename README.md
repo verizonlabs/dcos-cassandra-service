@@ -894,6 +894,18 @@ Example executor configuration:
       <td>The port that the executor will accept API requests on.</td>
     </tr>
 
+    <tr>
+      <td>network_mode</td>
+      <td>string</td>
+      <td>Use host or CNI networking.</td>
+    </tr>
+
+    <tr>
+      <td>cni_network</td>
+      <td>string</td>
+      <td>The CNI network name to use if network_mode is set to CNI.</td>
+    </tr>
+
 </table>
 
 ### Task Configuration

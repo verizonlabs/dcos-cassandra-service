@@ -156,6 +156,8 @@ public class ConfigurationManagerTest {
                 345,
                 901,
                 17,
+                "host",
+                "dcos",
                 "/java/home",
                 URI.create("/jre/location"), URI.create("/executor/location"),
                 URI.create("/cassandra/location"));
