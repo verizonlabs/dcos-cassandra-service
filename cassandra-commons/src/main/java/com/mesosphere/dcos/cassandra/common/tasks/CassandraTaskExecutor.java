@@ -19,11 +19,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.ExecutorConfig;
-
-import java.util.*;
-
 import org.apache.mesos.Protos;
 import org.apache.mesos.executor.ExecutorUtils;
+
+import java.util.*;
 
 import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
 
@@ -107,12 +106,15 @@ public class CassandraTaskExecutor {
         Set<String> uris,
         String javaHome) {
 
+        uris.add("file:///opt/mesosphere/bin/dvdcli"); // Add this as a param.
+
         this.info = Protos.ExecutorInfo.newBuilder()
             .setFrameworkId(Protos.FrameworkID.newBuilder()
                 .setValue(frameworkId))
             .setName(name)
             .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
-            .setCommand(createCommandInfo(command,
+                // Have this run a Java process to check environment first before launching the executor itself.
+            .setCommand(createCommandInfo("./dvdcli mount --volumename=" + name.replace("node-", "timh_cass_").replace("_executor", "") + " --volumedriver=rexray && " + command,
                 arguments,
                 uris,
                 ImmutableMap.<String, String>builder()
