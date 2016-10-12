@@ -375,6 +375,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
         for (Protos.Offer offer : offers) {
             LOGGER.info("Received Offer: {}", TextFormat.shortDebugString(offer));
+            LOGGER.info("Attributes of Offer: {}", offer.getAttributesList().toString());
         }
     }
 
