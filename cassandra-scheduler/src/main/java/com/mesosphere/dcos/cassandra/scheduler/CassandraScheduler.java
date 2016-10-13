@@ -113,6 +113,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         this.defaultConfigurationManager = defaultConfigurationManager;
 
         this.offerFilters = Protos.Filters.newBuilder().setRefuseSeconds(mesosConfig.getRefuseSeconds()).build();
+
         LOGGER.info("Creating an offer filter with refuse_seconds = {}", mesosConfig.getRefuseSeconds());
     }
 
@@ -195,10 +196,22 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
             final Optional<Block> currentBlock = planManager.getCurrentBlock();
 
+            // Filter offers here.
+            List<Protos.Offer> filtered_offers = offers.stream()
+                    .filter( offer -> offer.getAttributesList().stream().anyMatch( attribute -> attribute.getText()
+                    .equals(Protos.Value.Text.newBuilder().setValue("SDS").build())))
+                    .collect(Collectors.toList());
+
+            filtered_offers = filtered_offers.stream()
+                    .filter( offer -> offer.getAttributesList().stream().anyMatch( attribute -> attribute.getText()
+                            .equals(Protos.Value.Text.newBuilder().setValue("POD1").build())))
+                    .collect(Collectors.toList());
+
             if (currentBlock.isPresent()) {
                 LOGGER.info("Current execution block = {}", currentBlock.toString());
                 try {
-                    acceptedOffers.addAll(planScheduler.resourceOffers(driver, offers, currentBlock.get()));
+                    LOGGER.info("Filtered blocks = {}", filtered_offers.toString());
+                    acceptedOffers.addAll(planScheduler.resourceOffers(driver, filtered_offers, currentBlock.get()));
                 } catch (Throwable t) {
                     LOGGER.error("Error occured with plan scheduler: {}", t);
                 }
@@ -208,7 +221,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
             }
             // Perform any required repairs
             final List<Protos.Offer> unacceptedOffers = filterAcceptedOffers(
-                    offers,
+                    filtered_offers,
                     acceptedOffers);
 
             try {
@@ -226,13 +239,13 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
             ResourceCleanerScheduler cleanerScheduler = getCleanerScheduler();
             if (cleanerScheduler != null) {
                 try {
-                    acceptedOffers.addAll(getCleanerScheduler().resourceOffers(driver, offers));
+                    acceptedOffers.addAll(getCleanerScheduler().resourceOffers(driver, filtered_offers));
                 } catch (Throwable t) {
                     LOGGER.error("Error occured with plan scheduler: {}", t);
                 }
             }
 
-            declineOffers(driver, acceptedOffers, offers);
+            declineOffers(driver, acceptedOffers, filtered_offers);
         } catch (Throwable t){
             LOGGER.error("Error in offer acceptance cycle", t);
         }
