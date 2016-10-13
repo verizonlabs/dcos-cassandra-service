@@ -54,13 +54,13 @@ public class ExecutorConfig {
             int memoryMb,
             int heapMb,
             int apiPort,
-            String volumeName,
-            String volumeDriver,
             String javaHome,
             URI jreLocation,
             URI executorLocation,
             URI cassandraLocation,
-            URI dvdcli) {
+            URI dvdcli,
+            String volumeDriver,
+            String volumeName) {
 
         return new ExecutorConfig(
                 command,
@@ -69,13 +69,13 @@ public class ExecutorConfig {
                 memoryMb,
                 heapMb,
                 apiPort,
-                volumeName,
-                volumeDriver,
                 javaHome,
                 jreLocation,
                 executorLocation,
                 cassandraLocation,
-                dvdcli);
+                dvdcli,
+                volumeDriver,
+                volumeName);
     }
 
     @JsonCreator
@@ -86,14 +86,14 @@ public class ExecutorConfig {
             @JsonProperty("memory_mb") int memoryMb,
             @JsonProperty("heap_mb") int heapMb,
             @JsonProperty("api_port") int apiPort,
-            @JsonProperty("volume_name") String volumeName,
-            @JsonProperty("volume_driver") String volumeDriver,
             @JsonProperty("java_home") String javaHome,
             @JsonProperty("jre_location") String jreLocation,
             @JsonProperty("executor_location") String executorLocation,
             @JsonProperty("cassandra_location") String cassandraLocation,
             @JsonProperty("emc_ecs_workaround") boolean emcEcsWorkaround,
-            @JsonProperty("dvdcli") String dvdcli)
+            @JsonProperty("dvdcli") String dvdcli,
+            @JsonProperty("volume_driver") String volumeDriver,
+            @JsonProperty("volume_name") String volumeName)
             throws URISyntaxException, UnsupportedEncodingException {
 
         ExecutorConfig config = create(
@@ -103,13 +103,13 @@ public class ExecutorConfig {
                 memoryMb,
                 heapMb,
                 apiPort,
-                volumeName,
-                volumeDriver,
                 javaHome,
                 URI.create(jreLocation),
                 URI.create(executorLocation),
                 URI.create(cassandraLocation),
-                URI.create(dvdcli));
+                URI.create(dvdcli),
+                volumeDriver,
+                volumeName);
 
         return config;
     }
@@ -132,13 +132,6 @@ public class ExecutorConfig {
     @JsonProperty("api_port")
     private final int apiPort;
 
-    @JsonProperty("volume_name")
-    private final String volumeName;
-
-    @JsonProperty("volume_driver")
-    private final String volumeDriver;
-
-
     private final URI dvdcli;
     private final URI jreLocation;
     private final URI executorLocation;
@@ -147,6 +140,12 @@ public class ExecutorConfig {
     @JsonProperty("java_home")
     private final String javaHome;
 
+    @JsonProperty("volume_name")
+    private final String volumeName;
+
+    @JsonProperty("volume_driver")
+    private final String volumeDriver;
+
     public ExecutorConfig(
             String command,
             List<String> arguments,
@@ -154,13 +153,13 @@ public class ExecutorConfig {
             int memoryMb,
             int heapMb,
             int apiPort,
-            String volumeName,
-            String volumeDriver,
             String javaHome,
             URI jreLocation,
             URI executorLocation,
             URI cassandraLocation,
-            URI dvdcli) {
+            URI dvdcli,
+            String volumeDriver,
+            String volumeName) {
 
         this.command = command;
         this.arguments = arguments;
