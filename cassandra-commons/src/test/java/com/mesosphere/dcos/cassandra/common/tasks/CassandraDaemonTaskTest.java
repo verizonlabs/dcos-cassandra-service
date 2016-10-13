@@ -42,10 +42,13 @@ public class CassandraDaemonTaskTest {
                 256,
                 500,
                 1000,
+                "timh_cass",
+                "rexray",
                 "java-home",
                 new URI("http://jre-location"),
                 new URI("http://executor-location"),
-                new URI("http://cassandra-location"));
+                new URI("http://cassandra-location"),
+                new URI("file:///opt/mesosphere/bin/dvdcli"));
 
         testTaskExecutor = CassandraTaskExecutor.create(
                 "test-framework-id",

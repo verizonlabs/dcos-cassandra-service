@@ -54,10 +54,13 @@ public class ExecutorConfig {
             int memoryMb,
             int heapMb,
             int apiPort,
+            String volumeName,
+            String volumeDriver,
             String javaHome,
             URI jreLocation,
             URI executorLocation,
-            URI cassandraLocation) {
+            URI cassandraLocation,
+            URI dvdcli) {
 
         return new ExecutorConfig(
                 command,
@@ -66,10 +69,13 @@ public class ExecutorConfig {
                 memoryMb,
                 heapMb,
                 apiPort,
+                volumeName,
+                volumeDriver,
                 javaHome,
                 jreLocation,
                 executorLocation,
-                cassandraLocation);
+                cassandraLocation,
+                dvdcli);
     }
 
     @JsonCreator
@@ -80,11 +86,14 @@ public class ExecutorConfig {
             @JsonProperty("memory_mb") int memoryMb,
             @JsonProperty("heap_mb") int heapMb,
             @JsonProperty("api_port") int apiPort,
+            @JsonProperty("volume_name") String volumeName,
+            @JsonProperty("volume_driver") String volumeDriver,
             @JsonProperty("java_home") String javaHome,
             @JsonProperty("jre_location") String jreLocation,
             @JsonProperty("executor_location") String executorLocation,
             @JsonProperty("cassandra_location") String cassandraLocation,
-            @JsonProperty("emc_ecs_workaround") boolean emcEcsWorkaround)
+            @JsonProperty("emc_ecs_workaround") boolean emcEcsWorkaround,
+            @JsonProperty("dvdcli") String dvdcli)
             throws URISyntaxException, UnsupportedEncodingException {
 
         ExecutorConfig config = create(
@@ -94,10 +103,13 @@ public class ExecutorConfig {
                 memoryMb,
                 heapMb,
                 apiPort,
+                volumeName,
+                volumeDriver,
                 javaHome,
                 URI.create(jreLocation),
                 URI.create(executorLocation),
-                URI.create(cassandraLocation));
+                URI.create(cassandraLocation),
+                URI.create(dvdcli));
 
         return config;
     }
@@ -120,6 +132,14 @@ public class ExecutorConfig {
     @JsonProperty("api_port")
     private final int apiPort;
 
+    @JsonProperty("volume_name")
+    private final String volumeName;
+
+    @JsonProperty("volume_driver")
+    private final String volumeDriver;
+
+
+    private final URI dvdcli;
     private final URI jreLocation;
     private final URI executorLocation;
     private final URI cassandraLocation;
@@ -134,10 +154,13 @@ public class ExecutorConfig {
             int memoryMb,
             int heapMb,
             int apiPort,
+            String volumeName,
+            String volumeDriver,
             String javaHome,
             URI jreLocation,
             URI executorLocation,
-            URI cassandraLocation) {
+            URI cassandraLocation,
+            URI dvdcli) {
 
         this.command = command;
         this.arguments = arguments;
@@ -148,9 +171,11 @@ public class ExecutorConfig {
         this.jreLocation = jreLocation;
         this.executorLocation = executorLocation;
         this.cassandraLocation = cassandraLocation;
+        this.dvdcli = dvdcli;
+        this.volumeName = volumeName;
+        this.volumeDriver = volumeDriver;
         this.javaHome = javaHome;
     }
-
 
     public int getApiPort() {
         return apiPort;
@@ -207,9 +232,25 @@ public class ExecutorConfig {
         return cassandraLocation.toString();
     }
 
+    @JsonProperty("dvdcli")
+    public String getDvdcliString() {
+        return dvdcli.toString();
+    }
+
+    @JsonProperty("volume_name")
+    public String getVolumeNameString() {
+        return volumeName.toString();
+    }
+
+    @JsonProperty("volume_driver")
+    public String getVolumeDriverString() {
+        return volumeDriver.toString();
+    }
+
     @JsonIgnore
     public Set<String> getURIs() {
         Set<String> uris = new HashSet<String>();
+        uris.add(dvdcli.toString());
         uris.add(executorLocation.toString());
         uris.add(cassandraLocation.toString());
         uris.add(jreLocation.toString());

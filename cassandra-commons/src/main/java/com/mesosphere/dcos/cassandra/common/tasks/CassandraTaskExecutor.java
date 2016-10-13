@@ -22,7 +22,10 @@ import com.mesosphere.dcos.cassandra.common.config.ExecutorConfig;
 import org.apache.mesos.Protos;
 import org.apache.mesos.executor.ExecutorUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
 
@@ -42,25 +45,18 @@ public class CassandraTaskExecutor {
      * @return A new CassandraTaskExecutor constructed from the parameters.
      */
     public static CassandraTaskExecutor create(
-        final String frameworkId,
-        final String name,
-        final String role,
-        final String principal,
-        final ExecutorConfig config) {
+            final String frameworkId,
+            final String name,
+            final String role,
+            final String principal,
+            final ExecutorConfig config) {
 
         return new CassandraTaskExecutor(
-            frameworkId,
-            name,
-            role,
-            principal,
-            config.getCommand(),
-            config.getArguments(),
-            config.getCpus(),
-            config.getMemoryMb(),
-            config.getHeapMb(),
-            config.getApiPort(),
-            config.getURIs(),
-            config.getJavaHome());
+                frameworkId,
+                name,
+                role,
+                principal,
+                config);
     }
 
     /**
@@ -70,7 +66,7 @@ public class CassandraTaskExecutor {
      * @return A CassandraTaskExecutor parsed from info.
      */
     public static final CassandraTaskExecutor parse(
-        final Protos.ExecutorInfo info) {
+            final Protos.ExecutorInfo info) {
         return new CassandraTaskExecutor(info);
     }
 
@@ -82,52 +78,45 @@ public class CassandraTaskExecutor {
      *
      * @param frameworkId The id of the executor's framework.
      * @param name        The name of the executor.
-     * @param command     The command used to launch the executor.
-     * @param arguments   The arguments passed to the executor.
-     * @param cpus        The cpu shares allocated to the executor.
-     * @param memoryMb    The memory allocated to the executor in Mb.
-     * @param heapMb      The heap allocated to the executor in Mb.
-     * @param apiPort     The port the executor's API will listen on.
-     * @param uris        The URI's for the executor's resources.
-     * @param javaHome    The location of the local java installation for the
-     *                    executor.
      */
     private CassandraTaskExecutor(
-        String frameworkId,
-        String name,
-        String role,
-        String principal,
-        String command,
-        List<String> arguments,
-        double cpus,
-        int memoryMb,
-        int heapMb,
-        int apiPort,
-        Set<String> uris,
-        String javaHome) {
+            String frameworkId,
+            String name,
+            String role,
+            String principal,
+            ExecutorConfig config) {
 
-        uris.add("file:///opt/mesosphere/bin/dvdcli"); // Add this as a param.
+        Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
 
-        this.info = Protos.ExecutorInfo.newBuilder()
-            .setFrameworkId(Protos.FrameworkID.newBuilder()
+        /*
+        if ("cni".equalsIgnoreCase(config.getNetworkMode())) {
+            executorBuilder.setContainer(Protos.ContainerInfo.newBuilder()
+                    .setType(Protos.ContainerInfo.Type.MESOS)
+                    .addNetworkInfos(Protos.NetworkInfo.newBuilder()
+                            .setName("dcos")));
+        }*/
+
+        executorBuilder.setFrameworkId(Protos.FrameworkID.newBuilder()
                 .setValue(frameworkId))
-            .setName(name)
-            .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
-                // Have this run a Java process to check environment first before launching the executor itself.
-            .setCommand(createCommandInfo("./dvdcli mount --volumename=" + name.replace("node-", "timh_cass_").replace("_executor", "") + " --volumedriver=rexray && " + command,
-                arguments,
-                uris,
-                ImmutableMap.<String, String>builder()
-                    .put("JAVA_HOME", javaHome)
-                    .put("JAVA_OPTS", "-Xmx" + heapMb + "M")
-                    .put("EXECUTOR_API_PORT", Integer.toString(apiPort))
-                    .build()))
-            .addAllResources(
-                Arrays.asList(
-                    createCpus(cpus, role, principal),
-                    createMemoryMb(memoryMb, role, principal),
-                    createPorts(Arrays.asList(apiPort), role, principal)))
-            .build();
+                .setName(name)
+                .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
+                .setCommand(createCommandInfo("./dvdcli mount --volumename=" // Should use a string builder here instead.
+                                + name.replace("node-", config.getVolumeNameString()).replace("_executor", "")
+                                + " --volumedriver=" + config.getVolumeDriverString()
+                                + " && " + config.getCommand(),
+                        config.getArguments(),
+                        config.getURIs(),
+                        ImmutableMap.<String, String>builder()
+                                .put("JAVA_HOME", config.getJavaHome())
+                                .put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M")
+                                .put("EXECUTOR_API_PORT", Integer.toString(config.getApiPort()))
+                                .build()))
+                .addAllResources(
+                        Arrays.asList(
+                                createCpus(config.getCpus(), role, principal),
+                                createMemoryMb(config.getMemoryMb(), role, principal),
+                                createPorts(Arrays.asList(config.getApiPort()), role, principal)));
+        this.info = executorBuilder.build();
     }
 
     CassandraTaskExecutor(final Protos.ExecutorInfo info) {
@@ -150,8 +139,8 @@ public class CassandraTaskExecutor {
      */
     public int getApiPort() {
         return Integer.parseInt(
-            getValue("EXECUTOR_API_PORT", info.getCommand()
-                .getEnvironment()));
+                getValue("EXECUTOR_API_PORT", info.getCommand()
+                        .getEnvironment()));
     }
 
     /**
@@ -186,9 +175,9 @@ public class CassandraTaskExecutor {
      */
     public int getHeapMb() {
         return Integer.parseInt(
-            getValue("JAVA_OPTS", info.getCommand().getEnvironment())
-                .replace("-Xmx", "")
-                .replace("M", ""));
+                getValue("JAVA_OPTS", info.getCommand().getEnvironment())
+                        .replace("-Xmx", "")
+                        .replace("M", ""));
 
     }
 
@@ -229,8 +218,8 @@ public class CassandraTaskExecutor {
 
     public CassandraTaskExecutor withNewId() {
         return parse(
-            Protos.ExecutorInfo.newBuilder(getExecutorInfo())
-                .setExecutorId(ExecutorUtils.toExecutorId(getName())).build());
+                Protos.ExecutorInfo.newBuilder(getExecutorInfo())
+                        .setExecutorId(ExecutorUtils.toExecutorId(getName())).build());
     }
 
     public CassandraTaskExecutor clearId() {
@@ -250,11 +239,11 @@ public class CassandraTaskExecutor {
 
     public CassandraTaskExecutor update(final ExecutorConfig config) {
         return new CassandraTaskExecutor(
-            Protos.ExecutorInfo.newBuilder(info)
-                .setExecutorId(ExecutorUtils.toExecutorId(info.getName()))
-            .addAllResources(updateResources(config.getCpus(), config
-                    .getMemoryMb(),
-                info.getResourcesList())).build());
+                Protos.ExecutorInfo.newBuilder(info)
+                        .setExecutorId(ExecutorUtils.toExecutorId(info.getName()))
+                        .addAllResources(updateResources(config.getCpus(), config
+                                        .getMemoryMb(),
+                                info.getResourcesList())).build());
     }
 
     @Override
