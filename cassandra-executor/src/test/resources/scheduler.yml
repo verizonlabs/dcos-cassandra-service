@@ -11,7 +11,7 @@ executor:
   cassandra_location : ${EXECUTOR_CASSANDRA_LOCATION:-'https://s3-us-west-2.amazonaws.com/cassandra-framework-dev/testing/apache-cassandra-2.2.5-bin.tar.gz'}
   dvdcli : ${EXECUTOR_DVDCLI:-'file:///opt/mesosphere/bin/dvdcli'}
   volume_driver : ${EXECUTOR_VOLUME_DRIVER:-'rexray'}
-  volume_name : ${EXECUTOR_APPLICATION_VOLUME_NAME:-'timh_cass'}
+  volume_name : ${EXECUTOR_VOLUME_NAME:-'timh_cass'}
 cluster_task:
   cpus: ${CLUSTER_TASK_CPUS:-1}
   memory_mb: ${CLUSTER_TASK_MEMORY_MB:-256}
