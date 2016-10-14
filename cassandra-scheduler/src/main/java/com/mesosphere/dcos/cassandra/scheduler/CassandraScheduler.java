@@ -196,24 +196,21 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
             final Optional<Block> currentBlock = planManager.getCurrentBlock();
 
-            offers.stream().forEach(item -> item.getAttributesList().forEach(
-                    key -> LOGGER.info(key.getText().toString())));
-
             // Filter offers here.
             List<Protos.Offer> filtered_offers = offers.stream()
-                    .filter( offer -> offer.getAttributesList().stream().anyMatch( attribute -> attribute.getText().getValue()
-                    .contains("SDS")))
+                    .filter( offer -> offer.getAttributesList().stream().anyMatch( attribute -> attribute.getText()
+                    .equals(Protos.Value.Text.newBuilder().setValue("SDS").build())))
                     .collect(Collectors.toList());
 
             filtered_offers = filtered_offers.stream()
-                    .filter( offer -> offer.getAttributesList().stream().anyMatch( attribute -> attribute.getText().getValue()
-                    .contains("POD1")))
+                    .filter( offer -> offer.getAttributesList().stream().anyMatch( attribute -> attribute.getText()
+                    .equals(Protos.Value.Text.newBuilder().setValue("POD1").build())))
                     .collect(Collectors.toList());
 
             if (currentBlock.isPresent()) {
                 LOGGER.info("Current execution block = {}", currentBlock.toString());
                 try {
-                    LOGGER.info("Filtered offers = {}", filtered_offers.toString());
+                    LOGGER.info("Filtered blocks = {}", filtered_offers.toString());
                     acceptedOffers.addAll(planScheduler.resourceOffers(driver, filtered_offers, currentBlock.get()));
                 } catch (Throwable t) {
                     LOGGER.error("Error occured with plan scheduler: {}", t);
