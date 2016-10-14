@@ -101,7 +101,7 @@ public class CassandraTaskExecutor {
                 .setName(name)
                 .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
                 .setCommand(createCommandInfo("./dvdcli mount --volumename=" // Should use a string builder here instead.
-                                + name.replace("node-", config.getVolumeName()).replace("_executor", "_")
+                                + name.replace("node-", config.getVolumeName() + "_").replace("_executor", "")
                                 + " --volumedriver=" + config.getVolumeDriver()
                                 + " && " + config.getCommand(),
                         config.getArguments(),
