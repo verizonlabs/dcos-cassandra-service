@@ -236,14 +236,12 @@ public class ExecutorConfig {
         return dvdcli.toString();
     }
 
-    @JsonProperty("volume_name")
-    public String getVolumeNameString() {
-        return volumeName.toString();
+    public String getVolumeName() {
+        return volumeName;
     }
 
-    @JsonProperty("volume_driver")
-    public String getVolumeDriverString() {
-        return volumeDriver.toString();
+    public String getVolumeDriver() {
+        return volumeDriver;
     }
 
     @JsonIgnore
