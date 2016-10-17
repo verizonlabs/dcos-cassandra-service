@@ -95,13 +95,28 @@ public class CassandraTaskExecutor {
             String principal,
             ExecutorConfig config) {
 
+        String commandString = config.getCommand();
+        StringBuilder stringBuilder = new StringBuilder();
 
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
         Capabilities capabilities = new Capabilities(new DcosCluster());
+
+        if (config.getVolumeDriver().equalsIgnoreCase("rexray")){
+            // Should check to see if the enviornment is stable for rexray here.
+            stringBuilder.append("./dvdcli mount --volumename=");
+            stringBuilder.append(name.replace("node-", config.getVolumeName() + "_").replace("_executor", ""));
+            stringBuilder.append(" --volumedriver=");
+            stringBuilder.append(config.getVolumeDriver());
+            stringBuilder.append(" && ");
+            stringBuilder.append(config.getCommand());
+            commandString = stringBuilder.toString();
+        }
+
         try {
             if (capabilities.supportsNamedVips() && CNI_NETWORK.equalsIgnoreCase(config.getNetworkMode())) {
                 executorBuilder.setContainer(Protos.ContainerInfo.newBuilder()
                         .setType(Protos.ContainerInfo.Type.MESOS)
+
                         .addNetworkInfos(Protos.NetworkInfo.newBuilder()
                                 .setName(config.getCniNetwork())));
             }
@@ -112,10 +127,7 @@ public class CassandraTaskExecutor {
                     .setValue(frameworkId))
                     .setName(name)
                     .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
-                    .setCommand(createCommandInfo("./dvdcli mount --volumename=" // Should use a string builder here instead.
-                                    + name.replace("node-", config.getVolumeName() + "_").replace("_executor", "")
-                                    + " --volumedriver=" + config.getVolumeDriver()
-                                    + " && " + config.getCommand(),
+                    .setCommand(createCommandInfo(commandString,
                             config.getArguments(),
                             config.getURIs(),
                             ImmutableMap.<String, String>builder()

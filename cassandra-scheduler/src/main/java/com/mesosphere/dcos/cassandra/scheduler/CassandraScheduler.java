@@ -113,7 +113,6 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         this.defaultConfigurationManager = defaultConfigurationManager;
 
         this.offerFilters = Protos.Filters.newBuilder().setRefuseSeconds(mesosConfig.getRefuseSeconds()).build();
-
         LOGGER.info("Creating an offer filter with refuse_seconds = {}", mesosConfig.getRefuseSeconds());
     }
 
@@ -185,6 +184,32 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         suppressOrRevive();
     }
 
+    private List<Protos.Offer> filterOffers(List<Protos.Offer> offers, List<String> filters){
+        for (String filter : filters) {
+            offers.stream()
+                    .filter(offer -> offer.getAttributesList().stream().anyMatch(attribute -> attribute.getText()
+                            .equals(Protos.Value.Text.newBuilder().setValue(filter).build())))
+                    .collect(Collectors.toList());
+        }
+        return offers;
+    }
+
+    private List<Protos.Offer> filterOffersByHostname(List<Protos.Offer> offers, List<String> filters){
+        List<Protos.Offer> filteredOffers = new ArrayList<>();
+
+        for (String filter_term : filters) {
+            for (Protos.Offer offer : offers){
+                LOGGER.info("Filtered offer {} - {} = {}", filter_term, offer.getHostname(), filter_term.equals(offer));
+                if (filter_term.trim().equals(offer.getHostname().trim())){
+                    LOGGER.info("Filtered offer {}", offer.getHostname());
+                    filteredOffers.add(offer);
+                }
+            }
+        }
+        return filteredOffers;
+    }
+
+
     @Override
     public void resourceOffers(SchedulerDriver driver,
                                List<Protos.Offer> offers) {
@@ -196,21 +221,22 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
             final Optional<Block> currentBlock = planManager.getCurrentBlock();
 
-            // Filter offers here.
-            List<Protos.Offer> filtered_offers = offers.stream()
-                    .filter( offer -> offer.getAttributesList().stream().anyMatch( attribute -> attribute.getText()
-                    .equals(Protos.Value.Text.newBuilder().setValue("SDS").build())))
-                    .collect(Collectors.toList());
+            ArrayList<String> hostListFilter = configurationManager.getTargetConfig().getCassandraConfig().getHostListFilter();
 
-            filtered_offers = filtered_offers.stream()
-                    .filter( offer -> offer.getAttributesList().stream().anyMatch( attribute -> attribute.getText()
-                    .equals(Protos.Value.Text.newBuilder().setValue("POD1").build())))
-                    .collect(Collectors.toList());
+            ArrayList<String> filterList = configurationManager.getTargetConfig().getCassandraConfig().getHostFilter();
+
+            List<Protos.Offer> filtered_offers = new ArrayList<>();
+
+            // We default to the most specific.
+            if (hostListFilter.isEmpty()){
+                filtered_offers = filterOffers(offers, filterList);
+            } else {
+                filtered_offers = filterOffersByHostname(offers, hostListFilter);
+            }
 
             if (currentBlock.isPresent()) {
                 LOGGER.info("Current execution block = {}", currentBlock.toString());
                 try {
-                    LOGGER.info("Filtered blocks = {}", filtered_offers.toString());
                     acceptedOffers.addAll(planScheduler.resourceOffers(driver, filtered_offers, currentBlock.get()));
                 } catch (Throwable t) {
                     LOGGER.error("Error occured with plan scheduler: {}", t);
@@ -385,11 +411,6 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         }
 
         LOGGER.info("Received {} offers", offers.size());
-
-        for (Protos.Offer offer : offers) {
-            LOGGER.info("Received Offer: {}", TextFormat.shortDebugString(offer));
-            LOGGER.info("Attributes of Offer: {}", offer.getAttributesList().toString());
-        }
     }
 
     private void declineOffers(SchedulerDriver driver,
