@@ -20,8 +20,14 @@ import com.google.common.collect.Sets;
 import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.ExecutorConfig;
 import org.apache.mesos.Protos;
+import org.apache.mesos.dcos.Capabilities;
+import org.apache.mesos.dcos.DcosCluster;
 import org.apache.mesos.executor.ExecutorUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
@@ -37,6 +43,9 @@ import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
  * should be reused by Cluster tasks that operate on the Daemon.
  */
 public class CassandraTaskExecutor {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CassandraTaskExecutor.class);
+    private static final String CNI_NETWORK = "CNI";
 
     /**
      * Creates a new CassandraTaskExecutor.
@@ -86,37 +95,41 @@ public class CassandraTaskExecutor {
             String principal,
             ExecutorConfig config) {
 
+
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
-
-        /*
-        if ("cni".equalsIgnoreCase(config.getNetworkMode())) {
-            executorBuilder.setContainer(Protos.ContainerInfo.newBuilder()
-                    .setType(Protos.ContainerInfo.Type.MESOS)
-                    .addNetworkInfos(Protos.NetworkInfo.newBuilder()
-                            .setName("dcos")));
-        }*/
-
-        executorBuilder.setFrameworkId(Protos.FrameworkID.newBuilder()
-                .setValue(frameworkId))
-                .setName(name)
-                .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
-                .setCommand(createCommandInfo("./dvdcli mount --volumename=" // Should use a string builder here instead.
-                                + name.replace("node-", config.getVolumeName() + "_").replace("_executor", "")
-                                + " --volumedriver=" + config.getVolumeDriver()
-                                + " && " + config.getCommand(),
-                        config.getArguments(),
-                        config.getURIs(),
-                        ImmutableMap.<String, String>builder()
-                                .put("JAVA_HOME", config.getJavaHome())
-                                .put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M")
-                                .put("EXECUTOR_API_PORT", Integer.toString(config.getApiPort()))
-                                .build()))
-                .addAllResources(
-                        Arrays.asList(
-                                createCpus(config.getCpus(), role, principal),
-                                createMemoryMb(config.getMemoryMb(), role, principal),
-                                createPorts(Arrays.asList(config.getApiPort()), role, principal)));
-        this.info = executorBuilder.build();
+        Capabilities capabilities = new Capabilities(new DcosCluster());
+        try {
+            if (capabilities.supportsNamedVips() && CNI_NETWORK.equalsIgnoreCase(config.getNetworkMode())) {
+                executorBuilder.setContainer(Protos.ContainerInfo.newBuilder()
+                        .setType(Protos.ContainerInfo.Type.MESOS)
+                        .addNetworkInfos(Protos.NetworkInfo.newBuilder()
+                                .setName(config.getCniNetwork())));
+            }
+        } catch (IOException | URISyntaxException e) {
+            LOGGER.error("Unable to detect named VIP support: {}", e);
+        } finally {
+            executorBuilder.setFrameworkId(Protos.FrameworkID.newBuilder()
+                    .setValue(frameworkId))
+                    .setName(name)
+                    .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
+                    .setCommand(createCommandInfo("./dvdcli mount --volumename=" // Should use a string builder here instead.
+                                    + name.replace("node-", config.getVolumeName() + "_").replace("_executor", "")
+                                    + " --volumedriver=" + config.getVolumeDriver()
+                                    + " && " + config.getCommand(),
+                            config.getArguments(),
+                            config.getURIs(),
+                            ImmutableMap.<String, String>builder()
+                                    .put("JAVA_HOME", config.getJavaHome())
+                                    .put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M")
+                                    .put("EXECUTOR_API_PORT", Integer.toString(config.getApiPort()))
+                                    .build()))
+                    .addAllResources(
+                            Arrays.asList(
+                                    createCpus(config.getCpus(), role, principal),
+                                    createMemoryMb(config.getMemoryMb(), role, principal),
+                                    createPorts(Arrays.asList(config.getApiPort()), role, principal)));
+            this.info = executorBuilder.build();
+        }
     }
 
     CassandraTaskExecutor(final Protos.ExecutorInfo info) {
@@ -207,7 +220,6 @@ public class CassandraTaskExecutor {
     public int getMemoryMb() {
         return getResourceMemoryMb(info.getResourcesList());
     }
-
 
     /**
      * Gets a Protocol Buffers representation of the executor.

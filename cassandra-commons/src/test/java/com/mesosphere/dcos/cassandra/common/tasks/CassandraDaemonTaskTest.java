@@ -42,6 +42,8 @@ public class CassandraDaemonTaskTest {
                 256,
                 500,
                 1000,
+                "host",
+                "dcos",
                 "java-home",
                 new URI("http://jre-location"),
                 new URI("http://executor-location"),
@@ -98,6 +100,7 @@ public class CassandraDaemonTaskTest {
                 HeapConfig.DEFAULT,
                 Location.DEFAULT,
                 7199,
+                false,
                 CassandraApplicationConfig.builder().build());
 
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
@@ -124,6 +127,7 @@ public class CassandraDaemonTaskTest {
                 HeapConfig.DEFAULT,
                 Location.DEFAULT,
                 7199,
+                false,
                 CassandraApplicationConfig.builder().build());
 
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
@@ -152,6 +156,7 @@ public class CassandraDaemonTaskTest {
                 HeapConfig.DEFAULT,
                 Location.DEFAULT,
                 7199,
+                false,
                 CassandraApplicationConfig.builder().build());
 
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
@@ -161,6 +166,40 @@ public class CassandraDaemonTaskTest {
         double updatedTaskInfoDisk = getScalar(updatedTask.getTaskInfo().getResourcesList(), "disk");
         // Updating the Disk should not result in updated disk.  Disk cannot be updated.
         Assert.assertEquals(originalTaskInfoDisk, updatedTaskInfoDisk, 0.0);
+    }
+
+    @Test
+    public void testPublishDiscoveryInfo() {
+        CassandraConfig cassandraConfig = CassandraConfig.builder().setPublishDiscoveryInfo(true).build();
+
+        CassandraDaemonTask daemonTask = testTaskFactory.create(
+                TEST_DAEMON_NAME,
+                TEST_CONFIG_NAME,
+                testTaskExecutor,
+                cassandraConfig);
+
+        Protos.DiscoveryInfo discovery = daemonTask.getTaskInfo().getDiscovery();
+        Assert.assertEquals("Test Cluster.test-daemon-task-name", discovery.getName());
+        Assert.assertEquals(Protos.DiscoveryInfo.Visibility.EXTERNAL, discovery.getVisibility());
+        Assert.assertEquals(1, discovery.getPorts().getPortsCount());
+        Assert.assertEquals(9042, discovery.getPorts().getPorts(0).getNumber());
+        Assert.assertEquals("NativeTransport", discovery.getPorts().getPorts(0).getName());
+    }
+
+    @Test
+    public void testDcosNamedVipDiscoveryInfo() {
+        CassandraDaemonTask daemonTask = testTaskFactory.create(
+                TEST_DAEMON_NAME,
+                TEST_CONFIG_NAME,
+                testTaskExecutor,
+                CassandraConfig.DEFAULT);
+
+        Protos.DiscoveryInfo discovery = daemonTask.getTaskInfo().getDiscovery();
+        Assert.assertEquals("test-daemon-task-name", discovery.getName());
+        Assert.assertEquals(Protos.DiscoveryInfo.Visibility.EXTERNAL, discovery.getVisibility());
+        Assert.assertEquals(1, discovery.getPorts().getPortsCount());
+        Assert.assertEquals(9042, discovery.getPorts().getPorts(0).getNumber());
+        Assert.assertEquals("tcp", discovery.getPorts().getPorts(0).getProtocol());
     }
 
     private Protos.TaskInfo normalizeCassandraTaskInfo(CassandraDaemonTask daemonTask) {

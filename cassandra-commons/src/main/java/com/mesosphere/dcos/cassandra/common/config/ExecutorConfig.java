@@ -54,6 +54,8 @@ public class ExecutorConfig {
             int memoryMb,
             int heapMb,
             int apiPort,
+            String networkMode,
+            String cniNetwork,
             String javaHome,
             URI jreLocation,
             URI executorLocation,
@@ -69,6 +71,8 @@ public class ExecutorConfig {
                 memoryMb,
                 heapMb,
                 apiPort,
+                networkMode,
+                cniNetwork,
                 javaHome,
                 jreLocation,
                 executorLocation,
@@ -86,6 +90,8 @@ public class ExecutorConfig {
             @JsonProperty("memory_mb") int memoryMb,
             @JsonProperty("heap_mb") int heapMb,
             @JsonProperty("api_port") int apiPort,
+            @JsonProperty("network_mode") String networkMode,
+            @JsonProperty("cni_network") String cniNetwork,
             @JsonProperty("java_home") String javaHome,
             @JsonProperty("jre_location") String jreLocation,
             @JsonProperty("executor_location") String executorLocation,
@@ -103,6 +109,8 @@ public class ExecutorConfig {
                 memoryMb,
                 heapMb,
                 apiPort,
+                networkMode,
+                cniNetwork,
                 javaHome,
                 URI.create(jreLocation),
                 URI.create(executorLocation),
@@ -132,6 +140,12 @@ public class ExecutorConfig {
     @JsonProperty("api_port")
     private final int apiPort;
 
+    @JsonProperty("network_mode")
+    private final String networkMode;
+
+    @JsonProperty("cni_network")
+    private final String cniNetwork;
+
     private final URI dvdcli;
     private final URI jreLocation;
     private final URI executorLocation;
@@ -153,6 +167,8 @@ public class ExecutorConfig {
             int memoryMb,
             int heapMb,
             int apiPort,
+            String networkMode,
+            String cniNetwork,
             String javaHome,
             URI jreLocation,
             URI executorLocation,
@@ -167,6 +183,8 @@ public class ExecutorConfig {
         this.memoryMb = memoryMb;
         this.heapMb = heapMb;
         this.apiPort = apiPort;
+        this.networkMode = networkMode;
+        this.cniNetwork = cniNetwork;
         this.jreLocation = jreLocation;
         this.executorLocation = executorLocation;
         this.cassandraLocation = cassandraLocation;
@@ -178,6 +196,14 @@ public class ExecutorConfig {
 
     public int getApiPort() {
         return apiPort;
+    }
+
+    public String getNetworkMode() {
+        return networkMode;
+    }
+
+    public String getCniNetwork() {
+        return cniNetwork;
     }
 
     public List<String> getArguments() {
