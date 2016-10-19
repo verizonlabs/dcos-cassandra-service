@@ -13,22 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;package org.apache.mesos.offer;
-
-import org.apache.mesos.Protos;
-import org.apache.mesos.Protos.*;
-import org.apache.mesos.Protos.Resource.DiskInfo;
-import org.apache.mesos.Protos.Resource.DiskInfo.Persistence;
-import org.apache.mesos.Protos.Resource.DiskInfo.Source;
-import org.apache.mesos.Protos.Resource.ReservationInfo;
-import org.apache.mesos.Protos.Value.Range;
-import org.apache.mesos.Protos.Value.Ranges;
-import org.apache.mesos.specification.ResourceSpecification;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -490,9 +474,9 @@ public class ResourceUtilities {
                 .build();
     }
 
-    private static DiskInfo.Source createSource(String source){
+    private static Protos.Resource.DiskInfo.Source createSource(String source){
         return Protos.Resource.DiskInfo.Source.newBuilder()
-                .setPath(Source.Path.newBuilder().setRoot(source))
+                .setPath(Protos.Resource.DiskInfo.Source.Path.newBuilder().setRoot(source))
                 .build();
     }
     private static Protos.Resource.DiskInfo getExpectedMountVolumeDiskInfo(
