@@ -118,7 +118,7 @@ public class CassandraTaskExecutor {
                             .setHostPath("/var/log/")
                             .setContainerPath("testing")
                             .setMode(Protos.Volume.Mode.RW).build()))
-            .setCommand(createCommandInfo(command,
+            .setCommand(createCommandInfo("ls -a testing && ls -a testing/var/log " + command,
                 arguments,
                 uris,
                 ImmutableMap.<String, String>builder()
