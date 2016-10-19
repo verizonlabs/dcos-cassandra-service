@@ -5,6 +5,8 @@ package com.mesosphere.dcos.cassandra.common.config;
  */
 
 import org.apache.mesos.Protos;
+import org.apache.mesos.Protos.Resource.DiskInfo;
+import org.apache.mesos.Protos.Resource.DiskInfo.Source;
 import org.apache.mesos.offer.MesosResource;
 import org.apache.mesos.offer.ValueUtils;
 import org.apache.mesos.specification.ResourceSpecification;
@@ -57,8 +59,7 @@ public class ResourceUtilities {
         return resBuilder.build();
     }
 
-
-    public static Protos.Resource getDesiredMountVolume(String role, String principal, double diskSize, String containerPath, String rootPath) {
+    public static Protos.Resource getDesiredMountVolumeMapping(String role, String principal, double diskSize, String containerPath, String rootPath) {
         Protos.Value diskValue = Protos.Value.newBuilder()
                 .setType(Protos.Value.Type.SCALAR)
                 .setScalar(Protos.Value.Scalar.newBuilder().setValue(diskSize))
@@ -66,10 +67,9 @@ public class ResourceUtilities {
         Protos.Resource.Builder resBuilder = Protos.Resource.newBuilder(getUnreservedResource("disk", diskValue));
         resBuilder.setRole(role);
         resBuilder.setReservation(getDesiredReservationInfo(principal));
-        resBuilder.setDisk(getDesiredMountVolumeDiskInfo(principal, containerPath, rootPath));
+        resBuilder.setDisk(getDesiredMountVolumeDiskInfoMapping(principal, containerPath, rootPath));
         return resBuilder.build();
     }
-
 
     public static Protos.Resource getExpectedMountVolume(
             double diskSize,
@@ -122,6 +122,19 @@ public class ResourceUtilities {
         resBuilder.setRole(role);
         resBuilder.setReservation(getDesiredReservationInfo(principal));
         resBuilder.setDisk(getDesiredRootVolumeDiskInfo(principal, containerPath, rootPath));
+        return resBuilder.build();
+    }
+
+
+    public static Protos.Resource getDesiredRootVolumeMapping(String role, String principal, double diskSize, String containerPath, String rootPath) {
+        Protos.Value diskValue = Protos.Value.newBuilder()
+                .setType(Protos.Value.Type.SCALAR)
+                .setScalar(Protos.Value.Scalar.newBuilder().setValue(diskSize))
+                .build();
+        Protos.Resource.Builder resBuilder = Protos.Resource.newBuilder(getUnreservedResource("disk", diskValue));
+        resBuilder.setRole(role);
+        resBuilder.setReservation(getDesiredReservationInfo(principal));
+        resBuilder.setDisk(getDesiredRootVolumeDiskInfoMapping(principal, containerPath, rootPath));
         return resBuilder.build();
     }
 
@@ -468,15 +481,24 @@ public class ResourceUtilities {
                         .build())
                 .setVolume(Protos.Volume.newBuilder()
                         .setContainerPath(containerPath)
+                        .setMode(Protos.Volume.Mode.RW)
+                        .build())
+                .build();
+    }
+
+    private static Protos.Resource.DiskInfo getDesiredMountVolumeDiskInfoMapping(String principal, String containerPath, String rootPath) {
+        return Protos.Resource.DiskInfo.newBuilder()
+                .setVolume(Protos.Volume.newBuilder()
+                        .setContainerPath(containerPath)
                         .setHostPath(rootPath)
                         .setMode(Protos.Volume.Mode.RW)
                         .build())
                 .build();
     }
 
-    private static Protos.Resource.DiskInfo.Source createSource(String source){
+    private static DiskInfo.Source createSource(String source){
         return Protos.Resource.DiskInfo.Source.newBuilder()
-                .setPath(Protos.Resource.DiskInfo.Source.Path.newBuilder().setRoot(source))
+                .setPath(Source.Path.newBuilder().setRoot(source))
                 .build();
     }
     private static Protos.Resource.DiskInfo getExpectedMountVolumeDiskInfo(
@@ -515,6 +537,15 @@ public class ResourceUtilities {
                         .setId("")
                         .setPrincipal(principal)
                         .build())
+                .setVolume(Protos.Volume.newBuilder()
+                        .setContainerPath(containerPath)
+                        .setMode(Protos.Volume.Mode.RW)
+                        .build())
+                .build();
+    }
+
+    private static Protos.Resource.DiskInfo getDesiredRootVolumeDiskInfoMapping(String principal, String containerPath, String rootPath) {
+        return Protos.Resource.DiskInfo.newBuilder()
                 .setVolume(Protos.Volume.newBuilder()
                         .setContainerPath(containerPath)
                         .setHostPath(rootPath)

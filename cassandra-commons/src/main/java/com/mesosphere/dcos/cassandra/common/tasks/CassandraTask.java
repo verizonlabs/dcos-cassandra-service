@@ -16,7 +16,6 @@
 package com.mesosphere.dcos.cassandra.common.tasks;
 
 import com.google.protobuf.TextFormat;
-import com.mesosphere.dcos.cassandra.common.config.CassandraConfig;
 import com.mesosphere.dcos.cassandra.common.config.ResourceUtilities;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.serialization.Serializer;
@@ -221,9 +220,15 @@ public abstract class CassandraTask {
 
         if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
             if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
-                builder.addResources(ResourceUtilities.getDesiredMountVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH, data.getConfig().getFilepath()));
+                // Add persistent volume for cassandra metadata
+                //builder.addResources(ResourceUtilities.getDesiredMountVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
+                // Add volume mapping
+                builder.addResources(ResourceUtilities.getDesiredMountVolumeMapping(role, principal, diskMb, data.getConfig().getFilepath(), data.getConfig().getFilepath()));
             } else {
-                builder.addResources(ResourceUtilities.getDesiredRootVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH, data.getConfig().getFilepath()));
+
+                //builder.addResources(ResourceUtilities.getDesiredRootVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
+                // Add volume mapping
+                builder.addResources(ResourceUtilities.getDesiredRootVolumeMapping(role, principal, diskMb, data.getConfig().getFilepath(), data.getConfig().getFilepath()));
             }
         }
 
