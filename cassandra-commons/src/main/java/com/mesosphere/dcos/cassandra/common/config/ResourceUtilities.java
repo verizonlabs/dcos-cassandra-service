@@ -549,10 +549,6 @@ public class ResourceUtilities {
 
     private static Protos.Resource.DiskInfo getDesiredRootVolumeDiskInfoMapping(String principal, String containerPath, String rootPath) {
         return Protos.Resource.DiskInfo.newBuilder()
-                .setPersistence(Protos.Resource.DiskInfo.Persistence.newBuilder()
-                        .setId("")
-                        .setPrincipal(principal)
-                        .build())
                 .setVolume(Protos.Volume.newBuilder()
                         .setContainerPath(containerPath)
                         .setHostPath(rootPath)
