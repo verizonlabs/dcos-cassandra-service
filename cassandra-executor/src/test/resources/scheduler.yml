@@ -19,6 +19,7 @@ cassandra:
   disk_mb: ${CASSANDRA_DISK_MB:-10240}
   disk_type: ${CASSANDRA_DISK_TYPE:-ROOT}
   version: ${CASSANDRA_VERSION:-2.2.5}
+  filepath: ${CASSANDRA_FILEPATH:-"volume"}
   heap:
     size_mb : ${CASSANDRA_HEAP_SIZE_MB:-2048}
     new_mb : ${CASSANDRA_HEAP_NEW_MB:-100}

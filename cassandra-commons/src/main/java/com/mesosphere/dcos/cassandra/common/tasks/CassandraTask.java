@@ -15,9 +15,7 @@
  */
 package com.mesosphere.dcos.cassandra.common.tasks;
 
-import com.google.inject.Inject;
 import com.google.protobuf.TextFormat;
-import com.mesosphere.dcos.cassandra.common.config.CassandraConfig;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.serialization.Serializer;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.BackupSnapshotTask;
@@ -26,7 +24,6 @@ import com.mesosphere.dcos.cassandra.common.tasks.backup.DownloadSnapshotTask;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.RestoreSnapshotTask;
 import com.mesosphere.dcos.cassandra.common.tasks.cleanup.CleanupTask;
 import com.mesosphere.dcos.cassandra.common.tasks.repair.RepairTask;
-
 import org.apache.mesos.Protos;
 import org.apache.mesos.Protos.DiscoveryInfo;
 import org.apache.mesos.offer.ResourceUtils;
@@ -35,7 +32,6 @@ import org.apache.mesos.offer.VolumeRequirement;
 import org.apache.mesos.util.Algorithms;
 
 import javax.annotation.Nullable;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -205,9 +201,6 @@ public abstract class CassandraTask {
 
         String role = executor.getRole();
         String principal = executor.getPrincipal();
-        String diskDriver = data.getConfig().getApplication().getDiskDriver();
-        // Name the mount path the name of the cluster for testing.
-        String rexRayMountPath = data.getConfig().getApplication().getClusterName().toString();
 
         Protos.TaskInfo.Builder builder = Protos.TaskInfo.newBuilder()
             .setTaskId(createId(name))
@@ -225,18 +218,11 @@ public abstract class CassandraTask {
         builder.setLabels(Protos.Labels.newBuilder().addLabels(label));
 
         if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
-            if (volumeType.equals(VolumeRequirement.VolumeMode.CREATE) && diskDriver.equals("rexray")){
-                builder.setCommand(Protos.CommandInfo.newBuilder()
-                        .setValue("/opt/mesosphere/bin/dvdcli mount --volumedriver=rexray --volumename=" + rexRayMountPath));
-            }
-            else if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
-                builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, rexRayMountPath));
+            if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
+                builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, data.getConfig().getFilepath()));
             } else {
-                builder.addResources(ResourceUtils.getDesiredRootVolume(role, principal, diskMb, rexRayMountPath));
+                builder.addResources(ResourceUtils.getDesiredRootVolume(role, principal, diskMb, data.getConfig().getFilepath()));
             }
-        } else if (volumeMode.equals(VolumeRequirement.VolumeMode.NONE) && diskDriver.equals("rexray")) {
-            builder.setCommand(Protos.CommandInfo.newBuilder()
-                    .setValue("/opt/mesosphere/bin/dvdcli unmount --volumedriver=rexray --volumename=" + rexRayMountPath));
         }
 
         if (!ports.isEmpty()) {

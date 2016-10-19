@@ -96,7 +96,8 @@ public class CassandraDaemonTaskTest {
                 Location.DEFAULT,
                 7199,
                 false,
-                CassandraApplicationConfig.builder().build());
+                CassandraApplicationConfig.builder().build(),
+                "volume");
 
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
         Assert.assertNotEquals(normalizeCassandraTaskInfo(daemonTask), normalizeCassandraTaskInfo(updatedTask));
@@ -123,7 +124,8 @@ public class CassandraDaemonTaskTest {
                 Location.DEFAULT,
                 7199,
                 false,
-                CassandraApplicationConfig.builder().build());
+                CassandraApplicationConfig.builder().build(),
+                "volume");
 
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
         Assert.assertNotEquals(normalizeCassandraTaskInfo(daemonTask), normalizeCassandraTaskInfo(updatedTask));
@@ -152,7 +154,8 @@ public class CassandraDaemonTaskTest {
                 Location.DEFAULT,
                 7199,
                 false,
-                CassandraApplicationConfig.builder().build());
+                CassandraApplicationConfig.builder().build(),
+                "volume");
 
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
         Assert.assertNotEquals(normalizeCassandraTaskInfo(daemonTask), normalizeCassandraTaskInfo(updatedTask));

@@ -48,7 +48,8 @@ public class CassandraConfig {
                     Location.DEFAULT,
                     7199,
                     false,
-                    CassandraApplicationConfig.builder().build());
+                    CassandraApplicationConfig.builder().build(),
+                    "volume");
 
 
     /**
@@ -68,6 +69,7 @@ public class CassandraConfig {
         private int jmxPort;
         private boolean publishDiscoveryInfo;
         private CassandraApplicationConfig application;
+        private String filepath;
 
         /**
          * Constructs a new Builder by copying the properties of config.
@@ -87,6 +89,7 @@ public class CassandraConfig {
             this.jmxPort = config.jmxPort;
             this.publishDiscoveryInfo = config.publishDiscoveryInfo;
             this.application = config.application;
+            this.filepath = config.filepath;
         }
 
         /**
@@ -114,6 +117,15 @@ public class CassandraConfig {
         public Builder setApplication(CassandraApplicationConfig application) {
             this.application = application;
             return this;
+        }
+
+        public Builder setFilepath(String filepath){
+            this.filepath = filepath;
+            return this;
+        }
+
+        public String getFilepath(){
+            return filepath;
         }
 
         /**
@@ -321,7 +333,8 @@ public class CassandraConfig {
                     location,
                     jmxPort,
                     publishDiscoveryInfo,
-                    application);
+                    application,
+                    filepath);
         }
     }
 
@@ -400,7 +413,8 @@ public class CassandraConfig {
             @JsonProperty("jmx_port") int jmxPort,
             @JsonProperty("publish_discovery_info") boolean publishDiscoveryInfo,
             @JsonProperty("application")
-            CassandraApplicationConfig application) {
+            CassandraApplicationConfig application,
+            @JsonProperty("filepath") String filepath) {
 
         return new CassandraConfig(
                 version,
@@ -413,7 +427,8 @@ public class CassandraConfig {
                 location,
                 jmxPort,
                 publishDiscoveryInfo,
-                application);
+                application,
+                filepath);
     }
 
     /**
@@ -437,7 +452,8 @@ public class CassandraConfig {
                 Location.parse(config.getLocation()),
                 config.getJmxPort(),
                 config.getPublishDiscoveryInfo(),
-                CassandraApplicationConfig.parse(config.getApplication()));
+                CassandraApplicationConfig.parse(config.getApplication()),
+                (config.hasFilepath()) ? config.getFilepath() : VOLUME_PATH);
 
     }
 
@@ -487,6 +503,9 @@ public class CassandraConfig {
     @JsonProperty("application")
     private final CassandraApplicationConfig application;
 
+    @JsonProperty("filepath")
+    private final String filepath;
+
     /**
      * Constructs a CassandraConfig
      * @param version The Cassanra version of the node.
@@ -514,7 +533,8 @@ public class CassandraConfig {
                            final Location location,
                            final int jmxPort,
                            final boolean publishDiscoveryInfo,
-                           final CassandraApplicationConfig application) {
+                           final CassandraApplicationConfig application,
+                           final String filepath) {
         this.version = version;
         this.cpus = cpus;
         this.memoryMb = memoryMb;
@@ -526,6 +546,7 @@ public class CassandraConfig {
         this.jmxPort = jmxPort;
         this.publishDiscoveryInfo = publishDiscoveryInfo;
         this.application = application;
+        this.filepath = filepath;
     }
 
     /**
@@ -618,6 +639,10 @@ public class CassandraConfig {
      */
     public boolean getPublishDiscoveryInfo() { return publishDiscoveryInfo; }
 
+    public String getFilepath() {
+        return filepath;
+    }
+
     /**
      * Gets a Protocol Buffers representation of the config.
      * @return A Protocol Buffers representation of the config.
@@ -638,7 +663,8 @@ public class CassandraConfig {
                         .setHeap(heap.toProto())
                         .setLocation(location.toProto())
                         .setPublishDiscoveryInfo(publishDiscoveryInfo)
-                        .setApplication(application.toByteString());
+                        .setApplication(application.toByteString())
+                        .setFilepath(filepath);
 
         return builder.build();
     }
@@ -678,7 +704,8 @@ public class CassandraConfig {
                 Objects.equals(getReplaceIp(), that.getReplaceIp()) &&
                 Objects.equals(getHeap(), that.getHeap()) &&
                 Objects.equals(getLocation(), that.getLocation()) &&
-                Objects.equals(getApplication(), that.getApplication());
+                Objects.equals(getApplication(), that.getApplication()) &&
+                Objects.equals(getFilepath(), that.getFilepath());
     }
 
     @Override
@@ -686,7 +713,7 @@ public class CassandraConfig {
         return Objects.hash(getVersion(), getCpus(), getMemoryMb(), getDiskMb(),
                 getDiskType(),
                 getReplaceIp(), getHeap(), getLocation(), getJmxPort(), getPublishDiscoveryInfo(),
-                getApplication());
+                getApplication(), getFilepath());
     }
 
     @Override
