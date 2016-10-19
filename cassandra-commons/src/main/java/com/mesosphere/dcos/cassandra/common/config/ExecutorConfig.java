@@ -57,7 +57,9 @@ public class ExecutorConfig {
             String javaHome,
             URI jreLocation,
             URI executorLocation,
-            URI cassandraLocation) {
+            URI cassandraLocation,
+            String hostPath,
+            String containerPath) {
 
         return new ExecutorConfig(
                 command,
@@ -69,7 +71,9 @@ public class ExecutorConfig {
                 javaHome,
                 jreLocation,
                 executorLocation,
-                cassandraLocation);
+                cassandraLocation,
+                hostPath,
+                containerPath);
     }
 
     @JsonCreator
@@ -84,7 +88,9 @@ public class ExecutorConfig {
             @JsonProperty("jre_location") String jreLocation,
             @JsonProperty("executor_location") String executorLocation,
             @JsonProperty("cassandra_location") String cassandraLocation,
-            @JsonProperty("emc_ecs_workaround") boolean emcEcsWorkaround)
+            @JsonProperty("emc_ecs_workaround") boolean emcEcsWorkaround,
+            @JsonProperty("host_path") String hostPath,
+            @JsonProperty("container_path") String containerPath)
             throws URISyntaxException, UnsupportedEncodingException {
 
         ExecutorConfig config = create(
@@ -97,7 +103,9 @@ public class ExecutorConfig {
                 javaHome,
                 URI.create(jreLocation),
                 URI.create(executorLocation),
-                URI.create(cassandraLocation));
+                URI.create(cassandraLocation),
+                hostPath,
+                containerPath);
 
         return config;
     }
@@ -127,6 +135,12 @@ public class ExecutorConfig {
     @JsonProperty("java_home")
     private final String javaHome;
 
+    @JsonProperty("host_path")
+    private final String hostPath;
+
+    @JsonProperty("container_path")
+    private final String containerPath;
+
     public ExecutorConfig(
             String command,
             List<String> arguments,
@@ -137,7 +151,9 @@ public class ExecutorConfig {
             String javaHome,
             URI jreLocation,
             URI executorLocation,
-            URI cassandraLocation) {
+            URI cassandraLocation,
+            String hostPath,
+            String containerPath) {
 
         this.command = command;
         this.arguments = arguments;
@@ -149,6 +165,8 @@ public class ExecutorConfig {
         this.executorLocation = executorLocation;
         this.cassandraLocation = cassandraLocation;
         this.javaHome = javaHome;
+        this.hostPath = hostPath;
+        this.containerPath = containerPath;
     }
 
 
@@ -192,6 +210,10 @@ public class ExecutorConfig {
         return memoryMb;
     }
 
+    public String getHostPath(){ return  hostPath; }
+
+    public String getContainerPath(){ return containerPath; }
+
     @JsonProperty("jre_location")
     public String getJreLocationString() {
         return jreLocation.toString();
@@ -233,7 +255,9 @@ public class ExecutorConfig {
                         that.getExecutorLocation()) &&
                 Objects.equals(getCassandraLocation(),
                         that.getCassandraLocation()) &&
-                Objects.equals(getJavaHome(), that.getJavaHome());
+                Objects.equals(getJavaHome(), that.getJavaHome())
+                && getHostPath().equals(that.getHostPath())
+                && getContainerPath().equals(that.getContainerPath());
     }
 
     @Override
@@ -242,7 +266,7 @@ public class ExecutorConfig {
                 getMemoryMb(),
                 getHeapMb(), getApiPort(),
                 getJreLocation(), getExecutorLocation(), getCassandraLocation(),
-                getJavaHome());
+                getJavaHome(), getContainerPath(), getHostPath());
     }
 
     @Override

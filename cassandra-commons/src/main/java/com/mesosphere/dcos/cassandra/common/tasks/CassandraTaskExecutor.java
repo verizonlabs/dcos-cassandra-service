@@ -60,7 +60,9 @@ public class CassandraTaskExecutor {
             config.getHeapMb(),
             config.getApiPort(),
             config.getURIs(),
-            config.getJavaHome());
+            config.getJavaHome(),
+            config.getHostPath(),
+            config.getContainerPath());
     }
 
     /**
@@ -104,7 +106,9 @@ public class CassandraTaskExecutor {
         int heapMb,
         int apiPort,
         Set<String> uris,
-        String javaHome) {
+        String javaHome,
+        String hostPath,
+        String containerPath) {
 
         this.info = Protos.ExecutorInfo.newBuilder()
             .setFrameworkId(Protos.FrameworkID.newBuilder()
@@ -115,8 +119,8 @@ public class CassandraTaskExecutor {
                     .setType(Protos.ContainerInfo.Type.MESOS)
                     .addVolumes(
                     Protos.Volume.newBuilder()
-                            .setHostPath("/var/log/")
-                            .setContainerPath("logs")
+                            .setHostPath(hostPath)
+                            .setContainerPath(containerPath)
                             .setMode(Protos.Volume.Mode.RW).build()))
             .setCommand(createCommandInfo(command,
                 arguments,
