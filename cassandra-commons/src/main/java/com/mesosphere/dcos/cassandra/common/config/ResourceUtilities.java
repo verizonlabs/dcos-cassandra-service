@@ -496,7 +496,6 @@ public class ResourceUtilities {
                         .setContainerPath(containerPath)
                         .setMode(Protos.Volume.Mode.RW)
                         .build())
-                .setSource(Source.newBuilder().setPath(Source.Path.newBuilder().setRoot(rootPath)).setType(Source.Type.PATH))
                 .build();
     }
 
@@ -542,10 +541,9 @@ public class ResourceUtilities {
                         .setPrincipal(principal)
                         .build())
                 .setVolume(Protos.Volume.newBuilder()
-                        .setContainerPath(containerPath)
+                        .setContainerPath(rootPath)
                         .setMode(Protos.Volume.Mode.RW)
                         .build())
-                .setSource(Source.newBuilder().setPath(Source.Path.newBuilder().setRoot(rootPath)).setType(Source.Type.PATH))
                 .build();
     }
 
@@ -560,7 +558,6 @@ public class ResourceUtilities {
                         .setHostPath(rootPath)
                         .setMode(Protos.Volume.Mode.RW)
                         .build())
-                .setSource(Source.newBuilder().setPath(Source.Path.newBuilder().setRoot(rootPath)).setType(Source.Type.PATH))
                 .build();
     }
 
