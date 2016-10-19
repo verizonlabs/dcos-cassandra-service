@@ -3,11 +3,15 @@ targetCompatibility = '1.8'
 
 apply plugin: 'com.google.protobuf'
 dependencies {
-    compile 'mesosphere:dcos-commons:0.7.6-SNAPSHOT'
+    compile 'mesosphere:dcos-commons:0.7.12'
+    compile 'com.google.protobuf:protobuf-java:3.0.0'
     compile 'org.apache.cassandra:cassandra-all:2.2.4'
 }
 protobuf {
     generatedFilesBaseDir = "$projectDir/src/generated"
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
 }
 idea.module {
     sourceDirs += file("$projectDir/src/generated/main/java")

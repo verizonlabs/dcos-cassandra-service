@@ -21,6 +21,7 @@ import org.apache.cassandra.repair.RepairParallelism;
 import org.apache.cassandra.repair.messages.RepairOption;
 import org.apache.mesos.ExecutorDriver;
 import org.apache.mesos.Protos;
+import org.apache.mesos.executor.ExecutorTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +29,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.Future;
 
 /**
  * Implements anti-entropy, primary range, sequential repair by executing
  * RepairTask by delegating repair to the CassandraDaemonProcess.
  */
-public class Repair implements Runnable {
+public class Repair implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(Repair.class);
 
     private final CassandraDaemonProcess daemon;
@@ -52,9 +54,7 @@ public class Repair implements Runnable {
         return task.getRepairContext().getColumnFamilies();
     }
 
-    private void repairKeyspace(String keyspace, List<String> columnFamilies)
-        throws
-        Exception {
+    private void repairKeyspace(String keyspace, List<String> columnFamilies) throws Exception {
         LOGGER.info("Starting repair : keySpace = {}, columnFamilies = {}",
             keyspace, columnFamilies);
 
@@ -64,7 +64,7 @@ public class Repair implements Runnable {
             String.join(",", columnFamilies));
         options.put(RepairOption.PARALLELISM_KEY,
             RepairParallelism.SEQUENTIAL.getName());
-        options.put(RepairOption.INCREMENTAL_KEY, "false");
+        options.put(RepairOption.INCREMENTAL_KEY, "true");
 
         String result = daemon.repair(keyspace, options);
 
@@ -129,5 +129,10 @@ public class Repair implements Runnable {
             .createStatus(state, Optional.of(message))
             .getTaskStatus();
         driver.sendStatusUpdate(status);
+    }
+
+    @Override
+    public void stop(Future<?> future) {
+        future.cancel(true);
     }
 }
