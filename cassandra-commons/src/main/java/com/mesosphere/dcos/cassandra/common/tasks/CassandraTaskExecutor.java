@@ -116,7 +116,7 @@ public class CassandraTaskExecutor {
                     .addVolumes(
                     Protos.Volume.newBuilder()
                             .setHostPath("/var/log")
-                            .setContainerPath("/tims/test")
+                            .setContainerPath("testing")
                             .setMode(Protos.Volume.Mode.RW).build()))
             .setCommand(createCommandInfo(command,
                 arguments,
