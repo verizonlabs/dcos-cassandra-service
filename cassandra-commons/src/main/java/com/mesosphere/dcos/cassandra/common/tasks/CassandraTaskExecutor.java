@@ -19,11 +19,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.ExecutorConfig;
-
-import java.util.*;
-
 import org.apache.mesos.Protos;
 import org.apache.mesos.executor.ExecutorUtils;
+
+import java.util.*;
 
 import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
 
@@ -112,6 +111,13 @@ public class CassandraTaskExecutor {
                 .setValue(frameworkId))
             .setName(name)
             .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
+            .setContainer(Protos.ContainerInfo.newBuilder()
+                    .setType(Protos.ContainerInfo.Type.MESOS)
+                    .addVolumes(
+                    Protos.Volume.newBuilder()
+                            .setHostPath("/var/log")
+                            .setContainerPath("volume")
+                            .setMode(Protos.Volume.Mode.RW).build()))
             .setCommand(createCommandInfo(command,
                 arguments,
                 uris,
