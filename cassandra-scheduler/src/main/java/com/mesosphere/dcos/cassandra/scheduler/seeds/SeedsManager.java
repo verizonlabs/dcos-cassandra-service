@@ -14,6 +14,7 @@ import com.mesosphere.dcos.cassandra.common.config.DefaultConfigurationManager;
 import com.mesosphere.dcos.cassandra.common.persistence.PersistenceException;
 import com.mesosphere.dcos.cassandra.scheduler.resources.SeedsResponse;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
+import org.apache.mesos.Protos;
 import org.apache.mesos.config.ConfigStoreException;
 import org.apache.mesos.state.StateStore;
 import org.apache.mesos.state.StateStoreException;
@@ -159,8 +160,16 @@ public class SeedsManager implements Runnable {
         final List<String> seeds = new ArrayList<>(active.size());
 
         for (int seed = 0; seed < seedCount && seed < active.size(); ++seed) {
-            seeds.add(InetAddress.getByName(active.get(seed).getHostname())
-                    .getHostAddress());
+            CassandraDaemonTask daemon = active.get(seed);
+            Protos.ContainerStatus status = daemon.getTaskStatus().getContainerStatus();
+            if (status.getNetworkInfosCount() == 0) {
+                seeds.add(InetAddress.getByName(daemon.getHostname())
+                        .getHostAddress());
+            } else {
+                String ip = status.getNetworkInfos(0).getIpAddresses(0).getIpAddress();
+                seeds.add(InetAddress.getByName(ip).getHostAddress());
+            }
+
         }
 
         return seeds;
