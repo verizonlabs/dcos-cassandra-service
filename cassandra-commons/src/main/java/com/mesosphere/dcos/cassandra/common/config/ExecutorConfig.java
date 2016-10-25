@@ -140,13 +140,14 @@ public class ExecutorConfig {
     @JsonProperty("api_port")
     private final int apiPort;
 
+    private final URI dvdcli;
+
     @JsonProperty("network_mode")
     private final String networkMode;
 
     @JsonProperty("cni_network")
     private final String cniNetwork;
 
-    private final URI dvdcli;
     private final URI jreLocation;
     private final URI executorLocation;
     private final URI cassandraLocation;
@@ -193,6 +194,7 @@ public class ExecutorConfig {
         this.volumeDriver = volumeDriver;
         this.javaHome = javaHome;
     }
+
 
     public int getApiPort() {
         return apiPort;

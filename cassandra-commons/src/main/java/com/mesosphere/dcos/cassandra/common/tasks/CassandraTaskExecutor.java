@@ -61,11 +61,11 @@ public class CassandraTaskExecutor {
             final ExecutorConfig config) {
 
         return new CassandraTaskExecutor(
-                frameworkId,
-                name,
-                role,
-                principal,
-                config);
+            frameworkId,
+            name,
+            role,
+            principal,
+            config);
     }
 
     /**
@@ -89,16 +89,15 @@ public class CassandraTaskExecutor {
      * @param name        The name of the executor.
      */
     private CassandraTaskExecutor(
-            String frameworkId,
-            String name,
-            String role,
-            String principal,
-            ExecutorConfig config) {
-
-        String commandString = config.getCommand();
-        StringBuilder stringBuilder = new StringBuilder();
+        String frameworkId,
+        String name,
+        String role,
+        String principal,
+        ExecutorConfig config) {
 
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
+        String commandString = config.getCommand();
+        StringBuilder stringBuilder = new StringBuilder();
         Capabilities capabilities = new Capabilities(new DcosCluster());
 
         if (config.getVolumeDriver().equalsIgnoreCase("rexray")){
@@ -116,7 +115,6 @@ public class CassandraTaskExecutor {
             if (capabilities.supportsNamedVips() && CNI_NETWORK.equalsIgnoreCase(config.getNetworkMode())) {
                 executorBuilder.setContainer(Protos.ContainerInfo.newBuilder()
                         .setType(Protos.ContainerInfo.Type.MESOS)
-
                         .addNetworkInfos(Protos.NetworkInfo.newBuilder()
                                 .setName(config.getCniNetwork())));
             }
@@ -232,6 +230,7 @@ public class CassandraTaskExecutor {
     public int getMemoryMb() {
         return getResourceMemoryMb(info.getResourcesList());
     }
+
 
     /**
      * Gets a Protocol Buffers representation of the executor.
