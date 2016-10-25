@@ -11,6 +11,9 @@ executor:
   jre_location : ${EXECUTOR_JRE_LOCATION:-'https://s3-us-west-2.amazonaws.com/cassandra-framework-dev/jre/linux/server-jre-8u74-linux-x64.tar.gz'}
   executor_location : ${EXECUTOR_LOCATION:-'https://s3-us-west-2.amazonaws.com/cassandra-framework-dev/testing/executor.zip'}
   cassandra_location : ${EXECUTOR_CASSANDRA_LOCATION:-'https://s3-us-west-2.amazonaws.com/cassandra-framework-dev/testing/apache-cassandra-2.2.5-bin.tar.gz'}
+  dvdcli : ${EXECUTOR_DVDCLI:-'file:///opt/mesosphere/bin/dvdcli'}
+  volume_driver : ${EXECUTOR_VOLUME_DRIVER:-"rexray"}
+  volume_name : ${EXECUTOR_VOLUME_NAME:-"timh_cass"}
 cluster_task:
   cpus: ${CLUSTER_TASK_CPUS:-1}
   memory_mb: ${CLUSTER_TASK_MEMORY_MB:-256}
@@ -21,6 +24,9 @@ cassandra:
   disk_mb: ${CASSANDRA_DISK_MB:-10240}
   disk_type: ${CASSANDRA_DISK_TYPE:-ROOT}
   version: ${CASSANDRA_VERSION:-2.2.5}
+  filepath: ${CASSANDRA_FILEPATH:-"volume"}
+  host_filter: ${CASSANDRA_HOST_FILTER:-["SDS", "POD1"]}
+  host_list_filter: ${CASSANDRA_HOST_LIST_FILTER:-[]}
   heap:
     size_mb : ${CASSANDRA_HEAP_SIZE_MB:-2048}
     new_mb : ${CASSANDRA_HEAP_NEW_MB:-100}

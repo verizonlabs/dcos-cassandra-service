@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import static com.mesosphere.dcos.cassandra.common.config.CassandraConfig.hostFilterDefault;
+import static com.mesosphere.dcos.cassandra.common.config.CassandraConfig.hostListFilterDefault;
 import static org.mockito.Mockito.when;
 
 /**
@@ -47,7 +49,10 @@ public class CassandraDaemonTaskTest {
                 "java-home",
                 new URI("http://jre-location"),
                 new URI("http://executor-location"),
-                new URI("http://cassandra-location"));
+                new URI("http://cassandra-location"),
+                new URI("file:///opt/mesosphere/bin/dvdcli"),
+                "rexray",
+                "timh_cass");
 
         testTaskExecutor = CassandraTaskExecutor.create(
                 "test-framework-id",
@@ -98,7 +103,10 @@ public class CassandraDaemonTaskTest {
                 Location.DEFAULT,
                 7199,
                 false,
-                CassandraApplicationConfig.builder().build());
+                CassandraApplicationConfig.builder().build(),
+                "volume",
+                hostFilterDefault,
+                hostListFilterDefault);
 
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
         Assert.assertNotEquals(normalizeCassandraTaskInfo(daemonTask), normalizeCassandraTaskInfo(updatedTask));
@@ -125,7 +133,10 @@ public class CassandraDaemonTaskTest {
                 Location.DEFAULT,
                 7199,
                 false,
-                CassandraApplicationConfig.builder().build());
+                CassandraApplicationConfig.builder().build(),
+                "volume",
+                hostFilterDefault,
+                hostListFilterDefault);
 
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
         Assert.assertNotEquals(normalizeCassandraTaskInfo(daemonTask), normalizeCassandraTaskInfo(updatedTask));
@@ -154,7 +165,10 @@ public class CassandraDaemonTaskTest {
                 Location.DEFAULT,
                 7199,
                 false,
-                CassandraApplicationConfig.builder().build());
+                CassandraApplicationConfig.builder().build(),
+                "volume",
+                hostFilterDefault,
+                hostListFilterDefault);
 
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
         Assert.assertNotEquals(normalizeCassandraTaskInfo(daemonTask), normalizeCassandraTaskInfo(updatedTask));

@@ -184,6 +184,32 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         suppressOrRevive();
     }
 
+    private List<Protos.Offer> filterOffers(List<Protos.Offer> offers, List<String> filters){
+        for (String filter : filters) {
+            offers.stream()
+                    .filter(offer -> offer.getAttributesList().stream().anyMatch(attribute -> attribute.getText()
+                            .equals(Protos.Value.Text.newBuilder().setValue(filter).build())))
+                    .collect(Collectors.toList());
+        }
+        return offers;
+    }
+
+    private List<Protos.Offer> filterOffersByHostname(List<Protos.Offer> offers, List<String> filters){
+        List<Protos.Offer> filteredOffers = new ArrayList<>();
+
+        for (String filter_term : filters) {
+            for (Protos.Offer offer : offers){
+                LOGGER.info("Filtered offer {} - {} = {}", filter_term, offer.getHostname(), filter_term.equals(offer));
+                if (filter_term.trim().equals(offer.getHostname().trim())){
+                    LOGGER.info("Filtered offer {}", offer.getHostname());
+                    filteredOffers.add(offer);
+                }
+            }
+        }
+        return filteredOffers;
+    }
+
+
     @Override
     public void resourceOffers(SchedulerDriver driver,
                                List<Protos.Offer> offers) {
@@ -195,10 +221,23 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
             final Optional<Block> currentBlock = planManager.getCurrentBlock();
 
+            ArrayList<String> hostListFilter = configurationManager.getTargetConfig().getCassandraConfig().getHostListFilter();
+
+            ArrayList<String> filterList = configurationManager.getTargetConfig().getCassandraConfig().getHostFilter();
+
+            List<Protos.Offer> filtered_offers = new ArrayList<>();
+
+            // We default to the most specific.
+            if (hostListFilter.isEmpty()){
+                filtered_offers = filterOffers(offers, filterList);
+            } else {
+                filtered_offers = filterOffersByHostname(offers, hostListFilter);
+            }
+
             if (currentBlock.isPresent()) {
                 LOGGER.info("Current execution block = {}", currentBlock.toString());
                 try {
-                    acceptedOffers.addAll(planScheduler.resourceOffers(driver, offers, currentBlock.get()));
+                    acceptedOffers.addAll(planScheduler.resourceOffers(driver, filtered_offers, currentBlock.get()));
                 } catch (Throwable t) {
                     LOGGER.error("Error occured with plan scheduler: {}", t);
                 }
@@ -208,7 +247,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
             }
             // Perform any required repairs
             final List<Protos.Offer> unacceptedOffers = filterAcceptedOffers(
-                    offers,
+                    filtered_offers,
                     acceptedOffers);
 
             try {
@@ -226,13 +265,13 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
             ResourceCleanerScheduler cleanerScheduler = getCleanerScheduler();
             if (cleanerScheduler != null) {
                 try {
-                    acceptedOffers.addAll(getCleanerScheduler().resourceOffers(driver, offers));
+                    acceptedOffers.addAll(getCleanerScheduler().resourceOffers(driver, filtered_offers));
                 } catch (Throwable t) {
                     LOGGER.error("Error occured with plan scheduler: {}", t);
                 }
             }
 
-            declineOffers(driver, acceptedOffers, offers);
+            declineOffers(driver, acceptedOffers, filtered_offers);
         } catch (Throwable t){
             LOGGER.error("Error in offer acceptance cycle", t);
         }
@@ -372,10 +411,6 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         }
 
         LOGGER.info("Received {} offers", offers.size());
-
-        for (Protos.Offer offer : offers) {
-            LOGGER.info("Received Offer: {}", TextFormat.shortDebugString(offer));
-        }
     }
 
     private void declineOffers(SchedulerDriver driver,

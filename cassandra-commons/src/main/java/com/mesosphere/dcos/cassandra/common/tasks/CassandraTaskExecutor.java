@@ -19,17 +19,19 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.ExecutorConfig;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.*;
-
 import org.apache.mesos.Protos;
 import org.apache.mesos.dcos.Capabilities;
 import org.apache.mesos.dcos.DcosCluster;
 import org.apache.mesos.executor.ExecutorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
 
@@ -52,11 +54,11 @@ public class CassandraTaskExecutor {
      * @return A new CassandraTaskExecutor constructed from the parameters.
      */
     public static CassandraTaskExecutor create(
-        final String frameworkId,
-        final String name,
-        final String role,
-        final String principal,
-        final ExecutorConfig config) {
+            final String frameworkId,
+            final String name,
+            final String role,
+            final String principal,
+            final ExecutorConfig config) {
 
         return new CassandraTaskExecutor(
             frameworkId,
@@ -73,7 +75,7 @@ public class CassandraTaskExecutor {
      * @return A CassandraTaskExecutor parsed from info.
      */
     public static final CassandraTaskExecutor parse(
-        final Protos.ExecutorInfo info) {
+            final Protos.ExecutorInfo info) {
         return new CassandraTaskExecutor(info);
     }
 
@@ -94,8 +96,20 @@ public class CassandraTaskExecutor {
         ExecutorConfig config) {
 
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
-
+        String commandString = config.getCommand();
+        StringBuilder stringBuilder = new StringBuilder();
         Capabilities capabilities = new Capabilities(new DcosCluster());
+
+        if (config.getVolumeDriver().equalsIgnoreCase("rexray")){
+            // Should check to see if the enviornment is stable for rexray here.
+            stringBuilder.append("./dvdcli mount --volumename=");
+            stringBuilder.append(name.replace("node-", config.getVolumeName() + "_").replace("_executor", ""));
+            stringBuilder.append(" --volumedriver=");
+            stringBuilder.append(config.getVolumeDriver());
+            stringBuilder.append(" && ");
+            stringBuilder.append(config.getCommand());
+            commandString = stringBuilder.toString();
+        }
 
         try {
             if (capabilities.supportsNamedVips() && CNI_NETWORK.equalsIgnoreCase(config.getNetworkMode())) {
@@ -111,7 +125,7 @@ public class CassandraTaskExecutor {
                     .setValue(frameworkId))
                     .setName(name)
                     .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
-                    .setCommand(createCommandInfo(config.getCommand(),
+                    .setCommand(createCommandInfo(commandString,
                             config.getArguments(),
                             config.getURIs(),
                             ImmutableMap.<String, String>builder()
@@ -148,8 +162,8 @@ public class CassandraTaskExecutor {
      */
     public int getApiPort() {
         return Integer.parseInt(
-            getValue("EXECUTOR_API_PORT", info.getCommand()
-                .getEnvironment()));
+                getValue("EXECUTOR_API_PORT", info.getCommand()
+                        .getEnvironment()));
     }
 
     /**
@@ -184,9 +198,9 @@ public class CassandraTaskExecutor {
      */
     public int getHeapMb() {
         return Integer.parseInt(
-            getValue("JAVA_OPTS", info.getCommand().getEnvironment())
-                .replace("-Xmx", "")
-                .replace("M", ""));
+                getValue("JAVA_OPTS", info.getCommand().getEnvironment())
+                        .replace("-Xmx", "")
+                        .replace("M", ""));
 
     }
 
@@ -227,8 +241,8 @@ public class CassandraTaskExecutor {
 
     public CassandraTaskExecutor withNewId() {
         return parse(
-            Protos.ExecutorInfo.newBuilder(getExecutorInfo())
-                .setExecutorId(ExecutorUtils.toExecutorId(getName())).build());
+                Protos.ExecutorInfo.newBuilder(getExecutorInfo())
+                        .setExecutorId(ExecutorUtils.toExecutorId(getName())).build());
     }
 
     public CassandraTaskExecutor clearId() {
@@ -248,11 +262,11 @@ public class CassandraTaskExecutor {
 
     public CassandraTaskExecutor update(final ExecutorConfig config) {
         return new CassandraTaskExecutor(
-            Protos.ExecutorInfo.newBuilder(info)
-                .setExecutorId(ExecutorUtils.toExecutorId(info.getName()))
-            .addAllResources(updateResources(config.getCpus(), config
-                    .getMemoryMb(),
-                info.getResourcesList())).build());
+                Protos.ExecutorInfo.newBuilder(info)
+                        .setExecutorId(ExecutorUtils.toExecutorId(info.getName()))
+                        .addAllResources(updateResources(config.getCpus(), config
+                                        .getMemoryMb(),
+                                info.getResourcesList())).build());
     }
 
     @Override

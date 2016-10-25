@@ -65,6 +65,8 @@ public class TestUtils {
                 .addResources(ResourceUtils.getUnreservedScalar("cpus", cpu))
                 .addResources(ResourceUtils.getUnreservedScalar("mem", memory))
                 .addResources(ResourceUtils.getUnreservedScalar("disk", disk))
+                .addAttributes(Protos.Attribute.newBuilder().setText(Protos.Value.Text.newBuilder().setValue("SDS")).setName("SDS").setType(Protos.Value.Type.TEXT))
+                .addAttributes(Protos.Attribute.newBuilder().setText(Protos.Value.Text.newBuilder().setValue("POD1")).setName("POD1").setType(Protos.Value.Type.TEXT))
                 .addResources(ResourceUtils.getUnreservedRanges(
                         "ports",
                         Arrays.asList(Protos.Value.Range.newBuilder().setBegin(5000).setEnd(40000).build())))
@@ -85,6 +87,8 @@ public class TestUtils {
                 .addAllResources(taskInfo.getResourcesList())
                 .addAllResources(taskInfo.getExecutor().getResourcesList())
                 .addAllResources(templateTaskInfo.getResourcesList())
+                .addAttributes(Protos.Attribute.newBuilder().setText(Protos.Value.Text.newBuilder().setValue("SDS")).setName("SDS").setType(Protos.Value.Type.TEXT))
+                .addAttributes(Protos.Attribute.newBuilder().setText(Protos.Value.Text.newBuilder().setValue("POD1")).setName("POD1").setType(Protos.Value.Type.TEXT))
                 .build();
     }
 
@@ -108,6 +112,8 @@ public class TestUtils {
                 .addResources(ResourceUtils.getUnreservedScalar("cpus", cpu))
                 .addResources(ResourceUtils.getUnreservedScalar("mem", memory))
                 .addResources(ResourceUtils.getUnreservedScalar("disk", disk))
+                .addAttributes(Protos.Attribute.newBuilder().setText(Protos.Value.Text.newBuilder().setValue("SDS")).setName("SDS").setType(Protos.Value.Type.TEXT))
+                .addAttributes(Protos.Attribute.newBuilder().setText(Protos.Value.Text.newBuilder().setValue("POD1")).setName("POD1").setType(Protos.Value.Type.TEXT))
                 .build();
     }
 
