@@ -185,11 +185,12 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
     }
 
     private List<Protos.Offer> filterOffers(List<Protos.Offer> offers, List<String> filters){
-        LOGGER.info("filtering by attributes.");
+
         for (String filter : filters) {
+            LOGGER.info("filtering by attributes {} ", filter);
             offers.stream()
                     .filter(offer -> offer.getAttributesList().stream().anyMatch(attribute -> attribute.getText()
-                            .equals(Protos.Value.Text.newBuilder().setValue(filter).build())))
+                            .equals(Protos.Value.Text.newBuilder().setValue(filter.trim()).build())))
                     .collect(Collectors.toList());
         }
         return offers;
