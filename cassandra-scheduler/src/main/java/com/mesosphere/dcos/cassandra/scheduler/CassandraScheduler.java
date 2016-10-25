@@ -185,6 +185,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
     }
 
     private List<Protos.Offer> filterOffers(List<Protos.Offer> offers, List<String> filters){
+        LOGGER.info("filtering by attributes.");
         for (String filter : filters) {
             offers.stream()
                     .filter(offer -> offer.getAttributesList().stream().anyMatch(attribute -> attribute.getText()
@@ -195,13 +196,12 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
     }
 
     private List<Protos.Offer> filterOffersByHostname(List<Protos.Offer> offers, List<String> filters){
+        LOGGER.info("filtering by hostname.");
         List<Protos.Offer> filteredOffers = new ArrayList<>();
 
         for (String filter_term : filters) {
             for (Protos.Offer offer : offers){
-                LOGGER.info("Filtered offer {} - {} = {}", filter_term, offer.getHostname(), filter_term.equals(offer));
                 if (filter_term.trim().equals(offer.getHostname().trim())){
-                    LOGGER.info("Filtered offer {}", offer.getHostname());
                     filteredOffers.add(offer);
                 }
             }
