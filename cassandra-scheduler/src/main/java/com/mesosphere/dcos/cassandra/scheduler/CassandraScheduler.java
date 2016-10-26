@@ -184,16 +184,12 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         suppressOrRevive();
     }
 
-    private List<Protos.Offer> filterOffers(List<Protos.Offer> offers, List<String> filters){
-        for (String filter : filters) {
-            offers.stream()
-                    .filter(offer -> offer.getAttributesList().stream().anyMatch(attribute -> attribute.getText()
-                            .equals(Protos.Value.Text.newBuilder().setValue(filter).build())))
-                    .collect(Collectors.toList())
-                    .forEach(offer -> LOGGER.info("Filtered Attribute Offer {}:", offer.getAttributesList()));
+    private List<Protos.Offer> filterOffers(List<Protos.Offer> offers, String filter){
+        return  offers.stream()
+                .filter(offer -> offer.getAttributesList().stream().anyMatch(attribute -> attribute.getText()
+                        .equals(Protos.Value.Text.newBuilder().setValue(filter).build())))
+                .collect(Collectors.toList());
 
-        }
-        return offers;
     }
 
     private List<Protos.Offer> filterOffersByHostname(List<Protos.Offer> offers, List<String> filters){
@@ -229,7 +225,9 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
             // We default to the most specific.
             if (hostListFilter.isEmpty()){
-                filtered_offers = filterOffers(offers, filterList);
+                for (String filter: filterList) {
+                    filtered_offers = filterOffers(offers, filter);
+                }
             } else {
                 filtered_offers = filterOffersByHostname(offers, hostListFilter);
             }
