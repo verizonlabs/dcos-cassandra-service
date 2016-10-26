@@ -189,7 +189,9 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
             offers.stream()
                     .filter(offer -> offer.getAttributesList().stream().anyMatch(attribute -> attribute.getText()
                             .equals(Protos.Value.Text.newBuilder().setValue(filter).build())))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList())
+                    .forEach(offer -> LOGGER.info("Filtered Attribute Offer {}:", offer.getAttributesList()));
+
         }
         return offers;
     }
@@ -199,9 +201,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
         for (String filter_term : filters) {
             for (Protos.Offer offer : offers){
-                LOGGER.info("Filtered offer {} - {} = {}", filter_term, offer.getHostname(), filter_term.equals(offer));
                 if (filter_term.trim().equals(offer.getHostname().trim())){
-                    LOGGER.info("Filtered offer {}", offer.getHostname());
                     filteredOffers.add(offer);
                 }
             }
