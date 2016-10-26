@@ -184,14 +184,12 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         suppressOrRevive();
     }
 
-    private List<Protos.Offer> filterOffers(List<Protos.Offer> offers, List<String> filters){
-        for (String filter : filters) {
-            offers.stream()
-                    .filter(offer -> offer.getAttributesList().stream().anyMatch(attribute -> attribute.getText()
-                            .equals(Protos.Value.Text.newBuilder().setValue(filter).build())))
-                    .collect(Collectors.toList());
-        }
-        return offers;
+    private List<Protos.Offer> filterOffers(List<Protos.Offer> offers, String filter){
+        return  offers.stream()
+                .filter(offer -> offer.getAttributesList().stream().anyMatch(attribute -> attribute.getText()
+                        .equals(Protos.Value.Text.newBuilder().setValue(filter).build())))
+                .collect(Collectors.toList());
+
     }
 
     private List<Protos.Offer> filterOffersByHostname(List<Protos.Offer> offers, List<String> filters){
@@ -199,9 +197,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
         for (String filter_term : filters) {
             for (Protos.Offer offer : offers){
-                LOGGER.info("Filtered offer {} - {} = {}", filter_term, offer.getHostname(), filter_term.equals(offer));
                 if (filter_term.trim().equals(offer.getHostname().trim())){
-                    LOGGER.info("Filtered offer {}", offer.getHostname());
                     filteredOffers.add(offer);
                 }
             }
@@ -225,13 +221,15 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
             ArrayList<String> filterList = configurationManager.getTargetConfig().getCassandraConfig().getHostFilter();
 
-            List<Protos.Offer> filtered_offers = new ArrayList<>();
+            List<Protos.Offer> filtered_offers = offers;
 
             // We default to the most specific.
             if (hostListFilter.isEmpty()){
-                filtered_offers = filterOffers(offers, filterList);
+                for (String filter: filterList) {
+                    filtered_offers = filterOffers(filtered_offers, filter);
+                }
             } else {
-                filtered_offers = filterOffersByHostname(offers, hostListFilter);
+                filtered_offers = filterOffersByHostname(filtered_offers, hostListFilter);
             }
 
             if (currentBlock.isPresent()) {
@@ -247,7 +245,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
             }
             // Perform any required repairs
             final List<Protos.Offer> unacceptedOffers = filterAcceptedOffers(
-                    filtered_offers,
+                    offers,
                     acceptedOffers);
 
             try {
@@ -265,13 +263,13 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
             ResourceCleanerScheduler cleanerScheduler = getCleanerScheduler();
             if (cleanerScheduler != null) {
                 try {
-                    acceptedOffers.addAll(getCleanerScheduler().resourceOffers(driver, filtered_offers));
+                    acceptedOffers.addAll(getCleanerScheduler().resourceOffers(driver, offers));
                 } catch (Throwable t) {
                     LOGGER.error("Error occured with plan scheduler: {}", t);
                 }
             }
 
-            declineOffers(driver, acceptedOffers, filtered_offers);
+            declineOffers(driver, acceptedOffers, offers);
         } catch (Throwable t){
             LOGGER.error("Error in offer acceptance cycle", t);
         }
