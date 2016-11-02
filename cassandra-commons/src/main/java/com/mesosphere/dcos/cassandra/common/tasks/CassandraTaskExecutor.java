@@ -101,14 +101,14 @@ public class CassandraTaskExecutor {
         Capabilities capabilities = new Capabilities(new DcosCluster());
 
         if (config.getVolumeDriver().equalsIgnoreCase("rexray")){
-            // Should check to see if the enviornment is stable for rexray here.
             stringBuilder.append("./dvdcli mount --volumename=");
             stringBuilder.append(name.replace("node-", config.getVolumeName() + "_").replace("_executor", ""));
             stringBuilder.append(" --volumedriver=");
-            stringBuilder.append(config.getVolumeDriver());
+            stringBuilder.append(config.getVolumeDriver().trim());
             stringBuilder.append(" && ");
             stringBuilder.append(config.getCommand());
             commandString = stringBuilder.toString();
+            LOGGER.info("Executor Command {}", commandString);
         }
 
         try {
