@@ -31,6 +31,8 @@ import org.apache.mesos.offer.ResourceUtils;
 import org.apache.mesos.offer.TaskUtils;
 import org.apache.mesos.offer.VolumeRequirement;
 import org.apache.mesos.util.Algorithms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
@@ -46,7 +48,7 @@ import java.util.Optional;
  */
 
 public abstract class CassandraTask {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(CassandraTask.class);
     protected static Protos.SlaveID EMPTY_SLAVE_ID = Protos.SlaveID
         .newBuilder().setValue("").build();
 
@@ -220,11 +222,15 @@ public abstract class CassandraTask {
                 .build();
         builder.setLabels(Protos.Labels.newBuilder().addLabels(label));
 
-        if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
-            if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
-                builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
-            } else {
-                builder.addResources(ResourceUtils.getDesiredRootVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
+        String path = getDataDirectory(executor);
+
+        if (path.equals(CassandraConfig.VOLUME_PATH)) {
+            if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
+                if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
+                    builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, path));
+                } else {
+                    builder.addResources(ResourceUtils.getDesiredRootVolume(role, principal, diskMb, path));
+                }
             }
         }
 
@@ -239,6 +245,13 @@ public abstract class CassandraTask {
         info = builder.build();
     }
 
+    private String getDataDirectory(CassandraTaskExecutor executor){
+        int isDockerVolume = executor.getExecutorInfo().getContainer().getVolumesCount();
+        if (isDockerVolume == 0){
+            return CassandraConfig.VOLUME_PATH;
+        }
+        return ""; // We're using a rexray volume if we get here.
+    }
 
     /**
      * Gets the unique identifier for the task.

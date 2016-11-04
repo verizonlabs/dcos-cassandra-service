@@ -15,9 +15,9 @@
  */
 package com.mesosphere.dcos.cassandra.common.tasks;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.protobuf.TextFormat;
+import com.mesosphere.dcos.cassandra.common.config.CassandraConfig;
 import com.mesosphere.dcos.cassandra.common.config.ExecutorConfig;
 import org.apache.mesos.Protos;
 import org.apache.mesos.dcos.Capabilities;
@@ -28,10 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
 
@@ -97,26 +94,28 @@ public class CassandraTaskExecutor {
 
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
         String commandString = config.getCommand();
-        StringBuilder stringBuilder = new StringBuilder();
+        String volumeName = name.replace("node-", config.getVolumeName() + "_").replace("_executor", "");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("JAVA_HOME", config.getJavaHome());
+        map.put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M");
+        map.put("EXECUTOR_API_PORT", Integer.toString(config.getApiPort()));
+
         Capabilities capabilities = new Capabilities(new DcosCluster());
 
+        Protos.ContainerInfo.Builder containerInfo = Protos.ContainerInfo.newBuilder()
+                .setType(Protos.ContainerInfo.Type.MESOS);
+
         if (config.getVolumeDriver().equalsIgnoreCase("rexray")){
-            stringBuilder.append("./dvdcli mount --volumename=");
-            stringBuilder.append(name.replace("node-", config.getVolumeName() + "_").replace("_executor", ""));
-            stringBuilder.append(" --volumedriver=");
-            stringBuilder.append(config.getVolumeDriver().trim());
-            stringBuilder.append(" && ");
-            stringBuilder.append(config.getCommand());
-            commandString = stringBuilder.toString();
-            LOGGER.info("Executor Command {}", commandString);
+            commandString = setRexrayCommand(volumeName, config);
+            containerInfo = setRexrayContainerOptions(containerInfo, volumeName);
         }
 
         try {
             if (capabilities.supportsNamedVips() && CNI_NETWORK.equalsIgnoreCase(config.getNetworkMode())) {
-                executorBuilder.setContainer(Protos.ContainerInfo.newBuilder()
-                        .setType(Protos.ContainerInfo.Type.MESOS)
+                containerInfo
                         .addNetworkInfos(Protos.NetworkInfo.newBuilder()
-                                .setName(config.getCniNetwork())));
+                        .setName(config.getCniNetwork()));
             }
         } catch (IOException | URISyntaxException e) {
             LOGGER.error("Unable to detect named VIP support: {}", e);
@@ -125,14 +124,11 @@ public class CassandraTaskExecutor {
                     .setValue(frameworkId))
                     .setName(name)
                     .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
+                    .setContainer(containerInfo)
                     .setCommand(createCommandInfo(commandString,
                             config.getArguments(),
                             config.getURIs(),
-                            ImmutableMap.<String, String>builder()
-                                    .put("JAVA_HOME", config.getJavaHome())
-                                    .put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M")
-                                    .put("EXECUTOR_API_PORT", Integer.toString(config.getApiPort()))
-                                    .build()))
+                            map))
                     .addAllResources(
                             Arrays.asList(
                                     createCpus(config.getCpus(), role, principal),
@@ -144,6 +140,34 @@ public class CassandraTaskExecutor {
 
     CassandraTaskExecutor(final Protos.ExecutorInfo info) {
         this.info = info;
+    }
+
+    private String setRexrayCommand(String volumeName, ExecutorConfig config){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("./dvdcli mount --volumename=");
+        stringBuilder.append(volumeName);
+        stringBuilder.append(" --volumedriver=");
+        stringBuilder.append(config.getVolumeDriver().trim());
+        stringBuilder.append(" && ");
+        stringBuilder.append(config.getCommand());
+
+        return stringBuilder.toString();
+    }
+
+    private Protos.ContainerInfo.Builder setRexrayContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName) {
+        return builder
+                .setType(Protos.ContainerInfo.Type.MESOS)
+                .addVolumes(Protos.Volume.newBuilder().setSource(
+                        Protos.Volume.Source.newBuilder()
+                        .setDockerVolume(Protos.Volume.Source.DockerVolume.newBuilder()
+                            .setDriver("rexray")
+                            .setName(volumeName)
+                            .build())
+                        .setType(Protos.Volume.Source.Type.DOCKER_VOLUME).build()
+                        )
+                .setMode(Protos.Volume.Mode.RW)
+                .setContainerPath(CassandraConfig.VOLUME_PATH)
+                );
     }
 
     public String getName() {
