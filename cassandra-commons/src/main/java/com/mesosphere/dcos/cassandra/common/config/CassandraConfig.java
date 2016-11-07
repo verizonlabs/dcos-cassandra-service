@@ -18,13 +18,19 @@ package com.mesosphere.dcos.cassandra.common.config;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.protobuf.ByteString;
 import com.mesosphere.dcos.cassandra.common.CassandraProtos;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.serialization.Serializer;
 import com.mesosphere.dcos.cassandra.common.util.JsonUtils;
+import javafx.util.converter.ByteStringConverter;
+import org.apache.mesos.Protos;
 import org.apache.mesos.offer.VolumeRequirement;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -33,6 +39,14 @@ import java.util.Objects;
  */
 public class CassandraConfig {
     public static final String VOLUME_PATH = "volume";
+
+    public static final ArrayList<String> hostFilterDefault = new ArrayList<String>() {{
+        add("SDS");
+        add("POD1");
+    }};
+
+    public static final ArrayList<String> hostListFilterDefault = new ArrayList<>();
+
     /**
      * The default configuration object.
      */
@@ -47,7 +61,11 @@ public class CassandraConfig {
                     HeapConfig.DEFAULT,
                     Location.DEFAULT,
                     7199,
-                    CassandraApplicationConfig.builder().build());
+                    false,
+                    CassandraApplicationConfig.builder().build(),
+                    "volume",
+                    hostFilterDefault,
+                    hostListFilterDefault);
 
 
     /**
@@ -65,7 +83,11 @@ public class CassandraConfig {
         private HeapConfig heap;
         private Location location;
         private int jmxPort;
+        private boolean publishDiscoveryInfo;
         private CassandraApplicationConfig application;
+        private String filepath;
+        private ArrayList<String> hostFilter;
+        private ArrayList<String> hostListFilter;
 
         /**
          * Constructs a new Builder by copying the properties of config.
@@ -83,7 +105,11 @@ public class CassandraConfig {
             this.heap = config.heap;
             this.location = config.location;
             this.jmxPort = config.jmxPort;
+            this.publishDiscoveryInfo = config.publishDiscoveryInfo;
             this.application = config.application;
+            this.filepath = config.filepath;
+            this.hostFilter = config.hostFilter;
+            this.hostListFilter = config.hostListFilter;
         }
 
         /**
@@ -111,6 +137,15 @@ public class CassandraConfig {
         public Builder setApplication(CassandraApplicationConfig application) {
             this.application = application;
             return this;
+        }
+
+        public Builder setFilepath(String filepath){
+            this.filepath = filepath;
+            return this;
+        }
+
+        public String getFilepath(){
+            return filepath;
         }
 
         /**
@@ -287,6 +322,38 @@ public class CassandraConfig {
         }
 
         /**
+         * Gets whether the Cassandra task should publish its discovery info.
+         * @return Flag that dictates whether the Cassandra task should publish its discovery info.
+         */
+        public boolean getPublishDiscoveryInfo() { return publishDiscoveryInfo; }
+
+        /**
+         * Sets whether the Cassandra task should publish its discovery info.
+         * @param publishDiscoveryInfo Flag to enable or disable publishing of discovery info.
+         * @return The Builder instance.
+         */
+        public Builder setPublishDiscoveryInfo(boolean publishDiscoveryInfo) {
+            this.publishDiscoveryInfo = publishDiscoveryInfo;
+            return this;
+        }
+
+        public Builder setHostFilter(ArrayList<String> hostFilter){
+            this.hostFilter = hostFilter;
+            return this;
+        }
+
+        public ArrayList<String> getHostFilter(){
+            return this.hostFilter;
+        }
+
+        public Builder setHostListFilter(ArrayList<String> hostListFilter){
+            this.hostListFilter = hostListFilter;
+            return this;
+        }
+
+        public ArrayList<String> getHostListFilter(){ return this.hostListFilter; }
+
+        /**
          * Creates a CassandraConfig with the properties of the Builder.
          * @return A
          */
@@ -302,7 +369,11 @@ public class CassandraConfig {
                     heap,
                     location,
                     jmxPort,
-                    application);
+                    publishDiscoveryInfo,
+                    application,
+                    filepath,
+                    hostFilter,
+                    hostListFilter);
         }
     }
 
@@ -363,6 +434,7 @@ public class CassandraConfig {
      * @param location The location (Rack and Data center) configuration for
      *                 the node.
      * @param jmxPort The JMX port the node will listen on.
+     * @param publishDiscoveryInfo The flag that specifies whether the Cassandra task should publish its discovery info.
      * @param application The Cassandra application configuration for the
      *                    node (This corresponds to the cassandra.yaml).
      * @return A CassandraConfig constructed from arguments.
@@ -378,8 +450,12 @@ public class CassandraConfig {
             @JsonProperty("heap") HeapConfig heap,
             @JsonProperty("location") Location location,
             @JsonProperty("jmx_port") int jmxPort,
+            @JsonProperty("publish_discovery_info") boolean publishDiscoveryInfo,
             @JsonProperty("application")
-            CassandraApplicationConfig application) {
+            CassandraApplicationConfig application,
+            @JsonProperty("filepath") String filepath,
+            @JsonProperty("host_filter") ArrayList<String> hostFilter,
+            @JsonProperty("host_list_filter") ArrayList<String> hostListFilter) {
 
         return new CassandraConfig(
                 version,
@@ -391,7 +467,11 @@ public class CassandraConfig {
                 heap,
                 location,
                 jmxPort,
-                application);
+                publishDiscoveryInfo,
+                application,
+                filepath,
+                hostFilter,
+                hostListFilter);
     }
 
     /**
@@ -403,6 +483,14 @@ public class CassandraConfig {
      */
     public static CassandraConfig parse(CassandraProtos.CassandraConfig config)
             throws IOException {
+        ArrayList<String> hostFilter = new ArrayList<>();
+        ArrayList<String> hostListFilter = new ArrayList<>();
+
+        // Covert List of ByteStrings to List of Strings.
+        config.getHostFilterList().asByteStringList().forEach(bytes -> hostFilter.add(bytes.toString()));
+
+        // Covert List of ByteStrings to List of Strings.
+        config.getHostListFilterList().asByteStringList().forEach(bytes -> hostListFilter.add(bytes.toString()));
 
         return create(
                 config.getVersion(),
@@ -414,7 +502,11 @@ public class CassandraConfig {
                 HeapConfig.parse(config.getHeap()),
                 Location.parse(config.getLocation()),
                 config.getJmxPort(),
-                CassandraApplicationConfig.parse(config.getApplication()));
+                config.getPublishDiscoveryInfo(),
+                CassandraApplicationConfig.parse(config.getApplication()),
+                (config.hasFilepath()) ? config.getFilepath() : VOLUME_PATH,
+                hostFilter,
+                hostListFilter);
 
     }
 
@@ -458,8 +550,20 @@ public class CassandraConfig {
     @JsonProperty("jmx_port")
     private final int jmxPort;
 
+    @JsonProperty("publish_discovery_info")
+    private final boolean publishDiscoveryInfo;
+
     @JsonProperty("application")
     private final CassandraApplicationConfig application;
+
+    @JsonProperty("filepath")
+    private final String filepath;
+
+    @JsonProperty("host_filter")
+    private final ArrayList<String> hostFilter;
+
+    @JsonProperty("host_list_filter")
+    private final ArrayList<String> hostListFilter;
 
     /**
      * Constructs a CassandraConfig
@@ -487,7 +591,11 @@ public class CassandraConfig {
                            final HeapConfig heap,
                            final Location location,
                            final int jmxPort,
-                           final CassandraApplicationConfig application) {
+                           final boolean publishDiscoveryInfo,
+                           final CassandraApplicationConfig application,
+                           final String filepath,
+                           final ArrayList<String> hostFilter,
+                           final ArrayList<String> hostListFilter) {
         this.version = version;
         this.cpus = cpus;
         this.memoryMb = memoryMb;
@@ -497,7 +605,11 @@ public class CassandraConfig {
         this.heap = heap;
         this.location = location;
         this.jmxPort = jmxPort;
+        this.publishDiscoveryInfo = publishDiscoveryInfo;
         this.application = application;
+        this.filepath = filepath;
+        this.hostFilter = hostFilter;
+        this.hostListFilter = hostListFilter;
     }
 
     /**
@@ -584,7 +696,23 @@ public class CassandraConfig {
         return memoryMb;
     }
 
+    /**
+     * Gets whether the Cassandra task should publish its discovery info.
+     * @return Flag that dictates whether the Cassandra task should publish its discovery info.
+     */
+    public boolean getPublishDiscoveryInfo() { return publishDiscoveryInfo; }
 
+    public String getFilepath() {
+        return filepath;
+    }
+
+    public ArrayList<String> getHostFilter(){
+        return hostFilter;
+    }
+
+    public ArrayList<String> getHostListFilter(){
+        return hostListFilter;
+    }
     /**
      * Gets a Protocol Buffers representation of the config.
      * @return A Protocol Buffers representation of the config.
@@ -604,7 +732,11 @@ public class CassandraConfig {
                         .setReplaceIp(replaceIp)
                         .setHeap(heap.toProto())
                         .setLocation(location.toProto())
-                        .setApplication(application.toByteString());
+                        .setPublishDiscoveryInfo(publishDiscoveryInfo)
+                        .setApplication(application.toByteString())
+                        .setFilepath(filepath)
+                        .addAllHostFilter(hostFilter)
+                        .addAllHostListFilter(hostListFilter);
 
         return builder.build();
     }
@@ -639,19 +771,23 @@ public class CassandraConfig {
                 getDiskMb() == that.getDiskMb() &&
                 getDiskType() == that.getDiskType() &&
                 getJmxPort() == that.getJmxPort() &&
+                getPublishDiscoveryInfo() == that.getPublishDiscoveryInfo() &&
                 Objects.equals(getVersion(), that.getVersion()) &&
                 Objects.equals(getReplaceIp(), that.getReplaceIp()) &&
                 Objects.equals(getHeap(), that.getHeap()) &&
                 Objects.equals(getLocation(), that.getLocation()) &&
-                Objects.equals(getApplication(), that.getApplication());
+                Objects.equals(getApplication(), that.getApplication()) &&
+                Objects.equals(getFilepath(), that.getFilepath()) &&
+                Objects.equals(getHostFilter(), that.getHostFilter()) &&
+                Objects.equals(getHostListFilter(), that.getHostListFilter());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getVersion(), getCpus(), getMemoryMb(), getDiskMb(),
                 getDiskType(),
-                getReplaceIp(), getHeap(), getLocation(), getJmxPort(),
-                getApplication());
+                getReplaceIp(), getHeap(), getLocation(), getJmxPort(), getPublishDiscoveryInfo(),
+                getApplication(), getFilepath(), getHostFilter(), getHostListFilter());
     }
 
     @Override

@@ -54,10 +54,15 @@ public class ExecutorConfig {
             int memoryMb,
             int heapMb,
             int apiPort,
+            String networkMode,
+            String cniNetwork,
             String javaHome,
             URI jreLocation,
             URI executorLocation,
             URI cassandraLocation,
+            URI dvdcli,
+            String volumeDriver,
+            String volumeName,
             String hostPath,
             String containerPath) {
 
@@ -68,10 +73,15 @@ public class ExecutorConfig {
                 memoryMb,
                 heapMb,
                 apiPort,
+                networkMode,
+                cniNetwork,
                 javaHome,
                 jreLocation,
                 executorLocation,
                 cassandraLocation,
+                dvdcli,
+                volumeDriver,
+                volumeName,
                 hostPath,
                 containerPath);
     }
@@ -84,11 +94,16 @@ public class ExecutorConfig {
             @JsonProperty("memory_mb") int memoryMb,
             @JsonProperty("heap_mb") int heapMb,
             @JsonProperty("api_port") int apiPort,
+            @JsonProperty("network_mode") String networkMode,
+            @JsonProperty("cni_network") String cniNetwork,
             @JsonProperty("java_home") String javaHome,
             @JsonProperty("jre_location") String jreLocation,
             @JsonProperty("executor_location") String executorLocation,
             @JsonProperty("cassandra_location") String cassandraLocation,
             @JsonProperty("emc_ecs_workaround") boolean emcEcsWorkaround,
+            @JsonProperty("dvdcli") String dvdcli,
+            @JsonProperty("volume_driver") String volumeDriver,
+            @JsonProperty("volume_name") String volumeName,
             @JsonProperty("host_path") String hostPath,
             @JsonProperty("container_path") String containerPath)
             throws URISyntaxException, UnsupportedEncodingException {
@@ -100,10 +115,15 @@ public class ExecutorConfig {
                 memoryMb,
                 heapMb,
                 apiPort,
+                networkMode,
+                cniNetwork,
                 javaHome,
                 URI.create(jreLocation),
                 URI.create(executorLocation),
                 URI.create(cassandraLocation),
+                URI.create(dvdcli),
+                volumeDriver,
+                volumeName,
                 hostPath,
                 containerPath);
 
@@ -128,12 +148,26 @@ public class ExecutorConfig {
     @JsonProperty("api_port")
     private final int apiPort;
 
+    private final URI dvdcli;
+
+    @JsonProperty("network_mode")
+    private final String networkMode;
+
+    @JsonProperty("cni_network")
+    private final String cniNetwork;
+
     private final URI jreLocation;
     private final URI executorLocation;
     private final URI cassandraLocation;
 
     @JsonProperty("java_home")
     private final String javaHome;
+
+    @JsonProperty("volume_name")
+    private final String volumeName;
+
+    @JsonProperty("volume_driver")
+    private final String volumeDriver;
 
     @JsonProperty("host_path")
     private final String hostPath;
@@ -148,10 +182,15 @@ public class ExecutorConfig {
             int memoryMb,
             int heapMb,
             int apiPort,
+            String networkMode,
+            String cniNetwork,
             String javaHome,
             URI jreLocation,
             URI executorLocation,
             URI cassandraLocation,
+            URI dvdcli,
+            String volumeDriver,
+            String volumeName,
             String hostPath,
             String containerPath) {
 
@@ -161,9 +200,14 @@ public class ExecutorConfig {
         this.memoryMb = memoryMb;
         this.heapMb = heapMb;
         this.apiPort = apiPort;
+        this.networkMode = networkMode;
+        this.cniNetwork = cniNetwork;
         this.jreLocation = jreLocation;
         this.executorLocation = executorLocation;
         this.cassandraLocation = cassandraLocation;
+        this.dvdcli = dvdcli;
+        this.volumeName = volumeName;
+        this.volumeDriver = volumeDriver;
         this.javaHome = javaHome;
         this.hostPath = hostPath;
         this.containerPath = containerPath;
@@ -172,6 +216,14 @@ public class ExecutorConfig {
 
     public int getApiPort() {
         return apiPort;
+    }
+
+    public String getNetworkMode() {
+        return networkMode;
+    }
+
+    public String getCniNetwork() {
+        return cniNetwork;
     }
 
     public List<String> getArguments() {
@@ -229,9 +281,23 @@ public class ExecutorConfig {
         return cassandraLocation.toString();
     }
 
+    @JsonProperty("dvdcli")
+    public String getDvdcliString() {
+        return dvdcli.toString();
+    }
+
+    public String getVolumeName() {
+        return volumeName;
+    }
+
+    public String getVolumeDriver() {
+        return volumeDriver;
+    }
+
     @JsonIgnore
     public Set<String> getURIs() {
         Set<String> uris = new HashSet<String>();
+        uris.add(dvdcli.toString());
         uris.add(executorLocation.toString());
         uris.add(cassandraLocation.toString());
         uris.add(jreLocation.toString());

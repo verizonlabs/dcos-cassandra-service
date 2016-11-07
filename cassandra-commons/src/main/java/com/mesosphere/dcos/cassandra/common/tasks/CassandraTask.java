@@ -15,9 +15,9 @@
  */
 package com.mesosphere.dcos.cassandra.common.tasks;
 
+import com.google.inject.Inject;
 import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.CassandraConfig;
-import com.mesosphere.dcos.cassandra.common.config.ResourceUtilities;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.serialization.Serializer;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.BackupSnapshotTask;
@@ -26,6 +26,7 @@ import com.mesosphere.dcos.cassandra.common.tasks.backup.DownloadSnapshotTask;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.RestoreSnapshotTask;
 import com.mesosphere.dcos.cassandra.common.tasks.cleanup.CleanupTask;
 import com.mesosphere.dcos.cassandra.common.tasks.repair.RepairTask;
+
 import org.apache.mesos.Protos;
 import org.apache.mesos.Protos.DiscoveryInfo;
 import org.apache.mesos.offer.ResourceUtils;
@@ -34,6 +35,7 @@ import org.apache.mesos.offer.VolumeRequirement;
 import org.apache.mesos.util.Algorithms;
 
 import javax.annotation.Nullable;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -158,6 +160,7 @@ public abstract class CassandraTask {
     }
 
     private final Protos.TaskInfo info;
+    private Protos.TaskStatus status;
 
     protected CassandraData getData() {
         return CassandraData.parse(info.getData());
@@ -167,12 +170,14 @@ public abstract class CassandraTask {
         return Protos.TaskInfo.newBuilder(info);
     }
 
-    public Protos.TaskStatus getCurrentStatus() {
-        return getStatusBuilder()
-            .setTaskId(info.getTaskId())
-            .setData(getData().getBytes())
-            .setState(getData()
-                .getState()).build();
+    public Protos.TaskStatus getTaskStatus() {
+        return status;
+    }
+
+    protected CassandraTask setTaskStatus(Protos.TaskStatus status) {
+        this.status = status;
+
+        return this;
     }
 
     public Protos.TaskState getState(){
@@ -186,7 +191,6 @@ public abstract class CassandraTask {
     protected CassandraTask(final Protos.TaskInfo info) {
         this.info = info;
     }
-
 
     protected CassandraTask(
         final String name,
@@ -221,14 +225,9 @@ public abstract class CassandraTask {
 
         if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
             if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
-                // Add persistent volume for cassandra metadata
-                builder.addResources(ResourceUtilities.getDesiredMountVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
-                // Add volume mapping
-                //builder.addResources(ResourceUtilities.getDesiredMountVolumeMapping(role, principal, diskMb, data.getConfig().getFilepath(), data.getConfig().getFilepath()));
+                builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
             } else {
-                builder.addResources(ResourceUtilities.getDesiredRootVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
-                // Add volume mapping
-                //builder.addResources(ResourceUtilities.getDesiredRootVolumeMapping(role, principal, diskMb, data.getConfig().getFilepath(), data.getConfig().getFilepath()));
+                builder.addResources(ResourceUtils.getDesiredRootVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
             }
         }
 

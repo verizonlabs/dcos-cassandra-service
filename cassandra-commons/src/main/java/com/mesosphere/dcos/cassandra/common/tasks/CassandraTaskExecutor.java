@@ -19,10 +19,22 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.ExecutorConfig;
-import org.apache.mesos.Protos;
-import org.apache.mesos.executor.ExecutorUtils;
 
 import java.util.*;
+
+import org.apache.mesos.Protos;
+import org.apache.mesos.dcos.Capabilities;
+import org.apache.mesos.dcos.DcosCluster;
+import org.apache.mesos.executor.ExecutorUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
 
@@ -35,6 +47,9 @@ import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
  */
 public class CassandraTaskExecutor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CassandraTaskExecutor.class);
+    private static final String CNI_NETWORK = "CNI";
+
     /**
      * Creates a new CassandraTaskExecutor.
      *
@@ -42,27 +57,18 @@ public class CassandraTaskExecutor {
      * @return A new CassandraTaskExecutor constructed from the parameters.
      */
     public static CassandraTaskExecutor create(
-        final String frameworkId,
-        final String name,
-        final String role,
-        final String principal,
-        final ExecutorConfig config) {
+            final String frameworkId,
+            final String name,
+            final String role,
+            final String principal,
+            final ExecutorConfig config) {
 
         return new CassandraTaskExecutor(
             frameworkId,
             name,
             role,
             principal,
-            config.getCommand(),
-            config.getArguments(),
-            config.getCpus(),
-            config.getMemoryMb(),
-            config.getHeapMb(),
-            config.getApiPort(),
-            config.getURIs(),
-            config.getJavaHome(),
-            config.getHostPath(),
-            config.getContainerPath());
+            config);
     }
 
     /**
@@ -72,7 +78,7 @@ public class CassandraTaskExecutor {
      * @return A CassandraTaskExecutor parsed from info.
      */
     public static final CassandraTaskExecutor parse(
-        final Protos.ExecutorInfo info) {
+            final Protos.ExecutorInfo info) {
         return new CassandraTaskExecutor(info);
     }
 
@@ -84,58 +90,59 @@ public class CassandraTaskExecutor {
      *
      * @param frameworkId The id of the executor's framework.
      * @param name        The name of the executor.
-     * @param command     The command used to launch the executor.
-     * @param arguments   The arguments passed to the executor.
-     * @param cpus        The cpu shares allocated to the executor.
-     * @param memoryMb    The memory allocated to the executor in Mb.
-     * @param heapMb      The heap allocated to the executor in Mb.
-     * @param apiPort     The port the executor's API will listen on.
-     * @param uris        The URI's for the executor's resources.
-     * @param javaHome    The location of the local java installation for the
-     *                    executor.
      */
     private CassandraTaskExecutor(
         String frameworkId,
         String name,
         String role,
         String principal,
-        String command,
-        List<String> arguments,
-        double cpus,
-        int memoryMb,
-        int heapMb,
-        int apiPort,
-        Set<String> uris,
-        String javaHome,
-        String hostPath,
-        String containerPath) {
+        ExecutorConfig config) {
 
-        this.info = Protos.ExecutorInfo.newBuilder()
-            .setFrameworkId(Protos.FrameworkID.newBuilder()
-                .setValue(frameworkId))
-            .setName(name)
-            .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
-            .setContainer(Protos.ContainerInfo.newBuilder()
-                    .setType(Protos.ContainerInfo.Type.MESOS)
-                    .addVolumes(
-                    Protos.Volume.newBuilder()
-                            .setHostPath(hostPath)
-                            .setContainerPath(containerPath)
-                            .setMode(Protos.Volume.Mode.RW).build()))
-            .setCommand(createCommandInfo(command,
-                arguments,
-                uris,
-                ImmutableMap.<String, String>builder()
-                    .put("JAVA_HOME", javaHome)
-                    .put("JAVA_OPTS", "-Xmx" + heapMb + "M")
-                    .put("EXECUTOR_API_PORT", Integer.toString(apiPort))
-                    .build()))
-            .addAllResources(
-                Arrays.asList(
-                    createCpus(cpus, role, principal),
-                    createMemoryMb(memoryMb, role, principal),
-                    createPorts(Arrays.asList(apiPort), role, principal)))
-            .build();
+        Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
+        String commandString = config.getCommand();
+        StringBuilder stringBuilder = new StringBuilder();
+        Capabilities capabilities = new Capabilities(new DcosCluster());
+
+        if (config.getVolumeDriver().equalsIgnoreCase("rexray")){
+            stringBuilder.append("./dvdcli mount --volumename=");
+            stringBuilder.append(name.replace("node-", config.getVolumeName() + "_").replace("_executor", ""));
+            stringBuilder.append(" --volumedriver=");
+            stringBuilder.append(config.getVolumeDriver().trim());
+            stringBuilder.append(" && ");
+            stringBuilder.append(config.getCommand());
+            commandString = stringBuilder.toString();
+            LOGGER.info("Executor Command {}", commandString);
+        }
+
+        try {
+            if (capabilities.supportsNamedVips() && CNI_NETWORK.equalsIgnoreCase(config.getNetworkMode())) {
+                executorBuilder.setContainer(Protos.ContainerInfo.newBuilder()
+                        .setType(Protos.ContainerInfo.Type.MESOS)
+                        .addNetworkInfos(Protos.NetworkInfo.newBuilder()
+                                .setName(config.getCniNetwork())));
+            }
+        } catch (IOException | URISyntaxException e) {
+            LOGGER.error("Unable to detect named VIP support: {}", e);
+        } finally {
+            executorBuilder.setFrameworkId(Protos.FrameworkID.newBuilder()
+                    .setValue(frameworkId))
+                    .setName(name)
+                    .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
+                    .setCommand(createCommandInfo(commandString,
+                            config.getArguments(),
+                            config.getURIs(),
+                            ImmutableMap.<String, String>builder()
+                                    .put("JAVA_HOME", config.getJavaHome())
+                                    .put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M")
+                                    .put("EXECUTOR_API_PORT", Integer.toString(config.getApiPort()))
+                                    .build()))
+                    .addAllResources(
+                            Arrays.asList(
+                                    createCpus(config.getCpus(), role, principal),
+                                    createMemoryMb(config.getMemoryMb(), role, principal),
+                                    createPorts(Arrays.asList(config.getApiPort()), role, principal)));
+            this.info = executorBuilder.build();
+        }
     }
 
     CassandraTaskExecutor(final Protos.ExecutorInfo info) {
@@ -158,8 +165,8 @@ public class CassandraTaskExecutor {
      */
     public int getApiPort() {
         return Integer.parseInt(
-            getValue("EXECUTOR_API_PORT", info.getCommand()
-                .getEnvironment()));
+                getValue("EXECUTOR_API_PORT", info.getCommand()
+                        .getEnvironment()));
     }
 
     /**
@@ -194,9 +201,9 @@ public class CassandraTaskExecutor {
      */
     public int getHeapMb() {
         return Integer.parseInt(
-            getValue("JAVA_OPTS", info.getCommand().getEnvironment())
-                .replace("-Xmx", "")
-                .replace("M", ""));
+                getValue("JAVA_OPTS", info.getCommand().getEnvironment())
+                        .replace("-Xmx", "")
+                        .replace("M", ""));
 
     }
 
@@ -237,8 +244,8 @@ public class CassandraTaskExecutor {
 
     public CassandraTaskExecutor withNewId() {
         return parse(
-            Protos.ExecutorInfo.newBuilder(getExecutorInfo())
-                .setExecutorId(ExecutorUtils.toExecutorId(getName())).build());
+                Protos.ExecutorInfo.newBuilder(getExecutorInfo())
+                        .setExecutorId(ExecutorUtils.toExecutorId(getName())).build());
     }
 
     public CassandraTaskExecutor clearId() {
@@ -258,11 +265,11 @@ public class CassandraTaskExecutor {
 
     public CassandraTaskExecutor update(final ExecutorConfig config) {
         return new CassandraTaskExecutor(
-            Protos.ExecutorInfo.newBuilder(info)
-                .setExecutorId(ExecutorUtils.toExecutorId(info.getName()))
-            .addAllResources(updateResources(config.getCpus(), config
-                    .getMemoryMb(),
-                info.getResourcesList())).build());
+                Protos.ExecutorInfo.newBuilder(info)
+                        .setExecutorId(ExecutorUtils.toExecutorId(info.getName()))
+                        .addAllResources(updateResources(config.getCpus(), config
+                                        .getMemoryMb(),
+                                info.getResourcesList())).build());
     }
 
     @Override

@@ -1,9 +1,10 @@
 package com.mesosphere.dcos.cassandra.common.util;
 
-import java.util.*;
 import org.apache.mesos.Protos.*;
 import org.apache.mesos.offer.ResourceUtils;
 import org.apache.mesos.util.Algorithms;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TaskUtils {
@@ -31,13 +32,29 @@ public class TaskUtils {
 
     public static Collection<CommandInfo.URI> createURIs(
         final Set<String> uris) {
-        return uris.stream()
-            .map(uri -> CommandInfo.URI.newBuilder()
-                .setCache(false)
-                .setExecutable(false)
-                .setExtract(true)
-                .setValue(uri).build())
-            .collect(Collectors.toList());
+
+        Collection<CommandInfo.URI> list = new ArrayList<>();
+
+        for (String uri : uris){
+            if (uri.contains("file:///")){
+                list.add(CommandInfo.URI.newBuilder()
+                        .setCache(false)
+                        .setExecutable(true)
+                        .setExtract(false)
+                        .setValue(uri)
+                        .build());
+            } else {
+                list.add(CommandInfo.URI.newBuilder()
+                        .setCache(false)
+                        .setExecutable(false)
+                        .setExtract(true)
+                        .setValue(uri)
+                        .build());
+            }
+
+
+        }
+        return list;
     }
 
     public static CommandInfo createCommandInfo(

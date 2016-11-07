@@ -52,6 +52,10 @@ message CassandraConfig{
     optional bool publishDiscoveryInfo = 12;
 
     optional string filepath = 13;
+
+    repeated string hostFilter = 14;
+
+    repeated string hostListFilter = 15;
 }
 
 message CassandraData{

@@ -5,10 +5,15 @@ executor:
   memory_mb : ${EXECUTOR_MEMORY_MB:-768}
   heap_mb : ${EXECUTOR_HEAP_MB:-512}
   api_port : ${EXECUTOR_API_PORT:-9000}
+  network_mode : ${EXECUTOR_NETWORK_MODE:-"host"}
+  cni_network : ${EXECUTOR_CNI_NETWORK:-"dcos"}
   java_home : ${EXECUTOR_JAVA_HOME:-"./jre"}
   jre_location : ${EXECUTOR_JRE_LOCATION:-'https://s3-us-west-2.amazonaws.com/cassandra-framework-dev/jre/linux/server-jre-8u74-linux-x64.tar.gz'}
   executor_location : ${EXECUTOR_LOCATION:-'https://s3-us-west-2.amazonaws.com/cassandra-framework-dev/testing/executor.zip'}
   cassandra_location : ${EXECUTOR_CASSANDRA_LOCATION:-'https://s3-us-west-2.amazonaws.com/cassandra-framework-dev/testing/apache-cassandra-2.2.5-bin.tar.gz'}
+  dvdcli : ${EXECUTOR_DVDCLI:-'file:///opt/mesosphere/bin/dvdcli'}
+  volume_driver : ${EXECUTOR_VOLUME_DRIVER:-"rexray"}
+  volume_name : ${EXECUTOR_VOLUME_NAME:-"timh_cass"}
   host_path: ${CASSANDRA_HOST_PATH:-"/var/log"}
   container_path: ${CASSANDRA_CONTAINER_PATH:-"logs"}
 cluster_task:
@@ -21,6 +26,9 @@ cassandra:
   disk_mb: ${CASSANDRA_DISK_MB:-10240}
   disk_type: ${CASSANDRA_DISK_TYPE:-ROOT}
   version: ${CASSANDRA_VERSION:-2.2.5}
+  filepath: ${CASSANDRA_FILEPATH:-"volume"}
+  host_filter: ${CASSANDRA_HOST_FILTER:-["SDS", "POD1"]}
+  host_list_filter: ${CASSANDRA_HOST_LIST_FILTER:-[]}
   heap:
     size_mb : ${CASSANDRA_HEAP_SIZE_MB:-2048}
     new_mb : ${CASSANDRA_HEAP_NEW_MB:-100}
@@ -29,6 +37,7 @@ cassandra:
     rack : ${CASSANDRA_LOCATION_RACK:-"rac1"}
     data_center : ${CASSANDRA_LOCATION_DATA_CENTER:-"dc1"}
   jmx_port: ${CASSANDRA_JMX_PORT:-7199}
+  publish_discovery_info: ${CASSANDRA_PUBLISH_DISCOVERY_INFO:-false}
   application:
      cluster_name : ${CASSANDRA_CLUSTER_NAME:-"cassandra"}
      authenticator: "AllowAllAuthenticator"
