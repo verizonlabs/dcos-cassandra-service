@@ -15,7 +15,6 @@
  */
 package com.mesosphere.dcos.cassandra.common.tasks;
 
-import com.google.inject.Inject;
 import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.CassandraConfig;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
@@ -26,7 +25,6 @@ import com.mesosphere.dcos.cassandra.common.tasks.backup.DownloadSnapshotTask;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.RestoreSnapshotTask;
 import com.mesosphere.dcos.cassandra.common.tasks.cleanup.CleanupTask;
 import com.mesosphere.dcos.cassandra.common.tasks.repair.RepairTask;
-
 import org.apache.mesos.Protos;
 import org.apache.mesos.Protos.DiscoveryInfo;
 import org.apache.mesos.offer.ResourceUtils;
@@ -35,7 +33,6 @@ import org.apache.mesos.offer.VolumeRequirement;
 import org.apache.mesos.util.Algorithms;
 
 import javax.annotation.Nullable;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
