@@ -144,7 +144,7 @@ public class CassandraTaskExecutor {
 
     private String setRexrayCommand(String volumeName, ExecutorConfig config){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("./dvdcli mount --volumename=");
+        stringBuilder.append("dvdcli mount --volumename=");
         stringBuilder.append(volumeName);
         stringBuilder.append(" --volumedriver=");
         stringBuilder.append(config.getVolumeDriver().trim());
