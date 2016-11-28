@@ -162,7 +162,9 @@ public class ConfigurationManagerTest {
                 URI.create("/jre/location"), URI.create("/executor/location"),
                 URI.create("/cassandra/location"), URI.create("file:///opt/mesosphere/bin/dvdcli"),
                 "rexray",
-                "timh_cass");
+                "timh_cass",
+                "/var/log",
+                "log");
         int updatedServers = original.getServers() + 10;
         int updatedSeeds = original.getSeeds() + 5;
 

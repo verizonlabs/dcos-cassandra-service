@@ -221,6 +221,11 @@ public class CassandraDaemonTask extends CassandraTask {
         }
 
         return this;
+
+    }
+
+    public VolumeRequirement.VolumeType getVolumeType() {
+        return getConfig().getDiskType();
     }
 
     @Override
@@ -230,6 +235,7 @@ public class CassandraDaemonTask extends CassandraTask {
                 .setData(getData()
                     .withState(state)
                     .getBytes()).build());
+
     }
 
     public CassandraDaemonStatus createStatus(Protos.TaskState state,
