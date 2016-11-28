@@ -16,6 +16,7 @@
 package com.mesosphere.dcos.cassandra.common.tasks;
 
 import com.google.protobuf.TextFormat;
+import com.mesosphere.dcos.cassandra.common.config.CassandraConfig;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.serialization.Serializer;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.BackupSnapshotTask;
@@ -221,9 +222,9 @@ public abstract class CassandraTask {
 
         if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
             if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
-                builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, data.getConfig().getFilepath()));
+                builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
             } else {
-                builder.addResources(ResourceUtils.getDesiredRootVolume(role, principal, diskMb, data.getConfig().getFilepath()));
+                builder.addResources(ResourceUtils.getDesiredRootVolume(role, principal, diskMb, CassandraConfig.VOLUME_PATH));
             }
         }
 
