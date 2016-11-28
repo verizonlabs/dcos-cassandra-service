@@ -52,7 +52,9 @@ public class CassandraDaemonTaskTest {
                 new URI("http://cassandra-location"),
                 new URI("file:///opt/mesosphere/bin/dvdcli"),
                 "rexray",
-                "timh_cass");
+                "timh_cass",
+                "/var/log",
+                "logs");
 
         testTaskExecutor = CassandraTaskExecutor.create(
                 "test-framework-id",

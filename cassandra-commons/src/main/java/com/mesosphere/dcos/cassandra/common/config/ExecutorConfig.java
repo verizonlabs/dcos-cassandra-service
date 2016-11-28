@@ -62,7 +62,9 @@ public class ExecutorConfig {
             URI cassandraLocation,
             URI dvdcli,
             String volumeDriver,
-            String volumeName) {
+            String volumeName,
+            String hostPath,
+            String containerPath) {
 
         return new ExecutorConfig(
                 command,
@@ -79,7 +81,9 @@ public class ExecutorConfig {
                 cassandraLocation,
                 dvdcli,
                 volumeDriver,
-                volumeName);
+                volumeName,
+                hostPath,
+                containerPath);
     }
 
     @JsonCreator
@@ -99,7 +103,9 @@ public class ExecutorConfig {
             @JsonProperty("emc_ecs_workaround") boolean emcEcsWorkaround,
             @JsonProperty("dvdcli") String dvdcli,
             @JsonProperty("volume_driver") String volumeDriver,
-            @JsonProperty("volume_name") String volumeName)
+            @JsonProperty("volume_name") String volumeName,
+            @JsonProperty("host_path") String hostPath,
+            @JsonProperty("container_path") String containerPath)
             throws URISyntaxException, UnsupportedEncodingException {
 
         ExecutorConfig config = create(
@@ -117,7 +123,9 @@ public class ExecutorConfig {
                 URI.create(cassandraLocation),
                 URI.create(dvdcli),
                 volumeDriver,
-                volumeName);
+                volumeName,
+                hostPath,
+                containerPath);
 
         return config;
     }
@@ -161,6 +169,12 @@ public class ExecutorConfig {
     @JsonProperty("volume_driver")
     private final String volumeDriver;
 
+    @JsonProperty("host_path")
+    private final String hostPath;
+
+    @JsonProperty("container_path")
+    private final String containerPath;
+
     public ExecutorConfig(
             String command,
             List<String> arguments,
@@ -176,7 +190,9 @@ public class ExecutorConfig {
             URI cassandraLocation,
             URI dvdcli,
             String volumeDriver,
-            String volumeName) {
+            String volumeName,
+            String hostPath,
+            String containerPath) {
 
         this.command = command;
         this.arguments = arguments;
@@ -193,6 +209,8 @@ public class ExecutorConfig {
         this.volumeName = volumeName;
         this.volumeDriver = volumeDriver;
         this.javaHome = javaHome;
+        this.hostPath = hostPath;
+        this.containerPath = containerPath;
     }
 
 
@@ -243,6 +261,10 @@ public class ExecutorConfig {
     public int getMemoryMb() {
         return memoryMb;
     }
+
+    public String getHostPath(){ return  hostPath; }
+
+    public String getContainerPath(){ return containerPath; }
 
     @JsonProperty("jre_location")
     public String getJreLocationString() {
@@ -299,7 +321,9 @@ public class ExecutorConfig {
                         that.getExecutorLocation()) &&
                 Objects.equals(getCassandraLocation(),
                         that.getCassandraLocation()) &&
-                Objects.equals(getJavaHome(), that.getJavaHome());
+                Objects.equals(getJavaHome(), that.getJavaHome())
+                && getHostPath().equals(that.getHostPath())
+                && getContainerPath().equals(that.getContainerPath());
     }
 
     @Override
@@ -308,7 +332,7 @@ public class ExecutorConfig {
                 getMemoryMb(),
                 getHeapMb(), getApiPort(),
                 getJreLocation(), getExecutorLocation(), getCassandraLocation(),
-                getJavaHome());
+                getJavaHome(), getContainerPath(), getHostPath());
     }
 
     @Override
