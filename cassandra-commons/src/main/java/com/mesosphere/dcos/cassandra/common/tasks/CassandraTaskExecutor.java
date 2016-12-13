@@ -176,7 +176,7 @@ public class CassandraTaskExecutor {
     private Protos.ContainerInfo.Builder setRootPathContainerOptions(Protos.ContainerInfo.Builder builder, String containerPath, String rootPath){
         return builder
                 .addVolumes(Protos.Volume.newBuilder()
-                    .setContainerPath(containerPath)
+                    .setContainerPath(CassandraConfig.VOLUME_PATH)
                     .setHostPath(rootPath)
                     .setMode(Protos.Volume.Mode.RW)
                 );
