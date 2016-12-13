@@ -226,7 +226,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
                 for (String filter: filterList) {
                     filtered_offers = filterOffers(filtered_offers, filter);
                 }
-            } else {
+            } else if (!hostListFilter.isEmpty()){
                 filtered_offers = filterOffersByHostname(filtered_offers, hostListFilter);
             }
 
