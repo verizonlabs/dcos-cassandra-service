@@ -78,6 +78,7 @@ public class CassandraTaskExecutor {
 
 
     private Protos.ExecutorInfo info;
+    private ExecutorConfig config;
 
     /**
      * Constructs a CassandraTaskExecutor.
@@ -92,6 +93,7 @@ public class CassandraTaskExecutor {
         String principal,
         ExecutorConfig config) {
 
+        this.config = config;
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
         String commandString = config.getCommand();
         String volumeName = name.replace("node-", config.getVolumeName() + "_").replace("_executor", "");
@@ -158,7 +160,6 @@ public class CassandraTaskExecutor {
 
     private Protos.ContainerInfo.Builder setRexrayContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName) {
         return builder
-                .setType(Protos.ContainerInfo.Type.MESOS)
                 .addVolumes(Protos.Volume.newBuilder().setSource(
                         Protos.Volume.Source.newBuilder()
                         .setDockerVolume(Protos.Volume.Source.DockerVolume.newBuilder()
@@ -175,10 +176,13 @@ public class CassandraTaskExecutor {
     private Protos.ContainerInfo.Builder setRootPathContainerOptions(Protos.ContainerInfo.Builder builder, String containerPath, String rootPath){
         return builder
                 .addVolumes(Protos.Volume.newBuilder()
-                .setContainerPath(containerPath)
-                .setHostPath(rootPath)
-                .setMode(Protos.Volume.Mode.RW));
+                    .setContainerPath(containerPath)
+                    .setHostPath(rootPath)
+                    .setMode(Protos.Volume.Mode.RW)
+                );
     }
+
+    public ExecutorConfig getConfig() { return this.config; }
 
     public String getName() {
         return info.getName();
