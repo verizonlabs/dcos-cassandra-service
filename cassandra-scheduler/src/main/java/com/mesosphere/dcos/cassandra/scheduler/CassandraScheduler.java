@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.*;
 import com.mesosphere.dcos.cassandra.common.offer.LogOperationRecorder;
 import com.mesosphere.dcos.cassandra.common.offer.PersistentOfferRequirementProvider;
@@ -221,15 +220,14 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
             ArrayList<String> filterList = configurationManager.getTargetConfig().getCassandraConfig().getHostFilter();
 
-            List<Protos.Offer> filtered_offers = new ArrayList<>();
+            List<Protos.Offer> filtered_offers = offers;
 
-            // We default to the most specific.
             if (hostListFilter.isEmpty()){
                 for (String filter: filterList) {
-                    filtered_offers = filterOffers(offers, filter);
+                    filtered_offers = filterOffers(filtered_offers, filter);
                 }
             } else {
-                filtered_offers = filterOffersByHostname(offers, hostListFilter);
+                filtered_offers = filterOffersByHostname(filtered_offers, hostListFilter);
             }
 
             if (currentBlock.isPresent()) {
