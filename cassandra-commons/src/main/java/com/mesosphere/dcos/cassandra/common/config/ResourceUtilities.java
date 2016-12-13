@@ -494,6 +494,7 @@ public class ResourceUtilities {
                         .build())
                 .setVolume(Protos.Volume.newBuilder()
                         .setContainerPath(containerPath)
+                        .setHostPath(rootPath)
                         .setMode(Protos.Volume.Mode.RW)
                         .build())
                 .build();

@@ -17,6 +17,7 @@ package com.mesosphere.dcos.cassandra.common.tasks;
 
 import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.CassandraConfig;
+import com.mesosphere.dcos.cassandra.common.config.ResourceUtilities;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.serialization.Serializer;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.BackupSnapshotTask;
@@ -228,8 +229,9 @@ public abstract class CassandraTask {
             }
         }
 
+
         if (!ports.isEmpty()) {
-            builder.addResources(ResourceUtils.getDesiredRanges(role, principal, "ports", Algorithms.createRanges(ports)));
+            builder.addResources(ResourceUtilities.getDesiredRanges(role, principal, "ports", Algorithms.createRanges(ports)));
         }
 
         if (discoveryInfo != null) {
