@@ -26,8 +26,6 @@ import org.apache.mesos.executor.ExecutorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.*;
 
 import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
@@ -108,69 +106,30 @@ public class CassandraTaskExecutor {
         Protos.ContainerInfo.Builder containerInfo = Protos.ContainerInfo.newBuilder()
                 .setType(Protos.ContainerInfo.Type.MESOS);
 
-        if (config.getVolumeDriver().equalsIgnoreCase("rexray")){
-            commandString = setRexrayCommand(volumeName, config);
-            containerInfo = setRexrayContainerOptions(containerInfo, volumeName);
-        } else if (!config.getContainerPath().isEmpty() && !config.getHostPath().isEmpty()){
+        if (!config.getContainerPath().isEmpty() && !config.getHostPath().isEmpty()){
             containerInfo = setRootPathContainerOptions(containerInfo, config.getContainerPath(), config.getHostPath());
         }
 
-        try {
-            if (capabilities.supportsNamedVips() && CNI_NETWORK.equalsIgnoreCase(config.getNetworkMode())) {
-                containerInfo
-                        .addNetworkInfos(Protos.NetworkInfo.newBuilder()
-                        .setName(config.getCniNetwork()));
-            }
-        } catch (IOException | URISyntaxException e) {
-            LOGGER.error("Unable to detect named VIP support: {}", e);
-        } finally {
-            executorBuilder.setFrameworkId(Protos.FrameworkID.newBuilder()
-                    .setValue(frameworkId))
-                    .setName(name)
-                    .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
-                    .setContainer(containerInfo)
-                    .setCommand(createCommandInfo(commandString,
-                            config.getArguments(),
-                            config.getURIs(),
-                            map))
-                    .addAllResources(
-                            Arrays.asList(
-                                    createCpus(config.getCpus(), role, principal),
-                                    createMemoryMb(config.getMemoryMb(), role, principal),
-                                    createPorts(Arrays.asList(config.getApiPort()), role, principal)));
+        executorBuilder.setFrameworkId(Protos.FrameworkID.newBuilder()
+                .setValue(frameworkId))
+                .setName(name)
+                .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
+                .setContainer(containerInfo)
+                .setCommand(createCommandInfo(commandString,
+                        config.getArguments(),
+                        config.getURIs(),
+                        map))
+                .addAllResources(
+                        Arrays.asList(
+                                createCpus(config.getCpus(), role, principal),
+                                createMemoryMb(config.getMemoryMb(), role, principal),
+                                createPorts(Arrays.asList(config.getApiPort()), role, principal)));
             this.info = executorBuilder.build();
-        }
+
     }
 
     CassandraTaskExecutor(final Protos.ExecutorInfo info) {
         this.info = info;
-    }
-
-    private String setRexrayCommand(String volumeName, ExecutorConfig config){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("dvdcli mount --volumename=");
-        stringBuilder.append(volumeName);
-        stringBuilder.append(" --volumedriver=");
-        stringBuilder.append(config.getVolumeDriver().trim());
-        stringBuilder.append(" && ");
-        stringBuilder.append(config.getCommand());
-
-        return stringBuilder.toString();
-    }
-
-    private Protos.ContainerInfo.Builder setRexrayContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName) {
-        return builder
-                .addVolumes(Protos.Volume.newBuilder().setSource(
-                        Protos.Volume.Source.newBuilder()
-                        .setDockerVolume(Protos.Volume.Source.DockerVolume.newBuilder()
-                            .setDriver("rexray")
-                            .setName(volumeName)
-                            .build())
-                        .setType(Protos.Volume.Source.Type.DOCKER_VOLUME).build()
-                        )
-                .setMode(Protos.Volume.Mode.RW)
-                .setContainerPath(CassandraConfig.VOLUME_PATH)
-                );
     }
 
     private Protos.ContainerInfo.Builder setRootPathContainerOptions(Protos.ContainerInfo.Builder builder, String containerPath, String rootPath){
