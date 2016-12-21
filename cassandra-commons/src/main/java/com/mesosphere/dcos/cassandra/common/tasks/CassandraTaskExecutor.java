@@ -163,13 +163,10 @@ public class CassandraTaskExecutor {
                             .setDriver("rexray")
                             .setName(volumeName)
                             .build())
+                            .setType(Protos.Volume.Source.Type.DOCKER_VOLUME)
                         .build()
                         )
                 .setMode(Protos.Volume.Mode.RW)
-                .setSource(Protos.Volume.Source.newBuilder().setDockerVolume(
-                        Protos.Volume.Source.DockerVolume.newBuilder()
-                                .setDriver("rexray")
-                                .setName(volumeName)))
                 .setContainerPath(CassandraConfig.VOLUME_PATH)
                 );
     }
