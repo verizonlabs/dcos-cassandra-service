@@ -19,9 +19,6 @@ import com.google.common.collect.Sets;
 import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.CassandraConfig;
 import com.mesosphere.dcos.cassandra.common.config.ExecutorConfig;
-
-import java.util.*;
-
 import org.apache.mesos.Protos;
 import org.apache.mesos.dcos.Capabilities;
 import org.apache.mesos.dcos.DcosCluster;
@@ -166,9 +163,13 @@ public class CassandraTaskExecutor {
                             .setDriver("rexray")
                             .setName(volumeName)
                             .build())
-                        .setType(Protos.Volume.Source.Type.DOCKER_VOLUME).build()
+                        .build()
                         )
                 .setMode(Protos.Volume.Mode.RW)
+                .setSource(Protos.Volume.Source.newBuilder().setDockerVolume(
+                        Protos.Volume.Source.DockerVolume.newBuilder()
+                                .setDriver("rexray")
+                                .setName(volumeName)))
                 .setContainerPath(CassandraConfig.VOLUME_PATH)
                 );
     }
