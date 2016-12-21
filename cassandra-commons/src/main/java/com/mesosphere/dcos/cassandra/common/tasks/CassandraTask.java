@@ -224,7 +224,7 @@ public abstract class CassandraTask {
 
         String path = getDataDirectory(executor);
 
-        if (path.equals(CassandraConfig.VOLUME_PATH)) {
+        if (!path.equals(CassandraConfig.VOLUME_PATH)) {
             if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
                 if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
                     builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, path));
