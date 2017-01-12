@@ -109,7 +109,7 @@ public class CassandraTaskExecutor {
         if (config.getVolumeDriver().equalsIgnoreCase("rexray") ||
                 config.getVolumeDriver().equalsIgnoreCase("pxd")) {
             commandString = setDvdcliCommand(volumeName, config);
-            containerInfo = setDvdcliContainerOptions(containerInfo, volumeName);
+            containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
         }
 
         try {
@@ -155,13 +155,13 @@ public class CassandraTaskExecutor {
         return stringBuilder.toString();
     }
 
-    private Protos.ContainerInfo.Builder setDvdcliContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName) {
+    private Protos.ContainerInfo.Builder setDvdcliContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName, String volumeDriver) {
         return builder
                 .setType(Protos.ContainerInfo.Type.MESOS)
                 .addVolumes(Protos.Volume.newBuilder().setSource(
                         Protos.Volume.Source.newBuilder()
                         .setDockerVolume(Protos.Volume.Source.DockerVolume.newBuilder()
-                            .setDriver("rexray")
+                            .setDriver(volumeDriver)
                             .setName(volumeName)
                             .build())
                             .setType(Protos.Volume.Source.Type.DOCKER_VOLUME)
