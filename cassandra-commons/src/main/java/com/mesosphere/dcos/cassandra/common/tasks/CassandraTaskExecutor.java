@@ -106,9 +106,10 @@ public class CassandraTaskExecutor {
         Protos.ContainerInfo.Builder containerInfo = Protos.ContainerInfo.newBuilder()
                 .setType(Protos.ContainerInfo.Type.MESOS);
 
-        if (config.getVolumeDriver().equalsIgnoreCase("rexray")){
-            commandString = setRexrayCommand(volumeName, config);
-            containerInfo = setRexrayContainerOptions(containerInfo, volumeName);
+        if (config.getVolumeDriver().equalsIgnoreCase("rexray") ||
+                config.getVolumeDriver().equalsIgnoreCase("portworx")) {
+            commandString = setDvdcliCommand(volumeName, config);
+            containerInfo = setDvdcliContainerOptions(containerInfo, volumeName);
         }
 
         try {
@@ -142,19 +143,19 @@ public class CassandraTaskExecutor {
         this.info = info;
     }
 
-    private String setRexrayCommand(String volumeName, ExecutorConfig config){
+    private String setDvdcliCommand(String volumeName, ExecutorConfig config){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("./dvdcli mount --volumename=");
         stringBuilder.append(volumeName);
         stringBuilder.append(" --volumedriver=");
-        stringBuilder.append(config.getVolumeDriver().trim());
+        stringBuilder.append(config.getVolumeDriver().trim().toLowerCase());
         stringBuilder.append(" && ");
         stringBuilder.append(config.getCommand());
 
         return stringBuilder.toString();
     }
 
-    private Protos.ContainerInfo.Builder setRexrayContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName) {
+    private Protos.ContainerInfo.Builder setDvdcliContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName) {
         return builder
                 .setType(Protos.ContainerInfo.Type.MESOS)
                 .addVolumes(Protos.Volume.newBuilder().setSource(
