@@ -107,7 +107,7 @@ public class CassandraTaskExecutor {
                 .setType(Protos.ContainerInfo.Type.MESOS);
 
         if (config.getVolumeDriver().equalsIgnoreCase("rexray") ||
-                config.getVolumeDriver().equalsIgnoreCase("portworx")) {
+                config.getVolumeDriver().equalsIgnoreCase("pxd")) {
             commandString = setDvdcliCommand(volumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, volumeName);
         }
