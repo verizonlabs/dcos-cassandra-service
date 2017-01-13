@@ -106,8 +106,11 @@ public class CassandraTaskExecutor {
         Protos.ContainerInfo.Builder containerInfo = Protos.ContainerInfo.newBuilder()
                 .setType(Protos.ContainerInfo.Type.MESOS);
 
-        if (config.getVolumeDriver().equalsIgnoreCase("rexray") ||
-                config.getVolumeDriver().equalsIgnoreCase("pxd")) {
+        // Iterate over a list of approved docker volume drivers, or do we only want to support certain storage systems?
+        if (config.getVolumeDriver().equalsIgnoreCase("rexray")) {
+            commandString = setDvdcliCommand(volumeName, config);
+            containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
+        } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")){
             commandString = setDvdcliCommand(volumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
         }
