@@ -58,7 +58,12 @@ public class S3StorageDriver implements BackupStorageDriver {
         if (uri.getScheme().equals(AmazonS3Client.S3_SERVICE_NAME)) {
             return uri.getHost();
         } else {
-            return uri.getPath().split("/")[1];
+            if (uri.getPath().split("/").length > 1){
+                return uri.getPath().split("/")[1];
+            } else {
+                return uri.getPath();
+            }
+
         }
     }
 
