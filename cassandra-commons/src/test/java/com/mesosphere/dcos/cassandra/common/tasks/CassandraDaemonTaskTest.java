@@ -172,13 +172,18 @@ public class CassandraDaemonTaskTest {
                 hostFilterDefault,
                 hostListFilterDefault);
 
-        CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig,TEST_CONFIG_ID);
-        Assert.assertNotEquals(normalizeCassandraTaskInfo(daemonTask), normalizeCassandraTaskInfo(updatedTask));
-        Assert.assertEquals(newDisk, updatedTask.getConfig().getDiskMb(), 0.0);
-        double originalTaskInfoDisk = getScalar(daemonTask.getTaskInfo().getResourcesList(), "disk");
-        double updatedTaskInfoDisk = getScalar(updatedTask.getTaskInfo().getResourcesList(), "disk");
-        // Updating the Disk should not result in updated disk.  Disk cannot be updated.
-        Assert.assertEquals(originalTaskInfoDisk, updatedTaskInfoDisk, 0.0);
+
+        CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig, TEST_CONFIG_ID);
+
+        if (updatedTask.getTaskInfo().getResourcesList().size() > 3) {
+            Assert.assertNotEquals(normalizeCassandraTaskInfo(daemonTask), normalizeCassandraTaskInfo(updatedTask));
+            Assert.assertEquals(newDisk, updatedTask.getConfig().getDiskMb(), 0.0);
+            double originalTaskInfoDisk = getScalar(daemonTask.getTaskInfo().getResourcesList(), "disk");
+            double updatedTaskInfoDisk = getScalar(updatedTask.getTaskInfo().getResourcesList(), "disk");
+            // Updating the Disk should not result in updated disk.  Disk cannot be updated.
+            Assert.assertEquals(originalTaskInfoDisk, updatedTaskInfoDisk, 0.0);
+        }
+
     }
 
     @Test
