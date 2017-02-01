@@ -28,11 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
+import java.util.*;
 
 import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
 
@@ -62,11 +58,11 @@ public class CassandraTaskExecutor {
             final ExecutorConfig config) {
 
         return new CassandraTaskExecutor(
-            frameworkId,
-            name,
-            role,
-            principal,
-            config);
+                frameworkId,
+                name,
+                role,
+                principal,
+                config);
     }
 
     /**
@@ -90,11 +86,11 @@ public class CassandraTaskExecutor {
      * @param name        The name of the executor.
      */
     private CassandraTaskExecutor(
-        String frameworkId,
-        String name,
-        String role,
-        String principal,
-        ExecutorConfig config) {
+            String frameworkId,
+            String name,
+            String role,
+            String principal,
+            ExecutorConfig config) {
 
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
         String commandString = config.getCommand();
@@ -115,7 +111,7 @@ public class CassandraTaskExecutor {
         if (config.getVolumeDriver().equalsIgnoreCase("rexray")) {
             commandString = setDvdcliCommand(volumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
-        } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")){
+        } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")) {
             commandString = setDvdcliCommand(volumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
 
@@ -125,7 +121,7 @@ public class CassandraTaskExecutor {
             if (capabilities.supportsNamedVips() && CNI_NETWORK.equalsIgnoreCase(config.getNetworkMode())) {
                 containerInfo
                         .addNetworkInfos(Protos.NetworkInfo.newBuilder()
-                        .setName(config.getCniNetwork()));
+                                .setName(config.getCniNetwork()));
             }
         } catch (IOException | URISyntaxException e) {
             LOGGER.error("Unable to detect named VIP support: {}", e);
@@ -153,7 +149,7 @@ public class CassandraTaskExecutor {
         this.info = info;
     }
 
-    private String setDvdcliCommand(String volumeName, ExecutorConfig config){
+    private String setDvdcliCommand(String volumeName, ExecutorConfig config) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("./dvdcli mount --volumename=");
         stringBuilder.append(volumeName);
@@ -170,15 +166,15 @@ public class CassandraTaskExecutor {
                 .setType(Protos.ContainerInfo.Type.MESOS)
                 .addVolumes(Protos.Volume.newBuilder().setSource(
                         Protos.Volume.Source.newBuilder()
-                        .setDockerVolume(Protos.Volume.Source.DockerVolume.newBuilder()
-                            .setDriver(volumeDriver)
-                            .setName(volumeName)
-                            .build())
-                            .setType(Protos.Volume.Source.Type.DOCKER_VOLUME)
-                        .build()
+                                .setDockerVolume(Protos.Volume.Source.DockerVolume.newBuilder()
+                                        .setDriver(volumeDriver)
+                                        .setName(volumeName)
+                                        .build())
+                                .setType(Protos.Volume.Source.Type.DOCKER_VOLUME)
+                                .build()
                         )
-                .setMode(Protos.Volume.Mode.RW)
-                .setContainerPath(CassandraConfig.VOLUME_PATH)
+                                .setMode(Protos.Volume.Mode.RW)
+                                .setContainerPath(CassandraConfig.VOLUME_PATH)
                 );
     }
 
@@ -211,13 +207,14 @@ public class CassandraTaskExecutor {
         return info.getCommand().getValue();
     }
 
-    public String getRole(){
+    public String getRole() {
         return info.getResources(0).getRole();
     }
 
-    public String getPrincipal(){
+    public String getPrincipal() {
         return info.getResources(0).getReservation().getPrincipal();
     }
+
     /**
      * Gets the cpu shares.
      *
