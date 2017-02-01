@@ -172,6 +172,7 @@ public class CassandraDaemonTaskTest {
                 hostFilterDefault,
                 hostListFilterDefault);
 
+
         CassandraDaemonTask updatedTask = daemonTask.updateConfig(updatedConfig, TEST_CONFIG_ID);
 
         if (updatedTask.getTaskInfo().getResourcesList().size() > 3) {
@@ -182,6 +183,7 @@ public class CassandraDaemonTaskTest {
             // Updating the Disk should not result in updated disk.  Disk cannot be updated.
             Assert.assertEquals(originalTaskInfoDisk, updatedTaskInfoDisk, 0.0);
         }
+
     }
 
     @Test

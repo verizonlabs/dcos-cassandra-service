@@ -28,7 +28,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
 
 import static com.mesosphere.dcos.cassandra.common.util.TaskUtils.*;
 
@@ -94,6 +98,7 @@ public class CassandraTaskExecutor {
 
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
         String commandString = config.getCommand();
+
         String volumeName = name.replace("node-", config.getVolumeName() + "_").replace("_executor", "");
 
         Map<String, String> map = new HashMap<>();
@@ -113,6 +118,7 @@ public class CassandraTaskExecutor {
         } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")){
             commandString = setDvdcliCommand(volumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
+
         }
 
         try {
@@ -133,6 +139,7 @@ public class CassandraTaskExecutor {
                             config.getArguments(),
                             config.getURIs(),
                             map))
+
                     .addAllResources(
                             Arrays.asList(
                                     createCpus(config.getCpus(), role, principal),

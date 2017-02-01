@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.TextFormat;
 import com.mesosphere.dcos.cassandra.common.config.*;
 import com.mesosphere.dcos.cassandra.common.offer.LogOperationRecorder;
 import com.mesosphere.dcos.cassandra.common.offer.PersistentOfferRequirementProvider;
@@ -245,7 +244,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
             }
             // Perform any required repairs
             final List<Protos.Offer> unacceptedOffers = filterAcceptedOffers(
-                    offers,
+                    filtered_offers,
                     acceptedOffers);
 
             try {
@@ -263,13 +262,13 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
             ResourceCleanerScheduler cleanerScheduler = getCleanerScheduler();
             if (cleanerScheduler != null) {
                 try {
-                    acceptedOffers.addAll(getCleanerScheduler().resourceOffers(driver, offers));
+                    acceptedOffers.addAll(getCleanerScheduler().resourceOffers(driver, filtered_offers));
                 } catch (Throwable t) {
                     LOGGER.error("Error occured with plan scheduler: {}", t);
                 }
             }
 
-            declineOffers(driver, acceptedOffers, offers);
+            declineOffers(driver, acceptedOffers, filtered_offers);
         } catch (Throwable t){
             LOGGER.error("Error in offer acceptance cycle", t);
         }
