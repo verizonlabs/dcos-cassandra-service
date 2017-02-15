@@ -422,7 +422,6 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
     private void declineOffer(SchedulerDriver driver, Protos.Offer offer) {
         Protos.OfferID offerId = offer.getId();
-        LOGGER.info("Scheduler declining offer: {}", offerId);
         driver.declineOffer(offerId, offerFilters);
     }
 
