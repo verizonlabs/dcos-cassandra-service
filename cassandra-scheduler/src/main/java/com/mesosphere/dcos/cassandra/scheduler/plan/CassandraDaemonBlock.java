@@ -181,8 +181,8 @@ public class CassandraDaemonBlock extends DefaultObservable implements Block {
         try {
             final String taskName = org.apache.mesos.offer.TaskUtils.toTaskName(status.getTaskId());
             if (!getName().equals(taskName)) {
-                LOGGER.info("TaskStatus was meant for block: {} and doesn't affect block {}. Status: {}",
-                        taskName, getName(), status);
+                LOGGER.info("TaskStatus was meant for block: {} and doesn't affect block {}.",
+                        taskName, getName());
                 return;
             }
             if (isPending()) {
