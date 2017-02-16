@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Optional;
 
 public class MutableSchedulerConfiguration extends Configuration {
 

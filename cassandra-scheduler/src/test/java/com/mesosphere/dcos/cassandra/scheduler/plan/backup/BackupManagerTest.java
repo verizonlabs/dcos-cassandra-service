@@ -1,15 +1,14 @@
 package com.mesosphere.dcos.cassandra.scheduler.plan.backup;
 
+import com.mesosphere.dcos.cassandra.common.offer.ClusterTaskOfferRequirementProvider;
+import com.mesosphere.dcos.cassandra.common.persistence.PersistenceException;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraDaemonTask;
+import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.BackupRestoreContext;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.BackupSnapshotTask;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.BackupUploadTask;
-import com.mesosphere.dcos.cassandra.common.offer.ClusterTaskOfferRequirementProvider;
-import com.mesosphere.dcos.cassandra.common.persistence.PersistenceException;
 import com.mesosphere.dcos.cassandra.scheduler.resources.BackupRestoreRequest;
-import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
-
 import org.apache.mesos.Protos;
 import org.apache.mesos.Protos.TaskInfo;
 import org.apache.mesos.Protos.TaskStatus;
@@ -26,6 +25,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;

@@ -2,13 +2,13 @@ package com.mesosphere.dcos.cassandra.scheduler.plan.repair;
 
 
 import com.google.inject.Inject;
-import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
-import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskManager;
-import com.mesosphere.dcos.cassandra.common.tasks.repair.RepairContext;
 import com.mesosphere.dcos.cassandra.common.offer.ClusterTaskOfferRequirementProvider;
 import com.mesosphere.dcos.cassandra.common.persistence.PersistenceException;
-import com.mesosphere.dcos.cassandra.scheduler.resources.RepairRequest;
+import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
+import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskManager;
+import com.mesosphere.dcos.cassandra.common.tasks.repair.RepairContext;
+import com.mesosphere.dcos.cassandra.scheduler.resources.RepairRequest;
 import org.apache.mesos.scheduler.ChainedObserver;
 import org.apache.mesos.scheduler.plan.Phase;
 import org.apache.mesos.state.StateStore;

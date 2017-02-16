@@ -3,7 +3,6 @@ package com.mesosphere.dcos.cassandra.scheduler.resources;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskRequest;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.BackupRestoreContext;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.NotEmpty;
 

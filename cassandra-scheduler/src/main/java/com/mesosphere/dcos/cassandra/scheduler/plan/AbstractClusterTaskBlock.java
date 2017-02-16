@@ -2,9 +2,9 @@ package com.mesosphere.dcos.cassandra.scheduler.plan;
 
 import com.mesosphere.dcos.cassandra.common.offer.CassandraOfferRequirementProvider;
 import com.mesosphere.dcos.cassandra.common.persistence.PersistenceException;
+import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraTask;
 import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskContext;
-import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
 import org.apache.mesos.Protos;
 import org.apache.mesos.offer.OfferRequirement;
 import org.apache.mesos.scheduler.DefaultObservable;
