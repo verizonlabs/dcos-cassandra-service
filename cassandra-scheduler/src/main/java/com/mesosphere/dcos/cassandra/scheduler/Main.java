@@ -1,7 +1,5 @@
 package com.mesosphere.dcos.cassandra.scheduler;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.util.ContextInitializer;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.mesosphere.dcos.cassandra.common.config.ConfigurationManager;
@@ -19,16 +17,10 @@ import io.dropwizard.setup.Environment;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.mesos.scheduler.plan.api.PlanResource;
 import org.apache.mesos.state.api.StateResource;
-import org.slf4j.LoggerFactory;
 
 public class Main extends Application<MutableSchedulerConfiguration> {
 
   public static void main(String[] args) throws Exception {
-    LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
-    context.reset();
-    ContextInitializer initializer = new ContextInitializer(context);
-    initializer.autoConfig();
-
     new Main().run(args);
   }
 
