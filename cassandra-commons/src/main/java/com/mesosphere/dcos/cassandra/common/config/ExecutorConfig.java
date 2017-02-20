@@ -321,9 +321,7 @@ public class ExecutorConfig {
                         that.getExecutorLocation()) &&
                 Objects.equals(getCassandraLocation(),
                         that.getCassandraLocation()) &&
-                Objects.equals(getJavaHome(), that.getJavaHome())
-                && getHostPath().equals(that.getHostPath())
-                && getContainerPath().equals(that.getContainerPath());
+                Objects.equals(getJavaHome(), that.getJavaHome());
     }
 
     @Override
