@@ -15,7 +15,6 @@ import com.mesosphere.dcos.cassandra.scheduler.plan.backup.RestoreManager;
 import com.mesosphere.dcos.cassandra.scheduler.plan.cleanup.CleanupManager;
 import com.mesosphere.dcos.cassandra.scheduler.plan.repair.RepairManager;
 import com.mesosphere.dcos.cassandra.scheduler.seeds.SeedsManager;
-import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
 import io.dropwizard.configuration.*;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.validation.BaseValidator;
@@ -40,14 +39,18 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
 public class CassandraSchedulerTest {

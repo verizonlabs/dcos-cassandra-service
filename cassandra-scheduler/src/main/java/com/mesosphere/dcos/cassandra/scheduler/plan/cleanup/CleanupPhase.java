@@ -1,10 +1,10 @@
 package com.mesosphere.dcos.cassandra.scheduler.plan.cleanup;
 
 
-import com.mesosphere.dcos.cassandra.common.tasks.cleanup.CleanupContext;
 import com.mesosphere.dcos.cassandra.common.offer.ClusterTaskOfferRequirementProvider;
-import com.mesosphere.dcos.cassandra.scheduler.plan.AbstractClusterTaskPhase;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
+import com.mesosphere.dcos.cassandra.common.tasks.cleanup.CleanupContext;
+import com.mesosphere.dcos.cassandra.scheduler.plan.AbstractClusterTaskPhase;
 
 import java.util.*;
 import java.util.stream.Collectors;

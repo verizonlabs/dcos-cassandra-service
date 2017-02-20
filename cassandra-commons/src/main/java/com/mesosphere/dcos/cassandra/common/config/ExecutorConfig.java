@@ -15,8 +15,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 public class ExecutorConfig {
     public static Serializer<ExecutorConfig> JSON_SERIALIZER =

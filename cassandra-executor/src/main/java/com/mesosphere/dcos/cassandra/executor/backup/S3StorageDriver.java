@@ -31,11 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystems;
-import java.nio.file.FileVisitResult;
-import java.nio.file.FileVisitor;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,10 +49,17 @@ public class S3StorageDriver implements BackupStorageDriver {
     String getBucketName(BackupRestoreContext ctx) throws URISyntaxException {
         URI uri = new URI(ctx.getExternalLocation());
         LOGGER.info("URI: " + uri);
+        LOGGER.info("URI PATH: " + uri.getPath());
+        LOGGER.info("URI HOST: " + uri.getHost());
         if (uri.getScheme().equals(AmazonS3Client.S3_SERVICE_NAME)) {
             return uri.getHost();
         } else {
-            return uri.getPath().split("/")[1];
+            if (uri.getPath().split("/").length > 1){
+                return uri.getPath().split("/")[1];
+            } else {
+                return uri.getPath();
+            }
+
         }
     }
 

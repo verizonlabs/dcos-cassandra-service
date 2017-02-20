@@ -1,12 +1,11 @@
 package com.mesosphere.dcos.cassandra.scheduler.resources;
 
-import javax.ws.rs.core.Response;
-
+import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskManager;
+import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskManager;
-import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskRequest;
+import javax.ws.rs.core.Response;
 
 /**
  * Common code for starting/stopping Cleanup, Repair, Backup, and Restore tasks.

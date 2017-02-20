@@ -1,8 +1,8 @@
 package com.mesosphere.dcos.cassandra.scheduler.plan;
 
-import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskContext;
-import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
 import com.mesosphere.dcos.cassandra.common.offer.ClusterTaskOfferRequirementProvider;
+import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
+import com.mesosphere.dcos.cassandra.common.tasks.ClusterTaskContext;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.mesos.scheduler.ChainedObserver;
 import org.apache.mesos.scheduler.plan.Block;

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.io.Resources;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraDaemonTask;
-
 import io.dropwizard.configuration.*;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.validation.BaseValidator;

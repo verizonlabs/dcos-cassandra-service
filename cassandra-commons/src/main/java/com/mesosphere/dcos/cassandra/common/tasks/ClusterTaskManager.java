@@ -1,9 +1,9 @@
 package com.mesosphere.dcos.cassandra.common.tasks;
 
-import java.util.List;
-
 import org.apache.mesos.scheduler.plan.Completable;
 import org.apache.mesos.scheduler.plan.Phase;
+
+import java.util.List;
 
 /**
  * Interface for managers of ClusterTask execution (e.g Backup, Restore, Cleanup, ... )

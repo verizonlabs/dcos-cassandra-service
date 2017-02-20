@@ -1,15 +1,14 @@
 package com.mesosphere.dcos.cassandra.scheduler.plan.backup;
 
+import com.mesosphere.dcos.cassandra.common.offer.ClusterTaskOfferRequirementProvider;
+import com.mesosphere.dcos.cassandra.common.persistence.PersistenceException;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraDaemonTask;
+import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.BackupRestoreContext;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.DownloadSnapshotTask;
 import com.mesosphere.dcos.cassandra.common.tasks.backup.RestoreSnapshotTask;
-import com.mesosphere.dcos.cassandra.common.offer.ClusterTaskOfferRequirementProvider;
-import com.mesosphere.dcos.cassandra.common.persistence.PersistenceException;
 import com.mesosphere.dcos.cassandra.scheduler.resources.BackupRestoreRequest;
-import com.mesosphere.dcos.cassandra.common.tasks.CassandraState;
-
 import org.apache.mesos.Protos;
 import org.apache.mesos.Protos.TaskInfo;
 import org.apache.mesos.Protos.TaskStatus;
