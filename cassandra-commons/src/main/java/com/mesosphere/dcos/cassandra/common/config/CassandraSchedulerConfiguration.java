@@ -8,7 +8,10 @@ import com.mesosphere.dcos.cassandra.common.util.JsonUtils;
 import org.apache.mesos.config.ConfigStoreException;
 import org.apache.mesos.config.Configuration;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CassandraSchedulerConfiguration implements Configuration {

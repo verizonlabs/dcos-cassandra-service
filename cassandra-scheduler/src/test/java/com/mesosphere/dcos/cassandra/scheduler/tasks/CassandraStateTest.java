@@ -135,11 +135,14 @@ public class CassandraStateTest {
 
         Assert.assertEquals(CassandraTemplateTask.toTemplateTaskName(daemonTaskInfo.getName()),
                 clusterTemplateTaskInfo.getName());
-        Assert.assertEquals(2, clusterTemplateTaskInfo.getResourcesCount());
-        Assert.assertTrue(clusterTemplateTaskInfo.getTaskId().getValue().isEmpty());
+        // If we use rexray, we won't have resources...
+        if (container.getExecutorInfo().getCommand().getValue().contains("dvdcli")) {
+            Assert.assertEquals(2, clusterTemplateTaskInfo.getResourcesCount());
+            Assert.assertTrue(clusterTemplateTaskInfo.getTaskId().getValue().isEmpty());
 
-        for (Protos.Resource resource : clusterTemplateTaskInfo.getResourcesList()) {
-            Assert.assertTrue(ResourceUtils.getResourceId(resource).isEmpty());
+            for (Protos.Resource resource : clusterTemplateTaskInfo.getResourcesList()) {
+                Assert.assertTrue(ResourceUtils.getResourceId(resource).isEmpty());
+            }
         }
     }
 
@@ -192,7 +195,11 @@ public class CassandraStateTest {
 
     private void validateDaemonTaskInfo(Protos.TaskInfo daemonTaskInfo) throws TaskException {
         Assert.assertEquals(testDaemonName, daemonTaskInfo.getName());
-        Assert.assertEquals(4, daemonTaskInfo.getResourcesCount());
+        if (daemonTaskInfo.getContainer().getVolumesList().isEmpty()){
+            Assert.assertEquals(4, daemonTaskInfo.getResourcesCount());
+        } else {
+            Assert.assertEquals(4, daemonTaskInfo.getResourcesCount());
+        }
         Assert.assertEquals(testDaemonName, TaskUtils.toTaskName(daemonTaskInfo.getTaskId()));
         Assert.assertTrue(daemonTaskInfo.getSlaveId().getValue().isEmpty());
 
