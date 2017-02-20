@@ -1,5 +1,7 @@
 package com.mesosphere.dcos.cassandra.scheduler;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.util.ContextInitializer;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.mesosphere.dcos.cassandra.common.config.ConfigurationManager;
@@ -17,14 +19,16 @@ import io.dropwizard.setup.Environment;
 import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.mesos.scheduler.plan.api.PlanResource;
 import org.apache.mesos.state.api.StateResource;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main extends Application<MutableSchedulerConfiguration> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-
   public static void main(String[] args) throws Exception {
+    LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+    context.reset();
+    ContextInitializer initializer = new ContextInitializer(context);
+    initializer.autoConfig();
+
     new Main().run(args);
   }
 
@@ -54,9 +58,6 @@ public class Main extends Application<MutableSchedulerConfiguration> {
   @Override
   public void run(MutableSchedulerConfiguration configuration,
                   Environment environment) throws Exception {
-
-
-    logConfiguration(configuration);
 
     final SchedulerModule baseModule = new SchedulerModule(
       configuration.createConfig(),
@@ -113,29 +114,6 @@ public class Main extends Application<MutableSchedulerConfiguration> {
       injector.getInstance(RegisteredCheck.class));
     environment.healthChecks().register(ServersCheck.NAME,
       injector.getInstance(ServersCheck.class));
-  }
-
-
-  private void logConfiguration(MutableSchedulerConfiguration config) {
-
-    LOGGER.info("Framework ServiceConfig = {}",
-      config.getServiceConfig());
-    LOGGER.info("Framework Mesos Configuration = {}",
-      config.getMesosConfig());
-    LOGGER.info("Framework ZooKeeper Configuration = {}",
-      config.getCuratorConfig());
-    LOGGER.info(
-      "------------ Cassandra Configuration ------------");
-    LOGGER.info("heap = {}", config.getCassandraConfig().getHeap());
-    LOGGER.info("jmx port = {}", config.getCassandraConfig()
-      .getJmxPort());
-    LOGGER.info("location = {}", config.getCassandraConfig()
-      .getLocation());
-    config
-      .getCassandraConfig()
-      .getApplication()
-      .toMap()
-      .forEach((key, value) -> LOGGER.info("{} = {}", key, value));
   }
 
 }

@@ -15,6 +15,8 @@
  */
 package com.mesosphere.dcos.cassandra.executor;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.util.ContextInitializer;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.mesosphere.dcos.cassandra.executor.checks.DaemonRunning;
@@ -27,6 +29,7 @@ import io.dropwizard.java8.Java8Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.apache.commons.lang3.text.StrSubstitutor;
+import org.slf4j.LoggerFactory;
 
 /**
  * The main entry point for the Cassandra executor program.
@@ -34,6 +37,11 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 public class Main extends Application<CassandraExecutorConfiguration> {
 
     public static void main(String[] args) throws Exception {
+        LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
+        context.reset();
+        ContextInitializer initializer = new ContextInitializer(context);
+        initializer.autoConfig();
+
         new Main().run(args);
     }
 
