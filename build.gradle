@@ -50,7 +50,7 @@ configure(subprojects - project('seedprovider')) {
     }
 
     ext {
-        dropwizardVer = '0.9.2'
+        dropwizardVer = '1.0.6'
         guiceVer = '4.0'
         mesosVer = '1.0.0'
         junitVer = '4.12'
