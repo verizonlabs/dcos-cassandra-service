@@ -57,7 +57,6 @@ configure(subprojects - project('seedprovider')) {
         guavaVer = '19.0'
         slf4jVer = '1.7.14'
         curatorVer = '2.9.1'
-        dropwizardVer = '0.9.2'
         logbackVer = '1.1.3'
     }
 
