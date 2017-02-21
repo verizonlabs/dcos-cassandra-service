@@ -113,7 +113,7 @@ public class S3StorageDriver implements BackupStorageDriver {
             ClientConfiguration configuration = new ClientConfiguration();
             // Uses the older API to make it compatible with ECS.
             configuration.setSignerOverride("S3SignerType");
-            LOGGER.info("S3 configuration: {}", configuration);
+            LOGGER.info("S3 configuration: {}", configuration.getSignerOverride());
             amazonS3Client = new AmazonS3Client(basicAWSCredentials, configuration);
             amazonS3Client.setEndpoint(endpoint);
             // EMC specific options necessary.

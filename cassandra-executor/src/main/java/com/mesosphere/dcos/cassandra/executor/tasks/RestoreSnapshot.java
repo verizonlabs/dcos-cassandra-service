@@ -90,6 +90,7 @@ public class RestoreSnapshot implements ExecutorTask {
             final File[] keyspaces = keyspacesDirectory.listFiles();
 
             String libProcessAddress = System.getenv("LIBPROCESS_IP");
+            String nativeTransportPort = System.getenv("CASSANDRA_NATIVE_TRANSPORT_PORT");
             libProcessAddress = StringUtils.isBlank(
                 libProcessAddress) ? InetAddress.getLocalHost().getHostAddress() : libProcessAddress;
 
@@ -108,7 +109,7 @@ public class RestoreSnapshot implements ExecutorTask {
 
                     final String columnFamilyPath = columnFamily.getAbsolutePath();
                     final List<String> command = Arrays.asList(
-                        ssTableLoaderBinary, "-d", libProcessAddress, "-f",
+                        ssTableLoaderBinary, "-d", libProcessAddress, "-p", nativeTransportPort, "-f",
                         cassandraYaml, columnFamilyPath);
                     LOGGER.info("Executing command: {}", command);
 
