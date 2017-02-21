@@ -234,7 +234,7 @@ public class ClusterTaskOfferRequirementProviderTest {
         final Protos.ExecutorInfo executorInfo = requirement.getExecutorRequirementOptional().get().getExecutorInfo();
 
         Protos.CommandInfo cmd = executorInfo.getCommand();
-        Assert.assertEquals(4, cmd.getUrisList().size());
+        Assert.assertEquals(3, cmd.getUrisList().size());
         Assert.assertEquals(
             config.getExecutorConfig().getExecutorLocation().toString(),
             cmd.getUrisList().get(0).getValue());

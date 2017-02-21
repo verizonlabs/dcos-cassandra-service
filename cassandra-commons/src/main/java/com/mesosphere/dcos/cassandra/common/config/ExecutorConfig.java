@@ -297,7 +297,9 @@ public class ExecutorConfig {
     @JsonIgnore
     public Set<String> getURIs() {
         Set<String> uris = new HashSet<String>();
-        uris.add(dvdcli.toString());
+        if (!dvdcli.toString().isEmpty()) {
+            uris.add(dvdcli.toString());
+        }
         uris.add(executorLocation.toString());
         uris.add(cassandraLocation.toString());
         uris.add(jreLocation.toString());
