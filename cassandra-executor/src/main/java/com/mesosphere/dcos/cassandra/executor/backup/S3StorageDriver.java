@@ -113,6 +113,8 @@ public class S3StorageDriver implements BackupStorageDriver {
             final S3ClientOptions options = new S3ClientOptions();
             options.setPathStyleAccess(true);
             amazonS3Client.setS3ClientOptions(options);
+            // Uses the older API to make it compatible with ECS.
+            amazonS3Client.setSignerRegionOverride("S3SignerType");
         }
 
         return amazonS3Client;
