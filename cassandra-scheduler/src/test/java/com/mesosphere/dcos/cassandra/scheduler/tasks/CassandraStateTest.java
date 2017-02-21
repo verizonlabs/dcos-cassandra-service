@@ -196,7 +196,7 @@ public class CassandraStateTest {
     private void validateDaemonTaskInfo(Protos.TaskInfo daemonTaskInfo) throws TaskException {
         Assert.assertEquals(testDaemonName, daemonTaskInfo.getName());
         if (daemonTaskInfo.getContainer().getVolumesList().isEmpty()){
-            Assert.assertEquals(4, daemonTaskInfo.getResourcesCount());
+            Assert.assertEquals(3, daemonTaskInfo.getResourcesCount());
         } else {
             Assert.assertEquals(4, daemonTaskInfo.getResourcesCount());
         }
