@@ -247,13 +247,16 @@ public class CassandraDaemonTask extends CassandraTask {
     }
 
     public String getVolumePath() {
-        Protos.Volume executorVolume = getExecutor().getExecutorInfo().getContainer().getVolumes(0);
-        if (executorVolume.hasContainerPath()){
-            return executorVolume.getContainerPath();
-        } else {
+        if (getExecutor().getExecutorInfo().getContainer().getVolumesCount() >0){
+            return getExecutor().getExecutorInfo().getContainer().getVolumes(0).getContainerPath();
+        }
+        List<String> volumes = TaskUtils.getVolumePaths(getTaskInfo().getResourcesList());
+        if (!volumes.isEmpty()) {
             return TaskUtils.getVolumePaths(
                     getTaskInfo().getResourcesList())
                     .get(0);
+        } else {
+            return CassandraConfig.VOLUME_PATH;
         }
     }
 
