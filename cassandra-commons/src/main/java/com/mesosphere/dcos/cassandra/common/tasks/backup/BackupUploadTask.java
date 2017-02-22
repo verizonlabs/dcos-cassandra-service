@@ -88,7 +88,10 @@ public class BackupUploadTask extends CassandraTask {
         String[] split = command.split("--volumeName=");
         String volumeName = split[1].split(" ")[0];
 
+        completedTemplate.clearCommand();
         completedTemplate.clearExecutor();
+
+        completedTemplate.setCommand(Protos.CommandInfo.newBuilder().setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"));
         completedTemplate.setExecutor(Protos.ExecutorInfo.newBuilder()
             .setContainer(Protos.ContainerInfo.newBuilder()
                 .setType(Protos.ContainerInfo.Type.MESOS)
