@@ -76,6 +76,7 @@ public class RestoreSnapshot implements ExecutorTask {
             // Send TASK_RUNNING
             sendStatus(driver, Protos.TaskState.TASK_RUNNING,
                 "Started restoring snapshot");
+
             final String keyspaceDirectory =
                     context.getLocalLocation() + File.separator +
                     context.getName() + File.separator +
@@ -89,6 +90,14 @@ public class RestoreSnapshot implements ExecutorTask {
 
             final File keyspacesDirectory = new File(keyspaceDirectory);
             LOGGER.info("Keyspace Directory {} exists: {}", keyspaceDirectory, keyspacesDirectory.exists());
+            if (!keyspacesDirectory.exists()) {
+                try{
+                    LOGGER.info("Creating directory since it does not exist yet...");
+                    keyspacesDirectory.mkdir();
+                } catch (SecurityException err){
+                    LOGGER.error("Unable to make the directory {}!", keyspacesDirectory);
+                }
+            }
 
             final File[] keyspaces = keyspacesDirectory.listFiles();
 
