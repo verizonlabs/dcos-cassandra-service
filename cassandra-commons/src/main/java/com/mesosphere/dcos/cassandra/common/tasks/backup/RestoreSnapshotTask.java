@@ -15,6 +15,7 @@
  */
 package com.mesosphere.dcos.cassandra.common.tasks.backup;
 
+import com.mesosphere.dcos.cassandra.common.config.CassandraApplicationConfig;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraDaemonTask;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraData;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraTask;
@@ -141,4 +142,10 @@ public class RestoreSnapshotTask extends CassandraTask {
     public BackupRestoreContext getBackupRestoreContext() {
         return getData().getBackupRestoreContext();
     }
+
+    public CassandraApplicationConfig getCassandraConfig() {
+        return getData().getConfig().getApplication();
+    }
+
+
 }

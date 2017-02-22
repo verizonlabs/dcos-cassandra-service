@@ -25,10 +25,11 @@ import org.apache.mesos.executor.ExecutorTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
@@ -92,10 +93,12 @@ public class RestoreSnapshot implements ExecutorTask {
             final File[] keyspaces = keyspacesDirectory.listFiles();
 
             String libProcessAddress = System.getenv("LIBPROCESS_IP");
-            String nativeTransportPort = getNativeTransportPort();
+            String nativeTransportPort = Integer.toString(cassandraTask.getCassandraConfig().getNativeTransportPort());
 
             libProcessAddress = StringUtils.isBlank(
                 libProcessAddress) ? InetAddress.getLocalHost().getHostAddress() : libProcessAddress;
+
+            nativeTransportPort = StringUtils.isBlank(nativeTransportPort) ? "9042" : nativeTransportPort;
 
             for (File keyspace : keyspaces) {
                 final File[] columnFamilies = keyspace.listFiles();
@@ -171,38 +174,6 @@ public class RestoreSnapshot implements ExecutorTask {
 
         return builder.toString();
     }
-
-    private String getNativeTransportPort(){
-        URL url = getClass().getResource("cassandra.yaml");
-        BufferedReader reader;
-        try {
-            File file = new File(url.toURI());
-            reader = new BufferedReader(new FileReader(file));
-        } catch (URISyntaxException err){
-            LOGGER.error(err.toString());
-            return "";
-        } catch (FileNotFoundException err){
-            LOGGER.error(err.toString());
-            return "";
-        }
-        String line = null;
-        String nativeTransportPort = "";
-        try {
-            while ((line = reader.readLine()) != null) {
-                if (line.contains("native_transport_port")) {
-                    nativeTransportPort = line.split(":")[1];
-                }
-            }
-            if (nativeTransportPort.isEmpty()) {
-                nativeTransportPort = "9042"; // cassandra default.
-            }
-            reader.close();
-        } catch (IOException err){
-            LOGGER.error(err.toString());
-        }
-        return nativeTransportPort;
-    }
-
 
     private void sendStatus(ExecutorDriver driver,
                             Protos.TaskState state,
