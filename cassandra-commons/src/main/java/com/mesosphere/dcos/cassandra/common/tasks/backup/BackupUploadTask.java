@@ -79,15 +79,27 @@ public class BackupUploadTask extends CassandraTask {
                     .withLocalLocation(daemon.getVolumePath() + "/data"));
 
         String name = nameForDaemon(daemon);
-        Protos.TaskInfo completedTemplate = Protos.TaskInfo.newBuilder(template)
+        Protos.TaskInfo.Builder completedTemplate = Protos.TaskInfo.newBuilder(template)
                 .setName(name)
                 .setTaskId(TaskUtils.toTaskId(name))
-                .setData(data.getBytes())
-                .build();
+                .setData(data.getBytes());
+        String command = completedTemplate.getCommand().getValue();
 
-        completedTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate);
+        String[] split = command.split("--volumeName=");
+        String volumeName = split[1].split(" ")[0];
 
-        return new BackupUploadTask(completedTemplate);
+        completedTemplate.clearExecutor();
+        completedTemplate.setExecutor(Protos.ExecutorInfo.newBuilder()
+            .setContainer(Protos.ContainerInfo.newBuilder()
+                .setType(Protos.ContainerInfo.Type.MESOS)
+                .addVolumes(Protos.Volume.newBuilder()
+                    .setHostPath("/var/lib/rexray/volumes/" + volumeName)
+                    .setContainerPath("volume/data")
+                    .setMode(Protos.Volume.Mode.RW))));
+
+        Protos.TaskInfo finishedTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate.build());
+
+        return new BackupUploadTask(finishedTemplate);
     }
 
     /**

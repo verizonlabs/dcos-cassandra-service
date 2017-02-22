@@ -90,14 +90,8 @@ public class RestoreSnapshot implements ExecutorTask {
 
             final File keyspacesDirectory = new File(keyspaceDirectory);
             LOGGER.info("Keyspace Directory {} exists: {}", keyspaceDirectory, keyspacesDirectory.exists());
-            if (!keyspacesDirectory.exists()) {
-                try{
-                    LOGGER.info("Creating directory since it does not exist yet...");
-                    keyspacesDirectory.mkdir();
-                } catch (SecurityException err){
-                    LOGGER.error("Unable to make the directory {}!", keyspacesDirectory);
-                }
-            }
+
+            keyspacesDirectory.mkdirs();
 
             final File[] keyspaces = keyspacesDirectory.listFiles();
 
@@ -111,7 +105,6 @@ public class RestoreSnapshot implements ExecutorTask {
 
                 final String keyspaceName = keyspace.getName();
                 LOGGER.info("Going to bulk load keyspace: {}", keyspaceName);
-
 
                 for (File columnFamily : columnFamilies) {
                     final String columnFamilyName = columnFamily.getName();
