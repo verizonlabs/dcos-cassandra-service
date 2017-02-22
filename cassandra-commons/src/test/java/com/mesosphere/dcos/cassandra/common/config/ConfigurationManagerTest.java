@@ -5,10 +5,7 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.io.Resources;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraDaemonTask;
-import io.dropwizard.configuration.ConfigurationFactory;
-import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
-import io.dropwizard.configuration.FileConfigurationSourceProvider;
-import io.dropwizard.configuration.SubstitutingSourceProvider;
+import io.dropwizard.configuration.*;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.validation.BaseValidator;
 import org.apache.curator.RetryPolicy;
@@ -42,7 +39,7 @@ public class ConfigurationManagerTest {
         Capabilities mockCapabilities = Mockito.mock(Capabilities.class);
         when(mockCapabilities.supportsNamedVips()).thenReturn(true);
         taskFactory = new CassandraDaemonTask.Factory(mockCapabilities);
-        configurationFactory = new ConfigurationFactory<>(
+        configurationFactory = new YamlConfigurationFactory<>(
                         MutableSchedulerConfiguration.class,
                         BaseValidator.newValidator(),
                         Jackson.newObjectMapper()

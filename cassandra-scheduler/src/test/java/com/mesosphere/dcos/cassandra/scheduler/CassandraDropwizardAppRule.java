@@ -26,10 +26,6 @@ public class CassandraDropwizardAppRule<C extends MutableSchedulerConfiguration>
         super(applicationClass, configPath, configOverrides);
     }
 
-    public CassandraDropwizardAppRule(Class<? extends Application<C>> applicationClass, String configPath, Optional<String> customPropertyPrefix, ConfigOverride... configOverrides) {
-        super(applicationClass, configPath, customPropertyPrefix, configOverrides);
-    }
-
     public CassandraDropwizardAppRule(Class<? extends Application<C>> applicationClass, C configuration) {
         super(applicationClass, configuration);
     }
