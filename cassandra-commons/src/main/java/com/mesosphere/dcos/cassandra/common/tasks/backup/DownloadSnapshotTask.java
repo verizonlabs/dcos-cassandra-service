@@ -78,6 +78,8 @@ public class DownloadSnapshotTask extends CassandraTask {
                 .setName(name)
                 .setTaskId(TaskUtils.toTaskId(name))
                 .setData(data.getBytes())
+                .clearCommand()
+                .setCommand(Protos.CommandInfo.newBuilder().setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"))
                 .build();
 
         completedTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate);
