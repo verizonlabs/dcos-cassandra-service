@@ -80,17 +80,32 @@ public class BackupSnapshotTask extends CassandraTask {
                     .forNode(name)
                     .withLocalLocation(daemon.getVolumePath() + "/data"));
 
-        Protos.TaskInfo completedTemplate = Protos.TaskInfo.newBuilder(template)
+        Protos.TaskInfo.Builder completedTemplate = Protos.TaskInfo.newBuilder(template)
             .setName(name)
             .setTaskId(TaskUtils.toTaskId(name))
-            .setData(data.getBytes())
-            .clearCommand()
-            .setCommand(Protos.CommandInfo.newBuilder().setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"))
-            .build();
+            .setData(data.getBytes());
 
-        completedTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate);
+        String command = completedTemplate.getExecutor().getCommand().getValue();
 
-        return new BackupSnapshotTask(completedTemplate);
+        String[] split = command.split("--volumeName=");
+        String volumeName = split[1].split(" ")[0];
+
+        completedTemplate.clearCommand();
+        completedTemplate.clearExecutor();
+
+        completedTemplate.setExecutor(Protos.ExecutorInfo.newBuilder()
+                .setContainer(Protos.ContainerInfo.newBuilder()
+                        .setType(Protos.ContainerInfo.Type.MESOS)
+                        .addVolumes(Protos.Volume.newBuilder()
+                                .setHostPath("/var/lib/rexray/volumes/" + volumeName)
+                                .setContainerPath("volume/data")
+                                .setMode(Protos.Volume.Mode.RW)))
+                .setCommand(Protos.CommandInfo.newBuilder().setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"))
+        );
+
+        Protos.TaskInfo finalTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate.build());
+
+        return new BackupSnapshotTask(finalTemplate);
     }
 
     /**
