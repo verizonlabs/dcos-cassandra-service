@@ -19,7 +19,7 @@
         </encoder>
     </appender>
 
-    <root>
+    <root level="INFO">
         <appender-ref ref="STDERR" />
         <appender-ref ref="STDOUT" />
     </root>
