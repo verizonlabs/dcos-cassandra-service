@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +49,7 @@ public class RestoreSnapshot implements ExecutorTask {
     private final BackupRestoreContext context;
     private final RestoreSnapshotTask cassandraTask;
     private final String version;
+    private final int port;
 
     /**
      * Constructs a new RestoreSnapshot.
@@ -61,11 +61,13 @@ public class RestoreSnapshot implements ExecutorTask {
     public RestoreSnapshot(
         ExecutorDriver driver,
         RestoreSnapshotTask cassandraTask,
-        String version) {
+        String version,
+        int nativeTransportPort) {
         this.driver = driver;
         this.version = version;
         this.cassandraTask = cassandraTask;
         this.context = cassandraTask.getBackupRestoreContext();
+        this.port = nativeTransportPort;
     }
 
     @Override
@@ -85,20 +87,15 @@ public class RestoreSnapshot implements ExecutorTask {
             final String cassandraYaml =
                 CassandraPaths.create(version).cassandraConfig().toString();
 
-            Path confPath = CassandraPaths.create(version).cassandraConfig();
-
             final File keyspacesDirectory = new File(keyspaceDirectory);
             LOGGER.info("Keyspace Directory {} exists: {}", keyspaceDirectory, keyspacesDirectory.exists());
 
             final File[] keyspaces = keyspacesDirectory.listFiles();
 
             String libProcessAddress = System.getenv("LIBPROCESS_IP");
-            String nativeTransportPort = Integer.toString(cassandraTask.getCassandraConfig().getNativeTransportPort());
 
             libProcessAddress = StringUtils.isBlank(
                 libProcessAddress) ? InetAddress.getLocalHost().getHostAddress() : libProcessAddress;
-
-            nativeTransportPort = StringUtils.isBlank(nativeTransportPort) ? "9042" : nativeTransportPort;
 
             for (File keyspace : keyspaces) {
                 final File[] columnFamilies = keyspace.listFiles();
@@ -115,7 +112,7 @@ public class RestoreSnapshot implements ExecutorTask {
 
                     final String columnFamilyPath = columnFamily.getAbsolutePath();
                     final List<String> command = Arrays.asList(
-                        ssTableLoaderBinary, "-d", libProcessAddress, "-p", nativeTransportPort, "-f",
+                        ssTableLoaderBinary, "-d", libProcessAddress, "-p", Integer.toString(port), "-f",
                         cassandraYaml, columnFamilyPath);
                     LOGGER.info("Executing command: {}", command);
 
