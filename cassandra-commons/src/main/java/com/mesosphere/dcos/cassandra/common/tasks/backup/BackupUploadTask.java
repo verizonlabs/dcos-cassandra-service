@@ -83,22 +83,9 @@ public class BackupUploadTask extends CassandraTask {
                 .setName(name)
                 .setTaskId(TaskUtils.toTaskId(name))
                 .setData(data.getBytes());
-        String command = completedTemplate.getCommand().getValue();
-
-        String[] split = command.split("--volumeName=");
-        String volumeName = split[1].split(" ")[0];
 
         completedTemplate.clearCommand();
-        completedTemplate.clearExecutor();
-
         completedTemplate.setCommand(Protos.CommandInfo.newBuilder().setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"));
-        completedTemplate.setExecutor(Protos.ExecutorInfo.newBuilder()
-            .setContainer(Protos.ContainerInfo.newBuilder()
-                .setType(Protos.ContainerInfo.Type.MESOS)
-                .addVolumes(Protos.Volume.newBuilder()
-                    .setHostPath("/var/lib/rexray/volumes/" + volumeName)
-                    .setContainerPath("volume/data")
-                    .setMode(Protos.Volume.Mode.RW))));
 
         Protos.TaskInfo finishedTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate.build());
 
