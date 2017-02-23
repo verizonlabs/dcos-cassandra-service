@@ -86,6 +86,7 @@ public class RestoreSnapshotTask extends CassandraTask {
         Protos.ExecutorID execId = completedTemplate.getExecutor().getExecutorId();
         Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
         List<Protos.Resource> resourceList = completedTemplate.getExecutor().getResourcesList();
+        Protos.Labels labelList = completedTemplate.getExecutor().getLabels();
 
         String[] split = command.split("volumename");
         String volumeName = split[1].split(" ")[0].replace("=", "");
@@ -107,6 +108,8 @@ public class RestoreSnapshotTask extends CassandraTask {
         for (Protos.Resource resource: resourceList) {
             newExec.addResources(resource);
         }
+
+        newExec.setLabels(labelList);
 
         completedTemplate.setExecutor(newExec);
 

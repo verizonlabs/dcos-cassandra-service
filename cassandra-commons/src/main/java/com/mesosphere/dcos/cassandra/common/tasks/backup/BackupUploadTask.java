@@ -90,6 +90,7 @@ public class BackupUploadTask extends CassandraTask {
         String execName = completedTemplate.getExecutor().getName();
         Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
         List<Protos.Resource> resourceList = completedTemplate.getExecutor().getResourcesList();
+        Protos.Labels labelList = completedTemplate.getExecutor().getLabels();
 
         String[] split = command.split("volumename");
         String volumeName = split[1].split(" ")[0];
@@ -111,7 +112,7 @@ public class BackupUploadTask extends CassandraTask {
         for (Protos.Resource resource: resourceList) {
             newExec.addResources(resource);
         }
-
+        newExec.setLabels(labelList);
         completedTemplate.setExecutor(newExec);
 
         Protos.TaskInfo finalTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate.build());
