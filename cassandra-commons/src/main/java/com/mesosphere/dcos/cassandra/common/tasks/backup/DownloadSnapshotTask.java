@@ -90,7 +90,8 @@ public class DownloadSnapshotTask extends CassandraTask {
 
         String[] split = command.split("volumeName");
         LOGGER.debug("Executor command: {} ", split.toString());
-        String volumeName = "volume_debug_" + name;
+        String volumeName = split[1].split(" ")[0];
+        LOGGER.debug("Volume Name: {} ", split.toString());
 
         completedTemplate.clearCommand();
         completedTemplate.clearExecutor();
