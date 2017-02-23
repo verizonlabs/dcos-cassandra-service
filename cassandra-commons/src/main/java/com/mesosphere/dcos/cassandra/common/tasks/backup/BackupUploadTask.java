@@ -85,6 +85,11 @@ public class BackupUploadTask extends CassandraTask {
                 .setData(data.getBytes())
                 .build();
 
+        completedTemplate.getExecutor().toBuilder()
+                .clearCommand()
+                .setCommand(Protos.CommandInfo.newBuilder()
+                        .setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"));
+
         completedTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate);
 
         return new BackupUploadTask(completedTemplate);
