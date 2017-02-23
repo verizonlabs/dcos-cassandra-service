@@ -100,7 +100,7 @@ public class DownloadSnapshotTask extends CassandraTask {
 
         Protos.ExecutorInfo.Builder newExec = Protos.ExecutorInfo.newBuilder()
                 .setName(execName)
-                .setExecutorId(execId)
+                .setExecutorId(Protos.ExecutorID.newBuilder().setValue(""))
                 .setFrameworkId(frameId)
                 .setContainer(Protos.ContainerInfo.newBuilder()
                         .setType(Protos.ContainerInfo.Type.MESOS)
