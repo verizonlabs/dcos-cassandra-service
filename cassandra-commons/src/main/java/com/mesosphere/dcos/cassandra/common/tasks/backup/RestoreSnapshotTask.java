@@ -80,6 +80,7 @@ public class RestoreSnapshotTask extends CassandraTask {
                 .setTaskId(TaskUtils.toTaskId(name))
                 .setData(data.getBytes());
 
+
         String command = completedTemplate.getExecutor().getCommand().getValue();
         Protos.ExecutorID execId = completedTemplate.getExecutor().getExecutorId();
         Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
@@ -99,7 +100,7 @@ public class RestoreSnapshotTask extends CassandraTask {
                                 .setHostPath("/var/lib/rexray/volumes/" + volumeName)
                                 .setContainerPath("volume/data")
                                 .setMode(Protos.Volume.Mode.RW)))
-        .setCommand(Protos.CommandInfo.newBuilder().setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"))
+                .setCommand(Protos.CommandInfo.newBuilder().setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"))
         );
 
         Protos.TaskInfo finalTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate.build());

@@ -93,6 +93,7 @@ public class BackupSnapshotTask extends CassandraTask {
 
         LOGGER.info("Executor command: {} ", completedTemplate.getExecutor().getCommand().toString());
 
+
         String command = completedTemplate.getExecutor().getCommand().getValue();
         Protos.ExecutorID execId = completedTemplate.getExecutor().getExecutorId();
         Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
@@ -104,6 +105,8 @@ public class BackupSnapshotTask extends CassandraTask {
         completedTemplate.clearExecutor();
 
         completedTemplate.setExecutor(Protos.ExecutorInfo.newBuilder()
+                .setExecutorId(execId)
+                .setFrameworkId(frameId)
                 .setContainer(Protos.ContainerInfo.newBuilder()
                         .setType(Protos.ContainerInfo.Type.MESOS)
                         .addVolumes(Protos.Volume.newBuilder()

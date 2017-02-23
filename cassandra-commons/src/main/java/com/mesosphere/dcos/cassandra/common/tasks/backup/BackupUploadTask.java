@@ -95,6 +95,8 @@ public class BackupUploadTask extends CassandraTask {
         completedTemplate.clearExecutor();
 
         completedTemplate.setExecutor(Protos.ExecutorInfo.newBuilder()
+                .setExecutorId(execId)
+                .setFrameworkId(frameId)
                 .setContainer(Protos.ContainerInfo.newBuilder()
                         .setType(Protos.ContainerInfo.Type.MESOS)
                         .addVolumes(Protos.Volume.newBuilder()
