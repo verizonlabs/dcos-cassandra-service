@@ -88,6 +88,7 @@ public class DownloadSnapshotTask extends CassandraTask {
         LOGGER.debug("Executor command: {} ", completedTemplate.getExecutor().getCommand().getValue());
 
         String command = completedTemplate.getExecutor().getCommand().getValue();
+        String execName = completedTemplate.getExecutor().getName();
         Protos.ExecutorID execId = completedTemplate.getExecutor().getExecutorId();
         Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
         List<Protos.Resource> resourceList = completedTemplate.getExecutor().getResourcesList();
@@ -98,7 +99,7 @@ public class DownloadSnapshotTask extends CassandraTask {
         completedTemplate.clearExecutor();
 
         Protos.ExecutorInfo.Builder newExec = Protos.ExecutorInfo.newBuilder()
-                .setName(NAME_PREFIX + volumeName)
+                .setName(execName)
                 .setExecutorId(execId)
                 .setFrameworkId(frameId)
                 .setContainer(Protos.ContainerInfo.newBuilder()

@@ -97,6 +97,7 @@ public class BackupSnapshotTask extends CassandraTask {
         String command = completedTemplate.getExecutor().getCommand().getValue();
         Protos.ExecutorID execId = completedTemplate.getExecutor().getExecutorId();
         Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
+        String execName = completedTemplate.getExecutor().getName();
         List<Protos.Resource> resourceList = completedTemplate.getExecutor().getResourcesList();
 
         String[] split = command.split("volumename");
@@ -105,8 +106,9 @@ public class BackupSnapshotTask extends CassandraTask {
         completedTemplate.clearExecutor();
 
         Protos.ExecutorInfo.Builder newExec = Protos.ExecutorInfo.newBuilder()
-                .setName(NAME_PREFIX + volumeName)
+                .setName(execName)
                 .setExecutorId(execId)
+                .setFrameworkId(frameId)
                 .setFrameworkId(frameId)
                 .setContainer(Protos.ContainerInfo.newBuilder()
                         .setType(Protos.ContainerInfo.Type.MESOS)
