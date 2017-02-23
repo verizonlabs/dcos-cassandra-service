@@ -84,6 +84,7 @@ public class BackupUploadTask extends CassandraTask {
                 .setName(name)
                 .setTaskId(TaskUtils.toTaskId(name))
                 .setData(data.getBytes());
+
         String command = completedTemplate.getExecutor().getCommand().getValue();
         Protos.ExecutorID execId = completedTemplate.getExecutor().getExecutorId();
         Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
@@ -92,10 +93,10 @@ public class BackupUploadTask extends CassandraTask {
         String[] split = command.split("volumename");
         String volumeName = split[1].split(" ")[0];
 
-        completedTemplate.clearCommand();
         completedTemplate.clearExecutor();
 
         Protos.ExecutorInfo.Builder newExec = Protos.ExecutorInfo.newBuilder()
+                .setName(NAME_PREFIX + volumeName)
                 .setExecutorId(execId)
                 .setFrameworkId(frameId)
                 .setContainer(Protos.ContainerInfo.newBuilder()
