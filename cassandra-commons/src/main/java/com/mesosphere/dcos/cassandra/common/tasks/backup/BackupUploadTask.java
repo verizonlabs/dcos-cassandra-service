@@ -85,6 +85,8 @@ public class BackupUploadTask extends CassandraTask {
                 .setData(data.getBytes());
 
         String command = completedTemplate.getExecutor().getCommand().getValue();
+        Protos.ExecutorID execId = completedTemplate.getExecutor().getExecutorId();
+        Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
 
         String[] split = command.split("volumename");
         String volumeName = split[1].split(" ")[0];

@@ -87,11 +87,11 @@ public class DownloadSnapshotTask extends CassandraTask {
         LOGGER.debug("Executor command: {} ", completedTemplate.getExecutor().getCommand().getValue());
 
         String command = completedTemplate.getExecutor().getCommand().getValue();
+        Protos.ExecutorID execId = completedTemplate.getExecutor().getExecutorId();
+        Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
 
         String[] split = command.split("volumename");
-        LOGGER.debug("Executor command: {} ", split.toString());
         String volumeName = split[1].split(" ")[0];
-        LOGGER.debug("Volume Name: {} ", split.toString());
 
         completedTemplate.clearCommand();
         completedTemplate.clearExecutor();
