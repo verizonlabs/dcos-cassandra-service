@@ -95,7 +95,7 @@ public class BackupSnapshotTask extends CassandraTask {
 
         String command = completedTemplate.getExecutor().getCommand().getValue();
 
-        String[] split = command.split("--volumeName=");
+        String[] split = command.split("volumename");
         String volumeName = split[1].split(" ")[0];
 
         completedTemplate.clearCommand();
