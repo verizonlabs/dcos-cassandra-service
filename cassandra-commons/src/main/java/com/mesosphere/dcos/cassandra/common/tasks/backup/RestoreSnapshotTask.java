@@ -22,6 +22,7 @@ import com.mesosphere.dcos.cassandra.common.tasks.CassandraTaskStatus;
 import org.apache.mesos.Protos;
 import org.apache.mesos.offer.TaskUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -80,10 +81,10 @@ public class RestoreSnapshotTask extends CassandraTask {
                 .setTaskId(TaskUtils.toTaskId(name))
                 .setData(data.getBytes());
 
-
         String command = completedTemplate.getExecutor().getCommand().getValue();
         Protos.ExecutorID execId = completedTemplate.getExecutor().getExecutorId();
         Protos.FrameworkID frameId = completedTemplate.getExecutor().getFrameworkId();
+        List<Protos.Resource> resourceList = completedTemplate.getExecutor().getResourcesList();
 
         String[] split = command.split("volumename");
         String volumeName = split[1].split(" ")[0];
@@ -91,7 +92,7 @@ public class RestoreSnapshotTask extends CassandraTask {
         completedTemplate.clearCommand();
         completedTemplate.clearExecutor();
 
-        completedTemplate.setExecutor(Protos.ExecutorInfo.newBuilder()
+        Protos.ExecutorInfo.Builder newExec = Protos.ExecutorInfo.newBuilder()
                 .setExecutorId(execId)
                 .setFrameworkId(frameId)
                 .setContainer(Protos.ContainerInfo.newBuilder()
@@ -100,8 +101,13 @@ public class RestoreSnapshotTask extends CassandraTask {
                                 .setHostPath("/var/lib/rexray/volumes/" + volumeName)
                                 .setContainerPath("volume/data")
                                 .setMode(Protos.Volume.Mode.RW)))
-                .setCommand(Protos.CommandInfo.newBuilder().setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"))
-        );
+                .setCommand(Protos.CommandInfo.newBuilder().setValue("./executor/bin/cassandra-executor server executor/conf/executor.yml"));
+
+        for (Protos.Resource resource: resourceList) {
+            newExec.addResources(resource);
+        }
+
+        completedTemplate.setExecutor(newExec);
 
         Protos.TaskInfo finalTemplate = org.apache.mesos.offer.TaskUtils.clearTransient(completedTemplate.build());
 
