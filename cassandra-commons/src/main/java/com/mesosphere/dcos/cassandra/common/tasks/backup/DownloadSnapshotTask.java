@@ -21,6 +21,8 @@ import com.mesosphere.dcos.cassandra.common.tasks.CassandraTask;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraTaskStatus;
 import org.apache.mesos.Protos;
 import org.apache.mesos.offer.TaskUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -31,6 +33,9 @@ import java.util.Optional;
  * the CassandraDaemonTask is running on the targeted slave.
  */
 public class DownloadSnapshotTask extends CassandraTask {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger
+            (DownloadSnapshotTask.class);
 
     /**
      * The prefix for the name of DownloadSnapshotTasks.
@@ -78,6 +83,8 @@ public class DownloadSnapshotTask extends CassandraTask {
                 .setName(name)
                 .setTaskId(TaskUtils.toTaskId(name))
                 .setData(data.getBytes());
+
+        LOGGER.info("Executor command: {} ", completedTemplate.getExecutor().getCommand().toString());
 
         String command = completedTemplate.getExecutor().getCommand().getValue();
 
