@@ -84,12 +84,12 @@ public class DownloadSnapshotTask extends CassandraTask {
                 .setTaskId(TaskUtils.toTaskId(name))
                 .setData(data.getBytes());
 
-        LOGGER.info("Executor command: {} ", completedTemplate.getExecutor().getCommand().getValue());
+        LOGGER.debug("Executor command: {} ", completedTemplate.getExecutor().getCommand().getValue());
 
         String command = completedTemplate.getExecutor().getCommand().getValue();
 
         String[] split = command.split("volumeName");
-        LOGGER.info("Executor command: {} ", split);
+        LOGGER.debug("Executor command: {} ", split.toString());
         String volumeName = "volume_debug_" + name;
 
         completedTemplate.clearCommand();
