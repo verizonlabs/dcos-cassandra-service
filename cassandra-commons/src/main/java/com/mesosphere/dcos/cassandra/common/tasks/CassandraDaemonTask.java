@@ -168,6 +168,7 @@ public class CassandraDaemonTask extends CassandraTask {
                     name,
                     config.getApplication().getNativeTransportPort()),
             data);
+        executor.SetDvdCli();
     }
 
     private CassandraDaemonTask(
@@ -186,6 +187,7 @@ public class CassandraDaemonTask extends CassandraTask {
                 "",
                 CassandraMode.STARTING,
                 config));
+        executor.SetDvdCli();
     }
 
     private CassandraDaemonTask(final Protos.TaskInfo info) {
