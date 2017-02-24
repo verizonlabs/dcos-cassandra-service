@@ -168,7 +168,6 @@ public class CassandraDaemonTask extends CassandraTask {
                     name,
                     config.getApplication().getNativeTransportPort()),
             data);
-        executor.SetDvdCli();
     }
 
     private CassandraDaemonTask(
@@ -187,7 +186,6 @@ public class CassandraDaemonTask extends CassandraTask {
                 "",
                 CassandraMode.STARTING,
                 config));
-        executor.SetDvdCli();
     }
 
     private CassandraDaemonTask(final Protos.TaskInfo info) {
@@ -249,7 +247,7 @@ public class CassandraDaemonTask extends CassandraTask {
     }
 
     public String getVolumePath() {
-        if (getExecutor().HasDvdCli()){
+        if (getExecutor().getExecutorInfo().getContainer().getVolumesCount() >0){
             return getExecutor().getExecutorInfo().getContainer().getVolumes(0).getContainerPath();
         }
         List<String> volumes = TaskUtils.getVolumePaths(getTaskInfo().getResourcesList());
