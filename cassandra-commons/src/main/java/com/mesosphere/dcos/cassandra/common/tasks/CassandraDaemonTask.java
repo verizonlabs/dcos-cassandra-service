@@ -249,9 +249,9 @@ public class CassandraDaemonTask extends CassandraTask {
     }
 
     public String getVolumePath() {
-        Protos.Volume executorVolume = getExecutor().getExecutorInfo().getContainer().getVolumes(0);
-        if (executorVolume.hasContainerPath()){
-            return executorVolume.getContainerPath();
+        String isDvdcli = getExecutor().getExecutorInfo().getCommand().getValue();
+        if (isDvdcli.contains("dvdcli")){
+            return getExecutor().getExecutorInfo().getContainer().getVolumes(0).getContainerPath();
         } else {
             return TaskUtils.getVolumePaths(
                     getTaskInfo().getResourcesList())

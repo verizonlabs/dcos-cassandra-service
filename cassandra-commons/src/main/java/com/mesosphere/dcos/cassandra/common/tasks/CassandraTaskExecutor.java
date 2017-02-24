@@ -101,7 +101,6 @@ public class CassandraTaskExecutor {
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
         String commandString = config.getCommand();
 
-
         Map<String, String> map = new HashMap<>();
         map.put("JAVA_HOME", config.getJavaHome());
         map.put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M");
