@@ -252,9 +252,14 @@ public class CassandraDaemonTask extends CassandraTask {
         if (getExecutor().HasDvdCli()){
             return getExecutor().getExecutorInfo().getContainer().getVolumes(0).getContainerPath();
         }
-        return TaskUtils.getVolumePaths(
-                getTaskInfo().getResourcesList())
-                .get(0);
+        List<String> volumes = TaskUtils.getVolumePaths(getTaskInfo().getResourcesList());
+        if (!volumes.isEmpty()) {
+            return TaskUtils.getVolumePaths(
+                    getTaskInfo().getResourcesList())
+                    .get(0);
+        } else {
+            return CassandraConfig.VOLUME_PATH;
+        }
     }
 
     @Override
