@@ -249,11 +249,8 @@ public class CassandraDaemonTask extends CassandraTask {
     }
 
     public String getVolumePath() {
-        String isDvdcli = getExecutor().getExecutorInfo().getCommand().getValue();
-        if (isDvdcli.contains("dvdcli")){
-            if (getExecutor().getExecutorInfo().getContainer().getVolumesCount() > 0) {
-                return getExecutor().getExecutorInfo().getContainer().getVolumes(0).getContainerPath();
-            }
+        if (getExecutor().HasDvdCli()){
+            return getExecutor().getExecutorInfo().getContainer().getVolumes(0).getContainerPath();
         }
         return TaskUtils.getVolumePaths(
                 getTaskInfo().getResourcesList())

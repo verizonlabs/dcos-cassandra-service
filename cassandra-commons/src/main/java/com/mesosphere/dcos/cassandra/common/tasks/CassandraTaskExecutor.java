@@ -43,6 +43,7 @@ public class CassandraTaskExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CassandraTaskExecutor.class);
     private static final String CNI_NETWORK = "CNI";
+    private boolean hasDvdcli = false;
 
     /**
      * Creates a new CassandraTaskExecutor.
@@ -144,14 +145,21 @@ public class CassandraTaskExecutor {
 
     public void SetDvdCli(){
         String commandString;
+
         // Iterate over a list of approved docker volume drivers, or do we only want to support certain storage systems?
         if (config.getVolumeDriver().equalsIgnoreCase("rexray")) {
+            hasDvdcli = true;
             commandString = setDvdcliCommand(volumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
         } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")) {
+            hasDvdcli = true;
             commandString = setDvdcliCommand(volumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
         }
+    }
+
+    public boolean HasDvdCli(){
+        return hasDvdcli;
     }
 
     private String setDvdcliCommand(String volumeName, ExecutorConfig config) {
