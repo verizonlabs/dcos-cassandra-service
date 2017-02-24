@@ -61,7 +61,6 @@ public class CassandraDaemonController {
      */
     @Inject
     public CassandraDaemonController(Executor executor) {
-
         LOGGER.info("Setting executor to {}", executor);
         this.executor = (CassandraExecutor) executor;
         LOGGER.info("Set executor to {}", this.executor);

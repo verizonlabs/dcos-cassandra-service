@@ -49,6 +49,7 @@ public class RestoreSnapshot implements ExecutorTask {
     private final BackupRestoreContext context;
     private final RestoreSnapshotTask cassandraTask;
     private final String version;
+    private final int port;
 
     /**
      * Constructs a new RestoreSnapshot.
@@ -60,11 +61,13 @@ public class RestoreSnapshot implements ExecutorTask {
     public RestoreSnapshot(
         ExecutorDriver driver,
         RestoreSnapshotTask cassandraTask,
-        String version) {
+        String version,
+        int nativeTransportPort) {
         this.driver = driver;
         this.version = version;
         this.cassandraTask = cassandraTask;
         this.context = cassandraTask.getBackupRestoreContext();
+        this.port = nativeTransportPort;
     }
 
     @Override
@@ -73,6 +76,7 @@ public class RestoreSnapshot implements ExecutorTask {
             // Send TASK_RUNNING
             sendStatus(driver, Protos.TaskState.TASK_RUNNING,
                 "Started restoring snapshot");
+
             final String keyspaceDirectory =
                     context.getLocalLocation() + File.separator +
                     context.getName() + File.separator +
@@ -87,9 +91,12 @@ public class RestoreSnapshot implements ExecutorTask {
             final File keyspacesDirectory = new File(keyspaceDirectory);
             LOGGER.info("Keyspace Directory {} exists: {}", keyspaceDirectory, keyspacesDirectory.exists());
 
+            keyspacesDirectory.mkdirs();
+
             final File[] keyspaces = keyspacesDirectory.listFiles();
 
             String libProcessAddress = System.getenv("LIBPROCESS_IP");
+
             libProcessAddress = StringUtils.isBlank(
                 libProcessAddress) ? InetAddress.getLocalHost().getHostAddress() : libProcessAddress;
 
@@ -99,7 +106,6 @@ public class RestoreSnapshot implements ExecutorTask {
                 final String keyspaceName = keyspace.getName();
                 LOGGER.info("Going to bulk load keyspace: {}", keyspaceName);
 
-
                 for (File columnFamily : columnFamilies) {
                     final String columnFamilyName = columnFamily.getName();
                     LOGGER.info(
@@ -108,7 +114,7 @@ public class RestoreSnapshot implements ExecutorTask {
 
                     final String columnFamilyPath = columnFamily.getAbsolutePath();
                     final List<String> command = Arrays.asList(
-                        ssTableLoaderBinary, "-d", libProcessAddress, "-f",
+                        ssTableLoaderBinary, "-d", libProcessAddress, "-p", Integer.toString(port), "-f",
                         cassandraYaml, columnFamilyPath);
                     LOGGER.info("Executing command: {}", command);
 

@@ -21,6 +21,8 @@ import com.mesosphere.dcos.cassandra.common.tasks.CassandraTask;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraTaskStatus;
 import org.apache.mesos.Protos;
 import org.apache.mesos.offer.TaskUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Optional;
 
@@ -35,6 +37,10 @@ import java.util.Optional;
  * indicated key spaces are backed up.
  */
 public class BackupSnapshotTask extends CassandraTask {
+
+
+    private static final Logger LOGGER = LoggerFactory.getLogger
+            (BackupSnapshotTask.class);
 
     /**
      * The name prefix for BackupSnapshotTasks.

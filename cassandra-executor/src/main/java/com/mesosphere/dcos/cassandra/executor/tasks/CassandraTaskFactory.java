@@ -89,7 +89,8 @@ public class CassandraTaskFactory implements ExecutorTaskFactory {
                 return new RestoreSnapshot(
                         driver,
                         (RestoreSnapshotTask) cassandraTask,
-                        cassandra.getTask().getConfig().getVersion());
+                        cassandra.getTask().getConfig().getVersion(),
+                        cassandra.getTask().getConfig().getApplication().getNativeTransportPort());
             case CLEANUP:
                 return new Cleanup(driver, cassandra, (CleanupTask) cassandraTask);
             case REPAIR:
