@@ -102,6 +102,12 @@ public class CassandraTaskExecutor {
         map.put("JAVA_HOME", config.getJavaHome());
         map.put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M");
         map.put("EXECUTOR_API_PORT", Integer.toString(config.getApiPort()));
+        map.put("MON_GROUP", System.getenv().getOrDefault("MON_GROUP", "dakota"));
+        map.put("MON_APP", System.getenv().getOrDefault("MON_APP", "cassandra"));
+        map.put("MON_CORELATIONID", System.getenv().getOrDefault("MON_CORELATIONID", "0"));
+        map.put("MON_CONTACT", System.getenv().getOrDefault("MON_CONTACT", "dakota-team@one.verizon.com"));
+        map.put("LOGGER_KAFKA_BROKERS_HOST_PORT", System.getenv().getOrDefault("LOGGER_KAFKA_BROKERS_HOST_PORT", ""));
+        map.put("LOGGER_ZOOKEEPER_HOST_PORT", System.getenv().getOrDefault("LOGGER_ZOOKEEPER_HOST_PORT", ""));
 
         Capabilities capabilities = new Capabilities(new DcosCluster());
 
