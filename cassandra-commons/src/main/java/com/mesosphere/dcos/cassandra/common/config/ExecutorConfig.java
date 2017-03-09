@@ -303,9 +303,6 @@ public class ExecutorConfig {
         uris.add(executorLocation.toString());
         uris.add(cassandraLocation.toString());
         uris.add(jreLocation.toString());
-        if(System.getenv().containsKey("LOGGER_LOCATION")) {
-            uris.add(System.getenv("LOGGER_LOCATION"));
-        }
 
         return uris;
     }

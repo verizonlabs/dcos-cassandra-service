@@ -4,7 +4,7 @@
         <filter class="com.mesosphere.dcos.cassandra.common.logging.StdOutFilter" />
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="com.mesosphere.dcos.cassandra.common.logging.LogLayout">
-                <pattern>*|1|%p|%X{ENV:MESOS_EXECUTOR_ID}|%X{PID}|%X{ENV:MON_GROUP}|%X{ENV:MON_APP}|cassandra-executor|%X{ENV:MON_CORELATIONID:-0}|%C:%L|%d{yyyy/MM/dd HH:mm:ss.SSS}|%m%n</pattern>
+                <pattern>*|1|%p|%X{ENV:MESOS_TASK_ID}|%X{PID}|%X{ENV:MON_GROUP}|%X{ENV:MON_APP}|cassandra-executor|%X{ENV:MON_CORELATIONID:-0}|%C:%L|%d{yyyy/MM/dd HH:mm:ss.SSS}|%m%n</pattern>
             </layout>
         </encoder>
     </appender>
@@ -14,7 +14,7 @@
         <filter class="com.mesosphere.dcos.cassandra.common.logging.StdErrFilter" />
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="com.mesosphere.dcos.cassandra.common.logging.LogLayout">
-                <pattern>*|1|%p|%X{ENV:MESOS_EXECUTOR_ID}|%X{PID}|%X{ENV:MON_GROUP}|%X{ENV:MON_APP}|cassandra-executor|%X{ENV:MON_CORELATIONID:-0}|%C:%L|%d{yyyy/MM/dd HH:mm:ss.SSS}|%m%n</pattern>
+                <pattern>*|1|%p|%X{ENV:MESOS_TASK_ID}|%X{PID}|%X{ENV:MON_GROUP}|%X{ENV:MON_APP}|cassandra-executor|%X{ENV:MON_CORELATIONID:-0}|%C:%L|%d{yyyy/MM/dd HH:mm:ss.SSS}|%m%n</pattern>
             </layout>
         </encoder>
     </appender>
