@@ -108,6 +108,10 @@ public class ExecutorConfig {
             @JsonProperty("container_path") String containerPath)
             throws URISyntaxException, UnsupportedEncodingException {
 
+        if (dvdcli == null) {
+            dvdcli = "";
+        }
+
         ExecutorConfig config = create(
                 command,
                 arguments,
@@ -121,7 +125,7 @@ public class ExecutorConfig {
                 URI.create(jreLocation),
                 URI.create(executorLocation),
                 URI.create(cassandraLocation),
-                URI.create(dvdcli),
+                URI.create(dvdcli), // Null pointer exception when scheduler config is parsed unless we make sure it's never null.
                 volumeDriver,
                 volumeName,
                 hostPath,
@@ -283,6 +287,10 @@ public class ExecutorConfig {
 
     @JsonProperty("dvdcli")
     public String getDvdcliString() {
+        if (dvdcli == null) {
+            return "";
+        }
+
         return dvdcli.toString();
     }
 
