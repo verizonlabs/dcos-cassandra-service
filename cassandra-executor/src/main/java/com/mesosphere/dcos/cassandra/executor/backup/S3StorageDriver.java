@@ -15,6 +15,7 @@
  */
 package com.mesosphere.dcos.cassandra.executor.backup;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.S3ClientOptions;
@@ -104,15 +105,25 @@ public class S3StorageDriver implements BackupStorageDriver {
         final String secretKey = ctx.getSecretKey();
         String endpoint = getEndpoint(ctx);
         LOGGER.info("endpoint: {}", endpoint);
+        AmazonS3Client amazonS3Client;
 
         final BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(accessKey, secretKey);
-        final AmazonS3Client amazonS3Client = new AmazonS3Client(basicAWSCredentials);
-        amazonS3Client.setEndpoint(endpoint);
 
         if (ctx.usesEmc()) {
+            ClientConfiguration configuration = new ClientConfiguration();
+            // Uses the older API to make it compatible with ECS.
+            configuration.setSignerOverride("S3SignerType");
+            LOGGER.info("S3 configuration: {}", configuration.getSignerOverride());
+            amazonS3Client = new AmazonS3Client(basicAWSCredentials, configuration);
+            amazonS3Client.setEndpoint(endpoint);
+            // EMC specific options necessary.
             final S3ClientOptions options = new S3ClientOptions();
             options.setPathStyleAccess(true);
             amazonS3Client.setS3ClientOptions(options);
+        } else {
+            // Default s3 options.
+            amazonS3Client = new AmazonS3Client(basicAWSCredentials);
+            amazonS3Client.setEndpoint(endpoint);
         }
 
         return amazonS3Client;

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.datatype.guava.GuavaModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.io.Resources;
 import com.mesosphere.dcos.cassandra.common.config.*;
-import io.dropwizard.configuration.ConfigurationFactory;
-import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
-import io.dropwizard.configuration.FileConfigurationSourceProvider;
-import io.dropwizard.configuration.SubstitutingSourceProvider;
+import io.dropwizard.configuration.*;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import io.dropwizard.validation.BaseValidator;
@@ -39,7 +36,7 @@ public class ConfigurationResourceTest {
         server = new TestingServer();
         server.start();
         final ConfigurationFactory<MutableSchedulerConfiguration> factory =
-                new ConfigurationFactory<>(
+                new YamlConfigurationFactory<>(
                         MutableSchedulerConfiguration.class,
                         BaseValidator.newValidator(),
                         Jackson.newObjectMapper().registerModule(

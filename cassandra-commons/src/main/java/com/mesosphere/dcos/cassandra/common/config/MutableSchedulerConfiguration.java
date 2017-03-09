@@ -2,7 +2,9 @@ package com.mesosphere.dcos.cassandra.common.config;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.mesosphere.dcos.cassandra.common.logging.LoggerFactory;
 import io.dropwizard.Configuration;
+import io.dropwizard.logging.LoggingFactory;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -36,6 +38,10 @@ public class MutableSchedulerConfiguration extends Configuration {
   private String dcUrl;
   private String phaseStrategy;
 
+  @Override
+  public LoggingFactory getLoggingFactory() {
+    return new LoggerFactory();
+  }
 
   @JsonProperty("mesos")
   public MesosConfig getMesosConfig() {

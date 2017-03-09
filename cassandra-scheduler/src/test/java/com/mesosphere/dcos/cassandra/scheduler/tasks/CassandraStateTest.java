@@ -5,10 +5,7 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.google.common.io.Resources;
 import com.mesosphere.dcos.cassandra.common.config.*;
 import com.mesosphere.dcos.cassandra.common.tasks.*;
-import io.dropwizard.configuration.ConfigurationFactory;
-import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
-import io.dropwizard.configuration.FileConfigurationSourceProvider;
-import io.dropwizard.configuration.SubstitutingSourceProvider;
+import io.dropwizard.configuration.*;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.validation.BaseValidator;
 import org.apache.curator.RetryPolicy;
@@ -56,7 +53,7 @@ public class CassandraStateTest {
         server.start();
 
         final ConfigurationFactory<MutableSchedulerConfiguration> factory =
-                new ConfigurationFactory<>(
+                new YamlConfigurationFactory<>(
                         MutableSchedulerConfiguration.class,
                         BaseValidator.newValidator(),
                         Jackson.newObjectMapper().registerModule(
@@ -195,11 +192,6 @@ public class CassandraStateTest {
 
     private void validateDaemonTaskInfo(Protos.TaskInfo daemonTaskInfo) throws TaskException {
         Assert.assertEquals(testDaemonName, daemonTaskInfo.getName());
-        if (daemonTaskInfo.getContainer().getVolumesList().isEmpty()){
-            Assert.assertEquals(3, daemonTaskInfo.getResourcesCount());
-        } else {
-            Assert.assertEquals(4, daemonTaskInfo.getResourcesCount());
-        }
         Assert.assertEquals(testDaemonName, TaskUtils.toTaskName(daemonTaskInfo.getTaskId()));
         Assert.assertTrue(daemonTaskInfo.getSlaveId().getValue().isEmpty());
 
