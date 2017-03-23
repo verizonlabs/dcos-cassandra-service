@@ -110,10 +110,10 @@ public class CassandraTaskExecutor {
 
         // Iterate over a list of approved docker volume drivers, or do we only want to support certain storage systems?
         if (config.getVolumeDriver().equalsIgnoreCase("rexray")) {
-            commandString = setDvdcliCommand(this.VolumeName, config);
+            //commandString = setDvdcliCommand(this.VolumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, this.VolumeName, config.getVolumeDriver());
         } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")) {
-            commandString = setDvdcliCommand(this.VolumeName, config);
+            //commandString = setDvdcliCommand(this.VolumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, this.VolumeName, config.getVolumeDriver());
 
         }
