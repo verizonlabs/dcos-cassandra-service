@@ -7,10 +7,7 @@ import com.mesosphere.dcos.cassandra.common.config.ConfigValidationError;
 import com.mesosphere.dcos.cassandra.common.config.ConfigValidator;
 import com.mesosphere.dcos.cassandra.common.config.MutableSchedulerConfiguration;
 import com.mesosphere.dcos.cassandra.common.config.ServiceConfig;
-import io.dropwizard.configuration.ConfigurationFactory;
-import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
-import io.dropwizard.configuration.FileConfigurationSourceProvider;
-import io.dropwizard.configuration.SubstitutingSourceProvider;
+import io.dropwizard.configuration.*;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.validation.BaseValidator;
 import org.junit.Assert;
@@ -26,7 +23,7 @@ public class ConfigValidatorTest {
 
   @Before
   public void beforeEach() throws Exception {
-    factory = new ConfigurationFactory<>(
+    factory = new YamlConfigurationFactory<>(
       MutableSchedulerConfiguration.class,
       BaseValidator.newValidator(),
       Jackson.newObjectMapper().registerModule(new GuavaModule())

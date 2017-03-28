@@ -15,10 +15,7 @@ import com.mesosphere.dcos.cassandra.scheduler.plan.backup.RestoreManager;
 import com.mesosphere.dcos.cassandra.scheduler.plan.cleanup.CleanupManager;
 import com.mesosphere.dcos.cassandra.scheduler.plan.repair.RepairManager;
 import com.mesosphere.dcos.cassandra.scheduler.seeds.SeedsManager;
-import io.dropwizard.configuration.ConfigurationFactory;
-import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
-import io.dropwizard.configuration.FileConfigurationSourceProvider;
-import io.dropwizard.configuration.SubstitutingSourceProvider;
+import io.dropwizard.configuration.*;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.validation.BaseValidator;
 import org.apache.curator.test.TestingServer;
@@ -110,7 +107,7 @@ public class CassandraSchedulerTest {
         planManager = new CassandraPlanManager(
                 new CassandraPhaseStrategies("org.apache.mesos.scheduler.plan.DefaultInstallStrategy"));
 
-        factory = new ConfigurationFactory<>(
+        factory = new YamlConfigurationFactory<>(
                 MutableSchedulerConfiguration.class,
                 BaseValidator.newValidator(),
                 Jackson.newObjectMapper().registerModule(

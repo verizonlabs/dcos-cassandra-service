@@ -16,7 +16,9 @@
 package com.mesosphere.dcos.cassandra.executor.config;
 
 
+import com.mesosphere.dcos.cassandra.common.logging.LoggerFactory;
 import io.dropwizard.Configuration;
+import io.dropwizard.logging.LoggingFactory;
 
 /**
  * The Configuration object for the Executor application. It contains no
@@ -25,4 +27,8 @@ import io.dropwizard.Configuration;
  * should be implemented here.
  */
 public class CassandraExecutorConfiguration extends Configuration {
+    @Override
+    public LoggingFactory getLoggingFactory() {
+        return new LoggerFactory();
+    }
 }

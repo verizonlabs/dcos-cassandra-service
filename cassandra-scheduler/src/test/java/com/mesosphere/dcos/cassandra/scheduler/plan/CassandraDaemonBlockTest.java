@@ -7,10 +7,7 @@ import com.mesosphere.dcos.cassandra.common.config.*;
 import com.mesosphere.dcos.cassandra.common.offer.PersistentOfferRequirementProvider;
 import com.mesosphere.dcos.cassandra.common.tasks.*;
 import com.mesosphere.dcos.cassandra.scheduler.TestUtils;
-import io.dropwizard.configuration.ConfigurationFactory;
-import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
-import io.dropwizard.configuration.FileConfigurationSourceProvider;
-import io.dropwizard.configuration.SubstitutingSourceProvider;
+import io.dropwizard.configuration.*;
 import io.dropwizard.jackson.Jackson;
 import io.dropwizard.validation.BaseValidator;
 import org.apache.curator.RetryPolicy;
@@ -32,7 +29,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.powermock.reflect.Whitebox;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -71,7 +67,7 @@ public class CassandraDaemonBlockTest {
         taskFactory = new CassandraDaemonTask.Factory(mockCapabilities);
 
         final ConfigurationFactory<MutableSchedulerConfiguration> factory =
-                new ConfigurationFactory<>(
+                new YamlConfigurationFactory<>(
                         MutableSchedulerConfiguration.class,
                         BaseValidator.newValidator(),
                         Jackson.newObjectMapper().registerModule(
@@ -322,7 +318,6 @@ public class CassandraDaemonBlockTest {
                 CassandraTemplateTask.toTemplateTaskName(task.getName()), task);
         ArgumentCaptor<CassandraContainer> containerCaptor = ArgumentCaptor.forClass(CassandraContainer.class);
         verify(persistentOfferRequirementProvider).getReplacementOfferRequirement(containerCaptor.capture());
-        Assert.assertEquals(templateTask, Whitebox.getInternalState(containerCaptor.getValue(), "clusterTemplateTask"));
     }
 
     @Test
