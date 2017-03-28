@@ -121,7 +121,6 @@ public class CassandraTaskExecutor {
         } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")) {
             //commandString = setDvdcliCommand(this.VolumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, this.VolumeName, config.getVolumeDriver());
-
         }
 
         try {
