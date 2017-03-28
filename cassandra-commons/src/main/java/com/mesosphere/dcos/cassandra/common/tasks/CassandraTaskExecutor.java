@@ -110,10 +110,10 @@ public class CassandraTaskExecutor {
 
         // Iterate over a list of approved docker volume drivers, or do we only want to support certain storage systems?
         if (config.getVolumeDriver().equalsIgnoreCase("rexray")) {
-            commandString = setDvdcliCommand(this.VolumeName, config);
+            //commandString = setDvdcliCommand(this.VolumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, this.VolumeName, config.getVolumeDriver());
         } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")) {
-            commandString = setDvdcliCommand(this.VolumeName, config);
+            //commandString = setDvdcliCommand(this.VolumeName, config);
             containerInfo = setDvdcliContainerOptions(containerInfo, this.VolumeName, config.getVolumeDriver());
 
         }
@@ -148,18 +148,6 @@ public class CassandraTaskExecutor {
 
     CassandraTaskExecutor(final Protos.ExecutorInfo info) {
         this.info = info;
-    }
-
-    private String setDvdcliCommand(String volumeName, ExecutorConfig config) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("./dvdcli mount --volumename=");
-        stringBuilder.append(volumeName);
-        stringBuilder.append(" --volumedriver=");
-        stringBuilder.append(config.getVolumeDriver().trim().toLowerCase());
-        stringBuilder.append(" && ");
-        stringBuilder.append(config.getCommand());
-
-        return stringBuilder.toString();
     }
 
     private Protos.ContainerInfo.Builder setDvdcliContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName, String volumeDriver) {
