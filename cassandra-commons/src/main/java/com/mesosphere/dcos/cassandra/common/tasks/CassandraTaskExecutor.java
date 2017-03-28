@@ -155,18 +155,6 @@ public class CassandraTaskExecutor {
         this.info = info;
     }
 
-    private String setDvdcliCommand(String volumeName, ExecutorConfig config) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("./dvdcli mount --volumename=");
-        stringBuilder.append(volumeName);
-        stringBuilder.append(" --volumedriver=");
-        stringBuilder.append(config.getVolumeDriver().trim().toLowerCase());
-        stringBuilder.append(" && ");
-        stringBuilder.append(config.getCommand());
-
-        return stringBuilder.toString();
-    }
-
     private Protos.ContainerInfo.Builder setDvdcliContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName, String volumeDriver) {
         return builder
                 .setType(Protos.ContainerInfo.Type.MESOS)
