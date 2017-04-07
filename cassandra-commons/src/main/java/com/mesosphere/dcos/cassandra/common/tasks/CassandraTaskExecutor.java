@@ -43,7 +43,6 @@ public class CassandraTaskExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CassandraTaskExecutor.class);
     private static final String CNI_NETWORK = "CNI";
-    private String VolumeName = "";
 
     /**
      * Creates a new CassandraTaskExecutor.
@@ -96,8 +95,8 @@ public class CassandraTaskExecutor {
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
         String commandString = config.getCommand();
 
-        this.VolumeName = name.replace("node-", config.getVolumeName() + "_").replace("_executor", "");
-
+        String volumeName = name.replace("node-", config.getVolumeName() + "_").replace("_executor", "");
+        LOGGER.info("volume name: " + volumeName);
         Map<String, String> map = new HashMap<>();
         map.put("JAVA_HOME", config.getJavaHome());
         map.put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M");
@@ -116,12 +115,9 @@ public class CassandraTaskExecutor {
 
         // Iterate over a list of approved docker volume drivers, or do we only want to support certain storage systems?
         if (config.getVolumeDriver().equalsIgnoreCase("rexray")) {
-            commandString = setDvdcliCommand(this.VolumeName, config);
-            containerInfo = setDvdcliContainerOptions(containerInfo, this.VolumeName, config.getVolumeDriver());
+            containerInfo = addDockerVolumeToContainer(containerInfo, volumeName, config.getVolumeDriver());
         } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")) {
-            commandString = setDvdcliCommand(this.VolumeName, config);
-            containerInfo = setDvdcliContainerOptions(containerInfo, this.VolumeName, config.getVolumeDriver());
-
+            containerInfo = addDockerVolumeToContainer(containerInfo, volumeName, config.getVolumeDriver());
         }
 
         try {
@@ -142,7 +138,6 @@ public class CassandraTaskExecutor {
                             config.getArguments(),
                             config.getURIs(),
                             map))
-
                     .addAllResources(
                             Arrays.asList(
                                     createCpus(config.getCpus(), role, principal),
@@ -156,32 +151,22 @@ public class CassandraTaskExecutor {
         this.info = info;
     }
 
-    private String setDvdcliCommand(String volumeName, ExecutorConfig config) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("./dvdcli mount --volumename=");
-        stringBuilder.append(volumeName);
-        stringBuilder.append(" --volumedriver=");
-        stringBuilder.append(config.getVolumeDriver().trim().toLowerCase());
-        stringBuilder.append(" && ");
-        stringBuilder.append(config.getCommand());
-
-        return stringBuilder.toString();
-    }
-
-    private Protos.ContainerInfo.Builder setDvdcliContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName, String volumeDriver) {
+    private Protos.ContainerInfo.Builder addDockerVolumeToContainer(Protos.ContainerInfo.Builder builder, String volumeName, String volumeDriver) {
         return builder
-                .setType(Protos.ContainerInfo.Type.MESOS)
-                .addVolumes(Protos.Volume.newBuilder().setSource(
+                .addVolumes(
+                    Protos.Volume.newBuilder().setSource(
                         Protos.Volume.Source.newBuilder()
-                                .setDockerVolume(Protos.Volume.Source.DockerVolume.newBuilder()
-                                        .setDriver(volumeDriver)
-                                        .setName(volumeName)
-                                        .build())
+                                .setDockerVolume(
+                                        Protos.Volume.Source.DockerVolume.newBuilder()
+                                            .setDriver(volumeDriver)
+                                            .setName(volumeName)
+                                            .build()
+                                )
                                 .setType(Protos.Volume.Source.Type.DOCKER_VOLUME)
                                 .build()
                         )
-                                .setMode(Protos.Volume.Mode.RW)
-                                .setContainerPath(CassandraConfig.VOLUME_PATH)
+                    .setMode(Protos.Volume.Mode.RW)
+                    .setContainerPath(CassandraConfig.EXTERNAL_VOLUME_PATH)
                 );
     }
 
