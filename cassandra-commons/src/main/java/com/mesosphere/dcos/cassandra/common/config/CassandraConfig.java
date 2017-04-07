@@ -34,7 +34,6 @@ import java.util.Objects;
  */
 public class CassandraConfig {
     public static final String VOLUME_PATH = "volume";
-    public static final String EXTERNAL_VOLUME_PATH = "external_volume";
 
     public static final ArrayList<String> hostFilterDefault = new ArrayList<String>() {{
         add("SDS");

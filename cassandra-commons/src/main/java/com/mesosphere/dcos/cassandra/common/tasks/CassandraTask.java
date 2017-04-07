@@ -250,7 +250,7 @@ public abstract class CassandraTask {
         if (isDockerVolume == 0){
             return CassandraConfig.VOLUME_PATH;
         }
-        return CassandraConfig.EXTERNAL_VOLUME_PATH; // We're using a rexray volume if we get here.
+        return ""; // We're using a rexray volume if we get here.
     }
 
     /**

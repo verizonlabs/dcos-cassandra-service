@@ -166,7 +166,7 @@ public class CassandraTaskExecutor {
                                 .build()
                         )
                     .setMode(Protos.Volume.Mode.RW)
-                    .setContainerPath(CassandraConfig.EXTERNAL_VOLUME_PATH)
+                    .setContainerPath(CassandraConfig.VOLUME_PATH)
                 );
     }
 
