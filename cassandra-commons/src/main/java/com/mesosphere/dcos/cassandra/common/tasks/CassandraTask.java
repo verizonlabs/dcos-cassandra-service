@@ -255,7 +255,7 @@ public abstract class CassandraTask {
 
     /**
      * Gets the unique identifier for the task.
-     *K
+     *
      * @return The universally unique identifier for the task.
      */
     public String getId() {

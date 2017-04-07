@@ -96,7 +96,7 @@ public class CassandraTaskExecutor {
         String commandString = config.getCommand();
 
         String volumeName = name.replace("node-", config.getVolumeName() + "_").replace("_executor", "");
-        LOGGER.info("volume name: " + volumeName);
+
         Map<String, String> map = new HashMap<>();
         map.put("JAVA_HOME", config.getJavaHome());
         map.put("JAVA_OPTS", "-Xmx" + config.getHeapMb() + "M");
