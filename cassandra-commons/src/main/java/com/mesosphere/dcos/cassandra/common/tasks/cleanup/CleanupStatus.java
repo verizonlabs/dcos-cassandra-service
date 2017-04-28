@@ -29,7 +29,7 @@ public class CleanupStatus extends CassandraTaskStatus {
         return new CleanupStatus(status);
     }
 
-    protected CleanupStatus(final Protos.TaskStatus status) {
+    private CleanupStatus(final Protos.TaskStatus status) {
         super(status);
     }
 }

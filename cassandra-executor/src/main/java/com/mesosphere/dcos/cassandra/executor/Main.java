@@ -31,13 +31,13 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 /**
  * The main entry point for the Cassandra executor program.
  */
-public class Main extends Application<CassandraExecutorConfiguration> {
+class Main extends Application<CassandraExecutorConfiguration> {
 
     public static void main(String[] args) throws Exception {
         new Main().run(args);
     }
 
-    protected Main() {
+    private Main() {
         super();
     }
 

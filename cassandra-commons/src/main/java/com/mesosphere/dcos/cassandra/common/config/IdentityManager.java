@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class IdentityManager implements Managed {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(IdentityManager.class);
-    public static final String IDENTITY = "serviceConfig";
+    private static final String IDENTITY = "serviceConfig";
 
     private volatile ServiceConfig serviceConfig;
     private StateStore stateStore;

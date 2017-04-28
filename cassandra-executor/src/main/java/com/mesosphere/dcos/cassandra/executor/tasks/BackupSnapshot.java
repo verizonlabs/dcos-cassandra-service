@@ -32,7 +32,7 @@ import java.util.concurrent.Future;
  * method of the CassandraDaemonProcess and reporting status via the
  * ExecutorDriver.
  */
-public class BackupSnapshot implements ExecutorTask {
+class BackupSnapshot implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             BackupSnapshot.class);
     private CassandraDaemonProcess daemon;

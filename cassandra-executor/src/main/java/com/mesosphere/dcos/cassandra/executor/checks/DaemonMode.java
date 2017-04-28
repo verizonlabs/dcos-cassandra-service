@@ -27,7 +27,7 @@ import java.util.Optional;
  * DaemonMode implements a health check that tests if the Cassandra Daemon's
  * mode is normal.
  */
-public class DaemonMode extends HealthCheck {
+class DaemonMode extends HealthCheck {
 
     private final CassandraExecutor executor;
 

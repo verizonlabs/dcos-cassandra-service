@@ -317,9 +317,9 @@ public class S3StorageDriver implements BackupStorageDriver {
               file);
     }
 
-    public Map<String, Long> listSnapshotFiles(AmazonS3Client amazonS3Client,
-                                               String bucketName,
-                                               String backupName) {
+    private Map<String, Long> listSnapshotFiles(AmazonS3Client amazonS3Client,
+                                                String bucketName,
+                                                String backupName) {
         Map<String, Long> snapshotFiles = new HashMap<>();
         ObjectListing objectListing;
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest()

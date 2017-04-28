@@ -22,7 +22,7 @@ import java.util.List;
 
 public class RepairManager extends ChainedObserver implements ClusterTaskManager<RepairRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RepairManager.class);
-    static final String REPAIR_KEY = "repair";
+    private static final String REPAIR_KEY = "repair";
 
     private final CassandraState cassandraState;
     private final ClusterTaskOfferRequirementProvider provider;

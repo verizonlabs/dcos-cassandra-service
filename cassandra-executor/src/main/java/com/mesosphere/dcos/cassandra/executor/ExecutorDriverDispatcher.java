@@ -29,7 +29,7 @@ import java.util.concurrent.ExecutorService;
  * The ExecutorDriverDispatcher executes the Mesos Executor in a separate
  * thread of execution so that is asynchronous to the main thread.
  */
-public class ExecutorDriverDispatcher implements Runnable, Managed {
+class ExecutorDriverDispatcher implements Runnable, Managed {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(ExecutorDriverDispatcher.class);
 

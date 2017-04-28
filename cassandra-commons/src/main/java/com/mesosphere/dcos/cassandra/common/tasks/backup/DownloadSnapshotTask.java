@@ -40,7 +40,7 @@ public class DownloadSnapshotTask extends CassandraTask {
     /**
      * The prefix for the name of DownloadSnapshotTasks.
      */
-    public static final String NAME_PREFIX = "download-";
+    private static final String NAME_PREFIX = "download-";
 
     /**
      * Gets the name of a DownloadSnapshotTask for a CassandraDaemonTask.

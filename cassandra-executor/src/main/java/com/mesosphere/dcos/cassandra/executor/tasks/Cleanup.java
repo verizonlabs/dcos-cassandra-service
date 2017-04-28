@@ -34,7 +34,7 @@ import java.util.concurrent.Future;
  * methods of the CassandraDaemonProcess for the key spaces and column
  * families indicated by the task.
  */
-public class Cleanup implements ExecutorTask {
+class Cleanup implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(Cleanup.class);
 
     private final CassandraDaemonProcess daemon;

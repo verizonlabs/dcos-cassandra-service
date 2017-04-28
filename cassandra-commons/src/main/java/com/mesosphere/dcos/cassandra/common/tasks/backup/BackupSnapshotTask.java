@@ -45,7 +45,7 @@ public class BackupSnapshotTask extends CassandraTask {
     /**
      * The name prefix for BackupSnapshotTasks.
      */
-    public static final String NAME_PREFIX = "snapshot-";
+    private static final String NAME_PREFIX = "snapshot-";
 
     /**
      * Gets the name of a BackupSnapshotTask for a CassandraDaemonTask.

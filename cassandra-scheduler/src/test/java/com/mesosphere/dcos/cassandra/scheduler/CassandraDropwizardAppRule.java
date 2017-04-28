@@ -14,7 +14,7 @@ import org.apache.curator.utils.CloseableUtils;
 
 import javax.annotation.Nullable;
 
-public class CassandraDropwizardAppRule<C extends MutableSchedulerConfiguration> extends DropwizardAppRule {
+class CassandraDropwizardAppRule<C extends MutableSchedulerConfiguration> extends DropwizardAppRule {
     private TestingServer server = TestModule.createTestingServerQuietly();
     private CuratorFramework curator = TestModule.createClient(server);
 

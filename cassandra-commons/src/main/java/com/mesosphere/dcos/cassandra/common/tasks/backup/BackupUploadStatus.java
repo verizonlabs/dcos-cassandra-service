@@ -27,7 +27,7 @@ public class BackupUploadStatus extends CassandraTaskStatus {
         return new BackupUploadStatus(status);
     }
 
-    protected BackupUploadStatus(final Protos.TaskStatus status) {
+    private BackupUploadStatus(final Protos.TaskStatus status) {
         super(status);
     }
 }

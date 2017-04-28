@@ -22,8 +22,8 @@ import java.util.UUID;
 import static org.mockito.Mockito.when;
 
 public class BackupSnapshotPhaseTest {
-    public static final String SNAPSHOT_NODE_0 = "snapshot-node-0";
-    public static final String NODE_0 = "node-0";
+    private static final String SNAPSHOT_NODE_0 = "snapshot-node-0";
+    private static final String NODE_0 = "node-0";
     @Mock
     private ClusterTaskOfferRequirementProvider provider;
     @Mock

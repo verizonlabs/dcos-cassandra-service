@@ -697,7 +697,7 @@ public class CassandraConfig {
      */
     public boolean getPublishDiscoveryInfo() { return publishDiscoveryInfo; }
 
-    public String getFilepath() {
+    private String getFilepath() {
         return filepath;
     }
 

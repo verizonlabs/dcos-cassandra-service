@@ -41,7 +41,7 @@ public class CassandraPlan extends DefaultObservable implements Plan, Observer {
     private final DeploymentManager deployment;
     private final List<ClusterTaskManager<?>> managers;
 
-    public CassandraPlan(
+    private CassandraPlan(
             final DefaultConfigurationManager defaultConfigurationManager,
             final DeploymentManager deployment,
             final BackupManager backup,

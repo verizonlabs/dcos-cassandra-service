@@ -57,7 +57,7 @@ public class Location {
      * @return A Location constructed from the parameters.
      */
     @JsonCreator
-    public static Location create(
+    private static Location create(
             @JsonProperty("rack") final String rack,
             @JsonProperty("data_center") final String dataCenter) {
         return new Location(rack, dataCenter);
@@ -93,7 +93,7 @@ public class Location {
      * @param rack       The rack for the Cassandra node.
      * @param dataCenter The data center for the Cassandra node.
      */
-    public Location(final String rack, final String dataCenter) {
+    private Location(final String rack, final String dataCenter) {
         this.rack = rack;
         this.dataCenter = dataCenter;
     }
@@ -123,7 +123,7 @@ public class Location {
      * @return A Properties object indicating the rack and data center
      * contained in the location.
      */
-    public Properties toProperties() {
+    private Properties toProperties() {
 
         Properties properties = new Properties();
         properties.setProperty("rack", rack);

@@ -13,13 +13,13 @@ import java.util.UUID;
 
 public abstract class AbstractClusterTaskPhase<B extends Block, C extends ClusterTaskContext> extends ChainedObserver implements Phase {
 
-    protected final UUID id = UUID.randomUUID();
+    private final UUID id = UUID.randomUUID();
     protected final C context;
-    protected final List<B> blocks;
+    private final List<B> blocks;
     protected final CassandraState cassandraState;
     protected final ClusterTaskOfferRequirementProvider provider;
 
-    public AbstractClusterTaskPhase(
+    protected AbstractClusterTaskPhase(
             C context,
             CassandraState cassandraState,
             ClusterTaskOfferRequirementProvider provider) {

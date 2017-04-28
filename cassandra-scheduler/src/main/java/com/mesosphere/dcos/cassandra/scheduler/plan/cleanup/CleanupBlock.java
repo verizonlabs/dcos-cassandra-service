@@ -27,7 +27,7 @@ public class CleanupBlock extends AbstractClusterTaskBlock<CleanupContext> {
         return new CleanupBlock(daemon, cassandraState, provider, context);
     }
 
-    public CleanupBlock(
+    private CleanupBlock(
             String daemon,
             CassandraState cassandraState,
             CassandraOfferRequirementProvider provider,

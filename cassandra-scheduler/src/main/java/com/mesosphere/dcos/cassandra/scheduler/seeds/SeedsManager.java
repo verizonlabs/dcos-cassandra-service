@@ -79,7 +79,7 @@ public class SeedsManager implements Runnable {
         }
     }
 
-    Optional<DataCenterInfo> getRemoteInfo(String url) {
+    private Optional<DataCenterInfo> getRemoteInfo(String url) {
         LOGGER.info("Retrieving info: url = {}", url);
         try {
             DataCenterInfo info = client.getDataCenterInfo(url)
@@ -146,7 +146,7 @@ public class SeedsManager implements Runnable {
                 TimeUnit.MILLISECONDS);
     }
 
-    public List<String> getLocalSeeds() throws IOException {
+    private List<String> getLocalSeeds() throws IOException {
         final List<CassandraDaemonTask> active = tasks.getDaemons().values()
                 .stream()
                 .filter(daemon -> daemon.getMode() == CassandraMode.NORMAL && !daemon.getHostname().isEmpty())
@@ -175,7 +175,7 @@ public class SeedsManager implements Runnable {
         return seeds;
     }
 
-    public int getConfiguredSeedsCount() throws ConfigStoreException {
+    private int getConfiguredSeedsCount() throws ConfigStoreException {
         return ((CassandraSchedulerConfiguration)configurationManager.getTargetConfig()).getSeeds();
     }
 
@@ -198,7 +198,7 @@ public class SeedsManager implements Runnable {
         return false;
     }
 
-    public List<String> getRemoteSeeds() {
+    private List<String> getRemoteSeeds() {
         return dataCenters.values().stream().map(
                 dc -> dc.getSeeds()).flatMap
                 (List::stream).collect(Collectors.toList());
@@ -224,7 +224,7 @@ public class SeedsManager implements Runnable {
                 JsonUtils.toJsonString(dataCenters));
     }
 
-    public boolean tryUpdate(final DataCenterInfo info) {
+    private boolean tryUpdate(final DataCenterInfo info) {
         try {
             update(info);
             return true;

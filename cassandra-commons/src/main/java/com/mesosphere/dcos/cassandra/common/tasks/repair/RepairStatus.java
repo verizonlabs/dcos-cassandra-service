@@ -29,7 +29,7 @@ public class RepairStatus extends CassandraTaskStatus {
         return new RepairStatus(status);
     }
 
-    protected RepairStatus(final Protos.TaskStatus status) {
+    private RepairStatus(final Protos.TaskStatus status) {
         super(status);
     }
 

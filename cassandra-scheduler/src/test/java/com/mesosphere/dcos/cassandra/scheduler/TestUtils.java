@@ -25,7 +25,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static int ipToInt(String ipAddress) {
+    private static int ipToInt(String ipAddress) {
         String[] ipAddressInArray = ipAddress.split("\\.");
 
         int result = 0;
@@ -49,7 +49,7 @@ public class TestUtils {
         return generateOffer(frameworkId, cpu, memory, disk, offerUUID, offerUUID);
     }
 
-    public static Protos.Offer generateOffer(
+    private static Protos.Offer generateOffer(
             String frameworkId,
             double cpu,
             int memory,

@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
  * daemon via JMX using the NodeProbe class.
  */
 public class CassandraDaemonProcess extends ProcessTask {
-    public static final Set<String> SYSTEM_KEYSPACE_NAMES =
+    private static final Set<String> SYSTEM_KEYSPACE_NAMES =
             ImmutableSet.of(SystemKeyspace.NAME, SchemaKeyspace.NAME);
     private static final Logger LOGGER = LoggerFactory.getLogger(CassandraDaemonProcess.class);
 
@@ -179,7 +179,7 @@ public class CassandraDaemonProcess extends ProcessTask {
         return new CassandraDaemonProcess(scheduledExecutorService, cassandraTask, cassandraPaths, driver, taskInfo, processBuilder, true);
     }
 
-    protected CassandraDaemonProcess(
+    private CassandraDaemonProcess(
             ScheduledExecutorService scheduledExecutorService,
             CassandraDaemonTask cassandraTask,
             CassandraPaths cassandraPaths,
@@ -236,7 +236,7 @@ public class CassandraDaemonProcess extends ProcessTask {
      * @return The NodeProbe instance used to communicate with the Cassandra
      * process.
      */
-    public NodeProbe getProbe() {
+    private NodeProbe getProbe() {
         return this.probe.get();
     }
 

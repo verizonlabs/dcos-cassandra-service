@@ -38,9 +38,9 @@ public class SyncDataCenterBlock extends DefaultObservable implements Block, Run
         return new SyncDataCenterBlock(url,seeds,executor);
     }
 
-    public SyncDataCenterBlock(final String url,
-                               final SeedsManager seeds,
-                               final ExecutorService executor) {
+    private SyncDataCenterBlock(final String url,
+                                final SeedsManager seeds,
+                                final ExecutorService executor) {
         this.url = url;
         this.seeds = seeds;
         this.executor = executor;

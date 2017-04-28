@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CleanupManager extends ChainedObserver implements ClusterTaskManager<CleanupRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CleanupManager.class);
-    static final String CLEANUP_KEY = "cleanup";
+    private static final String CLEANUP_KEY = "cleanup";
 
     private final CassandraState cassandraState;
     private final ClusterTaskOfferRequirementProvider provider;

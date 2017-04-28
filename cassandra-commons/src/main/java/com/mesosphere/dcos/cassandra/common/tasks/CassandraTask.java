@@ -49,7 +49,7 @@ import java.util.Optional;
 
 public abstract class CassandraTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CassandraTask.class);
-    protected static Protos.SlaveID EMPTY_SLAVE_ID = Protos.SlaveID
+    private static Protos.SlaveID EMPTY_SLAVE_ID = Protos.SlaveID
         .newBuilder().setValue("").build();
 
     /**
@@ -154,7 +154,7 @@ public abstract class CassandraTask {
      *
      * @return A universally unique identifier.
      */
-    public static Protos.TaskID createId(final String name) {
+    protected static Protos.TaskID createId(final String name) {
         return TaskUtils.toTaskId(name);
     }
 
@@ -173,7 +173,7 @@ public abstract class CassandraTask {
         return status;
     }
 
-    protected CassandraTask setTaskStatus(Protos.TaskStatus status) {
+    CassandraTask setTaskStatus(Protos.TaskStatus status) {
         this.status = status;
 
         return this;
@@ -276,9 +276,9 @@ public abstract class CassandraTask {
      *
      * @return The status associated with the task.
      */
-    public Protos.TaskStatus.Builder getStatusBuilder(
-        final Protos.TaskState state,
-        final Optional<String> message
+    Protos.TaskStatus.Builder getStatusBuilder(
+            final Protos.TaskState state,
+            final Optional<String> message
     ) {
         Protos.TaskStatus.Builder builder = Protos.TaskStatus.newBuilder()
             .setSlaveId(info.getSlaveId())

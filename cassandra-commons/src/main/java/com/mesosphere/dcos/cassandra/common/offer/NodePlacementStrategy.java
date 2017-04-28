@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class NodePlacementStrategy {
+class NodePlacementStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             NodePlacementStrategy.class);
 

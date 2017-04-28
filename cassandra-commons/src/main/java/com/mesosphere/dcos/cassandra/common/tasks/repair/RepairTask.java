@@ -37,7 +37,7 @@ public class RepairTask extends CassandraTask {
     /**
      * Prefix for the name of RepairTasks
      */
-    public static final String NAME_PREFIX = "repair-";
+    private static final String NAME_PREFIX = "repair-";
 
 
     /**

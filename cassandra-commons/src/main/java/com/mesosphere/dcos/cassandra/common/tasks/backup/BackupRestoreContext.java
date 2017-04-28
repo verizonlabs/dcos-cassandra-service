@@ -81,13 +81,13 @@ public class BackupRestoreContext implements ClusterTaskContext {
     @JsonProperty("uses_emc")
     private final boolean usesEmc;
 
-    public BackupRestoreContext(final String nodeId,
-                                final String name,
-                                final String externalLocation,
-                                final String localLocation,
-                                final String accountId,
-                                final String secretKey,
-                                final boolean usesEmc) {
+    private BackupRestoreContext(final String nodeId,
+                                 final String name,
+                                 final String externalLocation,
+                                 final String localLocation,
+                                 final String accountId,
+                                 final String secretKey,
+                                 final boolean usesEmc) {
         this.nodeId = nodeId;
         this.externalLocation = externalLocation;
         this.name = name;

@@ -9,7 +9,7 @@ import org.apache.mesos.config.ConfigStoreException;
 import org.apache.mesos.config.Configuration;
 import org.apache.mesos.config.ConfigurationFactory;
 
-public class YAMLConfigurationFactory implements ConfigurationFactory<Configuration> {
+class YAMLConfigurationFactory implements ConfigurationFactory<Configuration> {
     private Class<?> typeParameterClass;
 
     public YAMLConfigurationFactory(Class<?> typeParameterClass) {

@@ -40,7 +40,7 @@ public class BackupUploadTask extends CassandraTask {
     /**
      * The name prefix for BackupUploadTasks.
      */
-    public static final String NAME_PREFIX = "upload-";
+    private static final String NAME_PREFIX = "upload-";
 
     /**
      * Gets the name of a BackupUploadTask for a CassandraDaemonTask.

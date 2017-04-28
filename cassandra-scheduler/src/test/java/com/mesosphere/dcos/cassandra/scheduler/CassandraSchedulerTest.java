@@ -84,7 +84,7 @@ public class CassandraSchedulerTest {
         beforeHelper("scheduler.yml");
     }
 
-    public void beforeHelper(String configName) throws Exception {
+    private void beforeHelper(String configName) throws Exception {
         MockitoAnnotations.initMocks(this);
         mesosConfig = Mockito.mock(MesosConfig.class);
 
@@ -303,7 +303,7 @@ public class CassandraSchedulerTest {
         assertTrue(!driver.isSuppressed());
     }
 
-    public void update() {
+    private void update() {
         scheduler.registered(driver, frameworkId, Protos.MasterInfo.getDefaultInstance());
         runReconcile(driver);
         final Phase currentPhase = planManager.getCurrentPhase().get();
@@ -384,7 +384,7 @@ public class CassandraSchedulerTest {
         assertTrue(currentBlock.isComplete());
     }
 
-    public static void launchAll(
+    private static void launchAll(
             final Collection<Protos.Offer.Operation> operations,
             final Scheduler scheduler,
             final SchedulerDriver driver) {
@@ -397,7 +397,7 @@ public class CassandraSchedulerTest {
                         Protos.TaskState.TASK_RUNNING, CassandraMode.NORMAL)));
     }
 
-    public void runReconcile(QueuedSchedulerDriver driver) {
+    private void runReconcile(QueuedSchedulerDriver driver) {
         Phase currentPhase = planManager.getCurrentPhase().get();
         assertTrue(currentPhase instanceof ReconciliationPhase);
         assertEquals(1, currentPhase.getBlocks().size());

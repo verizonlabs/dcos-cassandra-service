@@ -44,7 +44,7 @@ public class CassandraDaemonStatus extends CassandraTaskStatus {
      *
      * @param status The TaskStatus corresponding to the CassandraDaemon.
      */
-    protected CassandraDaemonStatus(final Protos.TaskStatus status) {
+    private CassandraDaemonStatus(final Protos.TaskStatus status) {
         super(status);
     }
 

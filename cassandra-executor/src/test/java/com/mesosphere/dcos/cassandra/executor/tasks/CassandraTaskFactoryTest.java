@@ -47,7 +47,8 @@ public class CassandraTaskFactoryTest {
     private CassandraState cassandraState;
     private static StateStore stateStore;
 
-    @Mock ExecutorDriver executorDriver;
+    @Mock
+    private ExecutorDriver executorDriver;
 
     @Before
     public void beforeEach() throws Exception {

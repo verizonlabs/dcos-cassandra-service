@@ -260,9 +260,9 @@ public class ExecutorConfig {
         return memoryMb;
     }
 
-    public String getHostPath(){ return  hostPath; }
+    private String getHostPath(){ return  hostPath; }
 
-    public String getContainerPath(){ return containerPath; }
+    private String getContainerPath(){ return containerPath; }
 
     @JsonProperty("jre_location")
     public String getJreLocationString() {

@@ -31,7 +31,7 @@ public class SnappyCompressionDriver implements CompressionDriver {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             SnappyCompressionDriver.class);
 
-    public static final int DEFAULT_BUFFER_SIZE = 4 * 1024; // 3KB
+    private static final int DEFAULT_BUFFER_SIZE = 4 * 1024; // 3KB
 
     public void compress(final InputStream source,
                          final OutputStream destination) {

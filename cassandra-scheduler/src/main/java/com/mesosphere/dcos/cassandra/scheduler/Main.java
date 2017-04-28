@@ -18,13 +18,13 @@ import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.mesos.scheduler.plan.api.PlanResource;
 import org.apache.mesos.state.api.StateResource;
 
-public class Main extends Application<MutableSchedulerConfiguration> {
+class Main extends Application<MutableSchedulerConfiguration> {
 
   public static void main(String[] args) throws Exception {
     new Main().run(args);
   }
 
-  public Main() {
+  private Main() {
     super();
   }
 

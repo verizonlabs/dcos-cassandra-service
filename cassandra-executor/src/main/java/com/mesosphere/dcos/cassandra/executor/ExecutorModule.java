@@ -28,7 +28,7 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class ExecutorModule extends AbstractModule {
 
-    final CassandraExecutorConfiguration configuration;
+    private final CassandraExecutorConfiguration configuration;
 
     /**
      * Creates a new ExecutorModule given the application configuration.

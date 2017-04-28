@@ -31,7 +31,7 @@ public class CleanupRequest implements ClusterTaskRequest {
     @JsonProperty("column_families")
     private final List<String> columnFamiles;
 
-    public CleanupRequest(
+    private CleanupRequest(
             final List<String> nodes,
             final List<String> keySpaces,
             final List<String> columnFamiles) {
@@ -44,15 +44,15 @@ public class CleanupRequest implements ClusterTaskRequest {
     }
 
 
-    public List<String> getColumnFamiles() {
+    private List<String> getColumnFamiles() {
         return columnFamiles;
     }
 
-    public List<String> getKeySpaces() {
+    private List<String> getKeySpaces() {
         return keySpaces;
     }
 
-    public List<String> getNodes() {
+    private List<String> getNodes() {
         return nodes;
     }
 

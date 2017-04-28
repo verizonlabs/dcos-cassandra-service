@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  */
-public class StorageUtil {
+class StorageUtil {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 

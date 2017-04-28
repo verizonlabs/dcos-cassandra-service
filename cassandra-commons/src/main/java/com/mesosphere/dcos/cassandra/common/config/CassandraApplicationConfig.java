@@ -56,8 +56,8 @@ public class CassandraApplicationConfig {
   public static final String ROLES_VALIDITY_IN_MS_KEY = "roles_validity_in_ms";
   public static final String PERMISSIONS_VALIDITY_IN_MS_KEY = "permissions_validity_in_ms";
   public static final String PARTITIONER_KEY = "partitioner";
-  public static final String DATA_FILE_DIRECTORIES_KEY = "data_file_directories";
-  public static final String COMMITLOG_DIRECTORY_KEY = "commitlog_directory";
+  private static final String DATA_FILE_DIRECTORIES_KEY = "data_file_directories";
+  private static final String COMMITLOG_DIRECTORY_KEY = "commitlog_directory";
   public static final String DISK_FAILURE_POLICY_KEY = "disk_failure_policy";
   public static final String COMMIT_FAILURE_POLICY_KEY = "commit_failure_policy";
   public static final String KEY_CACHE_SIZE_IN_MB_KEY = "key_cache_size_in_mb";
@@ -66,11 +66,11 @@ public class CassandraApplicationConfig {
   public static final String ROW_CACHE_SAVE_PERIOD_KEY = "row_cache_save_period";
   public static final String COUNTER_CACHE_SIZE_IN_MB_KEY = "counter_cache_size_in_mb";
   public static final String COUNTER_CACHE_SAVE_PERIOD_KEY = "counter_cache_save_period";
-  public static final String SAVED_CACHES_DIRECTORY_KEY = "saved_caches_directory";
+  private static final String SAVED_CACHES_DIRECTORY_KEY = "saved_caches_directory";
   public static final String COMMITLOG_SYNC_KEY = "commitlog_sync";
   public static final String COMMITLOG_SYNC_PERIOD_IN_MS_KEY = "commitlog_sync_period_in_ms";
   public static final String COMMITLOG_SEGMENT_SIZE_IN_MB_KEY = "commitlog_segment_size_in_mb";
-  public static final String SEED_PROVIDER_KEY = "seed_provider";
+  private static final String SEED_PROVIDER_KEY = "seed_provider";
   public static final String CONCURRENT_READS_KEY = "concurrent_reads";
   public static final String CONCURRENT_WRITES_KEY = "concurrent_writes";
   public static final String CONCURRENT_COUNTER_WRITES_KEY = "concurrent_counter_writes";
@@ -114,8 +114,8 @@ public class CassandraApplicationConfig {
   public static final String DYNAMIC_SNITCH_RESET_INTERVAL_IN_MS_KEY = "dynamic_snitch_reset_interval_in_ms";
   public static final String DYNAMIC_SNITCH_BADNESS_THRESHOLD_KEY = "dynamic_snitch_badness_threshold";
   public static final String REQUEST_SCHEDULER_KEY = "request_scheduler";
-  public static final String SERVER_ENCRYPTION_OPTIONS_KEY = "server_encryption_options";
-  public static final String CLIENT_ENCRYPTION_OPTIONS_KEY = "client_encryption_options";
+  private static final String SERVER_ENCRYPTION_OPTIONS_KEY = "server_encryption_options";
+  private static final String CLIENT_ENCRYPTION_OPTIONS_KEY = "client_encryption_options";
   public static final String INTERNODE_COMPRESSION_KEY = "internode_compression";
   public static final String INTER_DC_TCP_NODELAY_KEY = "inter_dc_tcp_nodelay";
   public static final String TRACETYPE_QUERY_TTL_KEY = "tracetype_query_ttl";
@@ -157,34 +157,34 @@ public class CassandraApplicationConfig {
   public static final String  BUFFER_POOL_USE_HEAP_IF_EXHAUSTED_KEY = "buffer_pool_use_heap_if_exhausted";
   public static final String  DISK_OPTIMIZATION_STRATEGY_KEY = "disk_optimization_strategy";
   public static final String  UNLOGGED_BATCH_ACROSS_PARTITIONS_WARN_THRESHOLD_KEY =  "unlogged_batch_across_partitions_warn_threshold";
-  public static final String  STREAMING_SOCKET_TIMOUT_IN_MS_KEY = "streaming_socket_timeout_in_ms";
+  private static final String  STREAMING_SOCKET_TIMOUT_IN_MS_KEY = "streaming_socket_timeout_in_ms";
   public static final String  ENABLE_SCRIPTED_USER_DEFINED_FUNCTIONS_KEY = "enable_scripted_user_defined_functions";
   public static final String  MAX_VALUE_SIZE_IN_MB_KEY = "max_value_size_in_mb";
 
-  public static final String DEFAULT_CLUSTER_NAME = "Test Cluster";
-  public static final int DEFAULT_NUM_TOKENS = 256;
-  public static final boolean DEFAULT_HINTED_HANDOFF_ENABLED = true;
-  public static final int DEFAULT_MAX_HINT_WINDOW_IN_MS = 10800000;
-  public static final int DEFAULT_HINTED_HANDOFF_THROTTLE_IN_KB = 1024;
-  public static final int DEFAULT_MAX_HINTS_DELIVERY_THREADS = 2;
-  public static final int DEFAULT_BATCHLOG_REPLAY_THROTTLE_IN_KB = 1024;
-  public static final String DEFAULT_AUTHENTICATOR = "AllowAllAuthenticator";
-  public static final String DEFAULT_AUTHORIZER = "AllowAllAuthorizer";
-  public static final String DEFAULT_ROLE_MANAGER = "CassandraRoleManager";
-  public static final int DEFAULT_ROLES_VALIDITY_IN_MS = 2000;
-  public static final int DEFAULT_PERMISSIONS_VALIDITY_IN_MS = 2000;
-  public static final String DEFAULT_PARTITIONER = "org.apache.cassandra.dht.Murmur3Partitioner";
-  public static final String DEFAULT_DISK_FAILURE_POLICY = "stop";
-  public static final String DEFAULT_COMMIT_FAILURE_POLICY = "stop";
-  public static final Integer DEFAULT_KEY_CACHE_SIZE_IN_MB = null;
-  public static final int DEFAULT_KEY_CACHE_SAVE_PERIOD = 14400;
-  public static final int DEFAULT_ROW_CACHE_SIZE_IN_MB = 0;
-  public static final int DEFAULT_ROW_CACHE_SAVE_PERIOD = 0;
-  public static final Integer DEFAULT_COUNTER_CACHE_SIZE_IN_MB = null;
-  public static final int DEFAULT_COUNTER_CACHE_SAVE_PERIOD = 7200;
-  public static final String DEFAULT_COMMITLOG_SYNC = "periodic";
-  public static final int DEFAULT_COMMITLOG_SYNC_PERIOD_IN_MS = 10000;
-  public static final int DEFAULT_COMMITLOG_SEGMENT_SIZE_IN_MB = 32;
+  private static final String DEFAULT_CLUSTER_NAME = "Test Cluster";
+  private static final int DEFAULT_NUM_TOKENS = 256;
+  private static final boolean DEFAULT_HINTED_HANDOFF_ENABLED = true;
+  private static final int DEFAULT_MAX_HINT_WINDOW_IN_MS = 10800000;
+  private static final int DEFAULT_HINTED_HANDOFF_THROTTLE_IN_KB = 1024;
+  private static final int DEFAULT_MAX_HINTS_DELIVERY_THREADS = 2;
+  private static final int DEFAULT_BATCHLOG_REPLAY_THROTTLE_IN_KB = 1024;
+  private static final String DEFAULT_AUTHENTICATOR = "AllowAllAuthenticator";
+  private static final String DEFAULT_AUTHORIZER = "AllowAllAuthorizer";
+  private static final String DEFAULT_ROLE_MANAGER = "CassandraRoleManager";
+  private static final int DEFAULT_ROLES_VALIDITY_IN_MS = 2000;
+  private static final int DEFAULT_PERMISSIONS_VALIDITY_IN_MS = 2000;
+  private static final String DEFAULT_PARTITIONER = "org.apache.cassandra.dht.Murmur3Partitioner";
+  private static final String DEFAULT_DISK_FAILURE_POLICY = "stop";
+  private static final String DEFAULT_COMMIT_FAILURE_POLICY = "stop";
+  private static final Integer DEFAULT_KEY_CACHE_SIZE_IN_MB = null;
+  private static final int DEFAULT_KEY_CACHE_SAVE_PERIOD = 14400;
+  private static final int DEFAULT_ROW_CACHE_SIZE_IN_MB = 0;
+  private static final int DEFAULT_ROW_CACHE_SAVE_PERIOD = 0;
+  private static final Integer DEFAULT_COUNTER_CACHE_SIZE_IN_MB = null;
+  private static final int DEFAULT_COUNTER_CACHE_SAVE_PERIOD = 7200;
+  private static final String DEFAULT_COMMITLOG_SYNC = "periodic";
+  private static final int DEFAULT_COMMITLOG_SYNC_PERIOD_IN_MS = 10000;
+  private static final int DEFAULT_COMMITLOG_SEGMENT_SIZE_IN_MB = 32;
   public static final List<Map<String, Object>> DEFAULT_SEED_PROVIDER =
     ImmutableList.<Map<String, Object>>of(
       ImmutableMap.<String, Object>of(
@@ -194,57 +194,57 @@ public class CassandraApplicationConfig {
           ("seeds", "127.0.0.1"))
       )
     );
-  public static final String DEFAULT_SEEDS_URL = "https://cassandara.marathon.mesos:9000";
-  public static final int DEFAULT_CONCURRENT_READS = 32;
-  public static final int DEFAULT_CONCURRENT_WRITES = 32;
-  public static final int DEFAULT_CONCURRENT_COUNTER_WRITES = 32;
-  public static final String DEFAULT_MEMTABLE_ALLOCATION_TYPE = "heap_buffers";
-  public static final Integer DEFAULT_INDEX_SUMMARY_CAPACITY_IN_MB = null;
-  public static final int DEFAULT_INDEX_SUMMARY_RESIZE_INTERVAL_IN_MINUTES = 60;
-  public static final boolean DEFAULT_TRICKLE_FSYNC = false;
-  public static final int DEFAULT_TRICKLE_FSYNC_INTERVAL_IN_KB = 10240;
-  public static final int DEFAULT_STORAGE_PORT = 7000;
-  public static final int DEFAULT_SSL_STORAGE_PORT = 7001;
-  public static final String DEFAULT_LISTEN_ADDRESS = "localhost";
-  public static final boolean DEFAULT_START_NATIVE_TRANSPORT = true;
-  public static final int DEFAULT_NATIVE_TRANSPORT_PORT = 9042;
-  public static final boolean DEFAULT_START_RPC = false;
-  public static final String DEFAULT_RPC_ADDRESS = "localhost";
-  public static final int DEFAULT_RPC_PORT = 9160;
-  public static final boolean DEFAULT_RPC_KEEPALIVE = true;
-  public static final String DEFAULT_RPC_SERVER_TYPE = "sync";
-  public static final int DEFAULT_THRIFT_FRAMED_TRANSPORT_SIZE_IN_MB = 15;
-  public static final boolean DEFAULT_INCREMENTAL_BACKUPS = false;
-  public static final boolean DEFAULT_SNAPSHOT_BEFORE_COMPACTION = false;
-  public static final boolean DEFAULT_AUTO_SNAPSHOT = true;
-  public static final int DEFAULT_TOMBSTONE_WARN_THRESHOLD = 1000;
-  public static final int DEFAULT_TOMBSTONE_FAILURE_THRESHOLD = 100000;
-  public static final int DEFAULT_COLUMN_INDEX_SIZE_IN_KB = 64;
-  public static final int DEFAULT_BATCH_SIZE_WARN_THRESHOLD_IN_KB = 5;
-  public static final int DEFAULT_BATCH_SIZE_FAIL_THRESHOLD_IN_KB = 50;
-  public static final int DEFAULT_COMPACTION_THROUGHPUT_MB_PER_SEC = 16;
-  public static final int DEFAULT_COMPACTION_LARGE_PARTITION_WARNING_THRESHOLD_MB = 100;
-  public static final int DEFAULT_SSTABLE_PREEMPTIVE_OPEN_INTERVAL_IN_MB = 50;
-  public static final int DEFAULT_READ_REQUEST_TIMEOUT_IN_MS = 5000;
-  public static final int DEFAULT_RANGE_REQUEST_TIMEOUT_IN_MS = 10000;
-  public static final int DEFAULT_WRITE_REQUEST_TIMEOUT_IN_MS = 2000;
-  public static final int DEFAULT_COUNTER_WRITE_REQUEST_TIMEOUT_IN_MS = 5000;
-  public static final int DEFAULT_CAS_CONTENTION_TIMEOUT_IN_MS = 1000;
-  public static final int DEFAULT_TRUNCATE_REQUEST_TIMEOUT_IN_MS = 60000;
-  public static final int DEFAULT_REQUEST_TIMEOUT_IN_MS = 10000;
-  public static final boolean DEFAULT_CROSS_NODE_TIMEOUT = false;
-  public static final String DEFAULT_ENDPOINT_SNITCH = "GossipingPropertyFileSnitch";
-  public static final int DEFAULT_DYNAMIC_SNITCH_UPDATE_INTERVAL_IN_MS = 100;
-  public static final int DEFAULT_DYNAMIC_SNITCH_RESET_INTERVAL_IN_MS = 600000;
-  public static final double DEFAULT_DYNAMIC_SNITCH_BADNESS_THRESHOLD = 0.1;
-  public static final String DEFAULT_REQUEST_SCHEDULER = "org.apache.cassandra.scheduler.NoScheduler";
-  public static final String DEFAULT_INTERNODE_COMPRESSION = "all";
-  public static final boolean DEFAULT_INTER_DC_TCP_NODELAY = false;
-  public static final int DEFAULT_TRACETYPE_QUERY_TTL = 86400;
-  public static final int DEFAULT_TRACETYPE_REPAIR_TTL = 604800;
-  public static final boolean DEFAULT_ENABLE_USER_DEFINED_FUNCTIONS = false;
-  public static final int DEFAULT_WINDOWS_TIMER_INTERVAL = 1;
-  public static final Map<String, Object> DEFAULT_SERVER_ENCRYPTION_OPTIONS =
+  private static final String DEFAULT_SEEDS_URL = "https://cassandara.marathon.mesos:9000";
+  private static final int DEFAULT_CONCURRENT_READS = 32;
+  private static final int DEFAULT_CONCURRENT_WRITES = 32;
+  private static final int DEFAULT_CONCURRENT_COUNTER_WRITES = 32;
+  private static final String DEFAULT_MEMTABLE_ALLOCATION_TYPE = "heap_buffers";
+  private static final Integer DEFAULT_INDEX_SUMMARY_CAPACITY_IN_MB = null;
+  private static final int DEFAULT_INDEX_SUMMARY_RESIZE_INTERVAL_IN_MINUTES = 60;
+  private static final boolean DEFAULT_TRICKLE_FSYNC = false;
+  private static final int DEFAULT_TRICKLE_FSYNC_INTERVAL_IN_KB = 10240;
+  private static final int DEFAULT_STORAGE_PORT = 7000;
+  private static final int DEFAULT_SSL_STORAGE_PORT = 7001;
+  private static final String DEFAULT_LISTEN_ADDRESS = "localhost";
+  private static final boolean DEFAULT_START_NATIVE_TRANSPORT = true;
+  private static final int DEFAULT_NATIVE_TRANSPORT_PORT = 9042;
+  private static final boolean DEFAULT_START_RPC = false;
+  private static final String DEFAULT_RPC_ADDRESS = "localhost";
+  private static final int DEFAULT_RPC_PORT = 9160;
+  private static final boolean DEFAULT_RPC_KEEPALIVE = true;
+  private static final String DEFAULT_RPC_SERVER_TYPE = "sync";
+  private static final int DEFAULT_THRIFT_FRAMED_TRANSPORT_SIZE_IN_MB = 15;
+  private static final boolean DEFAULT_INCREMENTAL_BACKUPS = false;
+  private static final boolean DEFAULT_SNAPSHOT_BEFORE_COMPACTION = false;
+  private static final boolean DEFAULT_AUTO_SNAPSHOT = true;
+  private static final int DEFAULT_TOMBSTONE_WARN_THRESHOLD = 1000;
+  private static final int DEFAULT_TOMBSTONE_FAILURE_THRESHOLD = 100000;
+  private static final int DEFAULT_COLUMN_INDEX_SIZE_IN_KB = 64;
+  private static final int DEFAULT_BATCH_SIZE_WARN_THRESHOLD_IN_KB = 5;
+  private static final int DEFAULT_BATCH_SIZE_FAIL_THRESHOLD_IN_KB = 50;
+  private static final int DEFAULT_COMPACTION_THROUGHPUT_MB_PER_SEC = 16;
+  private static final int DEFAULT_COMPACTION_LARGE_PARTITION_WARNING_THRESHOLD_MB = 100;
+  private static final int DEFAULT_SSTABLE_PREEMPTIVE_OPEN_INTERVAL_IN_MB = 50;
+  private static final int DEFAULT_READ_REQUEST_TIMEOUT_IN_MS = 5000;
+  private static final int DEFAULT_RANGE_REQUEST_TIMEOUT_IN_MS = 10000;
+  private static final int DEFAULT_WRITE_REQUEST_TIMEOUT_IN_MS = 2000;
+  private static final int DEFAULT_COUNTER_WRITE_REQUEST_TIMEOUT_IN_MS = 5000;
+  private static final int DEFAULT_CAS_CONTENTION_TIMEOUT_IN_MS = 1000;
+  private static final int DEFAULT_TRUNCATE_REQUEST_TIMEOUT_IN_MS = 60000;
+  private static final int DEFAULT_REQUEST_TIMEOUT_IN_MS = 10000;
+  private static final boolean DEFAULT_CROSS_NODE_TIMEOUT = false;
+  private static final String DEFAULT_ENDPOINT_SNITCH = "GossipingPropertyFileSnitch";
+  private static final int DEFAULT_DYNAMIC_SNITCH_UPDATE_INTERVAL_IN_MS = 100;
+  private static final int DEFAULT_DYNAMIC_SNITCH_RESET_INTERVAL_IN_MS = 600000;
+  private static final double DEFAULT_DYNAMIC_SNITCH_BADNESS_THRESHOLD = 0.1;
+  private static final String DEFAULT_REQUEST_SCHEDULER = "org.apache.cassandra.scheduler.NoScheduler";
+  private static final String DEFAULT_INTERNODE_COMPRESSION = "all";
+  private static final boolean DEFAULT_INTER_DC_TCP_NODELAY = false;
+  private static final int DEFAULT_TRACETYPE_QUERY_TTL = 86400;
+  private static final int DEFAULT_TRACETYPE_REPAIR_TTL = 604800;
+  private static final boolean DEFAULT_ENABLE_USER_DEFINED_FUNCTIONS = false;
+  private static final int DEFAULT_WINDOWS_TIMER_INTERVAL = 1;
+  private static final Map<String, Object> DEFAULT_SERVER_ENCRYPTION_OPTIONS =
     ImmutableMap.<String, Object>of(
       "internode_encryption", "none",
       "keystore", "conf/.keystore",
@@ -252,48 +252,48 @@ public class CassandraApplicationConfig {
       "truststore", "conf/.truststore",
       "truststore_password", "cassandra");
 
-  public static final Map<String, Object> DEFAULT_CLIENT_ENCRYPTION_OPTIONS =
+  private static final Map<String, Object> DEFAULT_CLIENT_ENCRYPTION_OPTIONS =
     ImmutableMap.<String, Object>of(
       "enabled", false,
       "optional", false,
       "keystore", "conf/.keystore",
       "keystore_password", "cassandra");
-  public static final int DEFAULT_MAX_HINTS_FILE_SIZE_IN_MB = 128;
-  public static final int DEFAULT_HINTS_FLUSH_PERIOD_IN_MS = 10000;
-  public static final int DEFAULT_CONCURRENT_MATERIALIZED_VIEW_WRITES = 32;
-  public static final String DEFAULT_INTERNODE_AUTHENTICATOR = "org.apache.cassandra.auth.AllowAllInternodeAuthenticator";
-  public static final int DEFAULT_COMMITLOG_TOTAL_SPACE_IN_MB = 8192;
+  private static final int DEFAULT_MAX_HINTS_FILE_SIZE_IN_MB = 128;
+  private static final int DEFAULT_HINTS_FLUSH_PERIOD_IN_MS = 10000;
+  private static final int DEFAULT_CONCURRENT_MATERIALIZED_VIEW_WRITES = 32;
+  private static final String DEFAULT_INTERNODE_AUTHENTICATOR = "org.apache.cassandra.auth.AllowAllInternodeAuthenticator";
+  private static final int DEFAULT_COMMITLOG_TOTAL_SPACE_IN_MB = 8192;
 
-  public static final int DEFAULT_ROLES_UPDATE_INTERVAL_IN_MS = 1000;
-  public static final int DEFAULT_PERMISSIONS_UPDATE_INTERVAL_IN_MS = 1000;
-  public static final int DEFAULT_KEY_CACHE_KEYS_TO_SAVE = 100;
-  public static final int DEFAULT_ROW_CACHE_KEYS_TO_SAVE = 100;
-  public static final int DEFAULT_COUNTER_CACHE_KEYS_TO_SAVE = 100;
-  public static final int DEFAULT_FILE_CACHE_SIZE_IN_MB = 512;
-  public static final int DEFAULT_MEMTABLE_HEAP_SPACE_IN_MB = 2048;
-  public static final int DEFAULT_MEMTABLE_OFFHEAP_SPACE_IN_MB = 2048;
-  public static final double DEFAULT_MEMTABLE_CLEANUP_THRESHOLD = 0.11;
-  public static final int DEFAULT_MEMTABLE_FLUSH_WRITERS = 8;
-  public static final boolean DEFAULT_LISTEN_ON_BROADCAST_ADDRESS = false;
-  public static final int DEFAULT_NATIVE_TRANSPORT_MAX_THREADS = 128;
-  public static final int DEFAULT_NATIVE_TRANSPORT_MAX_FRAME_SIZE_IN_MB = 256;
-  public static final int DEFAULT_NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS = -1;
-  public static final int DEFAULT_NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS_PER_IP = -1;
-  public static final int DEFAULT_RPC_MIN_THREADS = 16;
-  public static final int DEFAULT_RPC_MAX_THREADS = 2048;
-  public static final int DEFAULT_RPC_SEND_BUFF_SIZE_IN_BYTES = 0;
-  public static final int DEFAULT_RPC_RECV_BUFF_SIZE_IN_BYTES = 0;
-  public static final int DEFAULT_CONCURRENT_COMPACTORS = 1;
-  public static final int DEFAULT_STREAM_THROUGHPUT_OUTBOUND_MEGABITS_PER_SEC = 200;
-  public static final int DEFAULT_INTER_DC_STREAM_THROUGHPUT_OUTBOUND_MEGABITS_PER_SEC = 200;
-  public static final int DEFAULT_STREAMING_SOCKET_TIMEOUT_IN_MS = 86400000;
-  public static final int DEFAULT_PHI_CONVICT_THRESHOLD = 8;
-  public static final int DEFAULT_GC_WARN_THRESHOLD_IN_MS = 1000;
-  public static final boolean DEFAULT_BUFFER_POOL_USE_HEAP_IF_EXHAUSTED = true;
-  public static final String DEFAULT_DISK_OPTIMIZATION_STRATEGY = "ssd";
-  public static final int DEFAULT_UNLOGGED_BATCH_ACROSS_PARTITIONS_WARN_THRESHOLD =  10;
-  public static final boolean  DEFAULT_ENABLE_SCRIPTED_USER_DEFINED_FUNCTIONS = false;
-  public static final int  DEFAULT_MAX_VALUE_SIZE_IN_MB = 256;
+  private static final int DEFAULT_ROLES_UPDATE_INTERVAL_IN_MS = 1000;
+  private static final int DEFAULT_PERMISSIONS_UPDATE_INTERVAL_IN_MS = 1000;
+  private static final int DEFAULT_KEY_CACHE_KEYS_TO_SAVE = 100;
+  private static final int DEFAULT_ROW_CACHE_KEYS_TO_SAVE = 100;
+  private static final int DEFAULT_COUNTER_CACHE_KEYS_TO_SAVE = 100;
+  private static final int DEFAULT_FILE_CACHE_SIZE_IN_MB = 512;
+  private static final int DEFAULT_MEMTABLE_HEAP_SPACE_IN_MB = 2048;
+  private static final int DEFAULT_MEMTABLE_OFFHEAP_SPACE_IN_MB = 2048;
+  private static final double DEFAULT_MEMTABLE_CLEANUP_THRESHOLD = 0.11;
+  private static final int DEFAULT_MEMTABLE_FLUSH_WRITERS = 8;
+  private static final boolean DEFAULT_LISTEN_ON_BROADCAST_ADDRESS = false;
+  private static final int DEFAULT_NATIVE_TRANSPORT_MAX_THREADS = 128;
+  private static final int DEFAULT_NATIVE_TRANSPORT_MAX_FRAME_SIZE_IN_MB = 256;
+  private static final int DEFAULT_NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS = -1;
+  private static final int DEFAULT_NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS_PER_IP = -1;
+  private static final int DEFAULT_RPC_MIN_THREADS = 16;
+  private static final int DEFAULT_RPC_MAX_THREADS = 2048;
+  private static final int DEFAULT_RPC_SEND_BUFF_SIZE_IN_BYTES = 0;
+  private static final int DEFAULT_RPC_RECV_BUFF_SIZE_IN_BYTES = 0;
+  private static final int DEFAULT_CONCURRENT_COMPACTORS = 1;
+  private static final int DEFAULT_STREAM_THROUGHPUT_OUTBOUND_MEGABITS_PER_SEC = 200;
+  private static final int DEFAULT_INTER_DC_STREAM_THROUGHPUT_OUTBOUND_MEGABITS_PER_SEC = 200;
+  private static final int DEFAULT_STREAMING_SOCKET_TIMEOUT_IN_MS = 86400000;
+  private static final int DEFAULT_PHI_CONVICT_THRESHOLD = 8;
+  private static final int DEFAULT_GC_WARN_THRESHOLD_IN_MS = 1000;
+  private static final boolean DEFAULT_BUFFER_POOL_USE_HEAP_IF_EXHAUSTED = true;
+  private static final String DEFAULT_DISK_OPTIMIZATION_STRATEGY = "ssd";
+  private static final int DEFAULT_UNLOGGED_BATCH_ACROSS_PARTITIONS_WARN_THRESHOLD =  10;
+  private static final boolean  DEFAULT_ENABLE_SCRIPTED_USER_DEFINED_FUNCTIONS = false;
+  private static final int  DEFAULT_MAX_VALUE_SIZE_IN_MB = 256;
 
   /**
    * Parses a configuration from bytes.
@@ -303,7 +303,7 @@ public class CassandraApplicationConfig {
    * @return A CassandraApplicationConfig parsed from bytes.
    * @throws IOException if a configuration can not be parsed from bytes.
    */
-  public static CassandraApplicationConfig parse(byte[] bytes)
+  private static CassandraApplicationConfig parse(byte[] bytes)
     throws IOException {
     return MAPPER.readValue(bytes, CassandraApplicationConfig.class);
   }
@@ -350,7 +350,7 @@ public class CassandraApplicationConfig {
    * @return The A DcosSeedProvider configuration that will retrieve its seeds
    * from the host indicated by url.
    */
-  public static List<Map<String, Object>> createDcosSeedProvider(String url) {
+  private static List<Map<String, Object>> createDcosSeedProvider(String url) {
     return ImmutableList.<Map<String, Object>>of(
       ImmutableMap.<String, Object>of(
         "class_name",
@@ -362,120 +362,120 @@ public class CassandraApplicationConfig {
   }
 
   @JsonCreator
-  public static CassandraApplicationConfig create(
-    @JsonProperty(CLUSTER_NAME_KEY) final String clusterName,
-    @JsonProperty(NUM_TOKENS_KEY) final int numTokens,
-    @JsonProperty(HINTED_HANDOFF_ENABLED_KEY) final boolean hintedHandoffEnabled,
-    @JsonProperty(MAX_HINT_WINDOW_IN_MS_KEY) final int maxHintWindowInMs,
-    @JsonProperty(HINTED_HANDOFF_THROTTLE_IN_KB_KEY) final int hintedHandoffThrottleInKb,
-    @JsonProperty(MAX_HINTS_DELIVERY_THREADS_KEY) final int
-      maxHintsDeliveryThreads,
-    @JsonProperty(BATCHLOG_REPLAY_THROTTLE_IN_KB_KEY) final int
-      batchlogReplayThrottleInKb,
-    @JsonProperty(AUTHENTICATOR_KEY) final String authenticator,
-    @JsonProperty(AUTHORIZER_KEY) final String authorizer,
-    @JsonProperty(ROLE_MANAGER_KEY) final String roleManager,
-    @JsonProperty(ROLES_VALIDITY_IN_MS_KEY) final int rolesValidityInMs,
-    @JsonProperty(PERMISSIONS_VALIDITY_IN_MS_KEY) final int permissionsValidityInMs,
-    @JsonProperty(PARTITIONER_KEY) final String partitioner,
-    @JsonProperty(DISK_FAILURE_POLICY_KEY) final String diskFailurePolicy,
-    @JsonProperty(COMMIT_FAILURE_POLICY_KEY) final String commitFailurePolicy,
-    @JsonProperty(KEY_CACHE_SIZE_IN_MB_KEY) final Integer keyCacheSizeInMb,
-    @JsonProperty(KEY_CACHE_SAVE_PERIOD_KEY) final int keyCacheSavePeriod,
-    @JsonProperty(ROW_CACHE_SIZE_IN_MB_KEY) final int rowCacheSizeInMb,
-    @JsonProperty(ROW_CACHE_SAVE_PERIOD_KEY) final int rowCacheSavePeriod,
-    @JsonProperty(COUNTER_CACHE_SIZE_IN_MB_KEY) final Integer counterCacheSizeInMb,
-    @JsonProperty(COUNTER_CACHE_SAVE_PERIOD_KEY) final int counterCacheSavePeriod,
-    @JsonProperty(COMMITLOG_SYNC_KEY) final String commitlogSync,
-    @JsonProperty(COMMITLOG_SYNC_PERIOD_IN_MS_KEY) final int commitlogSyncPeriodInMs,
-    @JsonProperty(COMMITLOG_SEGMENT_SIZE_IN_MB_KEY) final int commitlogSegmentSizeInMb,
-    @JsonProperty(SEEDS_URL_KEY) final String seedsUrl,
-    @JsonProperty(CONCURRENT_READS_KEY) final int concurrentReads,
-    @JsonProperty(CONCURRENT_WRITES_KEY) final int concurrentWrites,
-    @JsonProperty(CONCURRENT_COUNTER_WRITES_KEY) final int concurrentCounterWrites,
-    @JsonProperty(MEMTABLE_ALLOCATION_TYPE_KEY) final String memtableAllocationType,
-    @JsonProperty(INDEX_SUMMARY_CAPACITY_IN_MB_KEY) final Integer indexSummaryCapacityInMb,
-    @JsonProperty(INDEX_SUMMARY_RESIZE_INTERVAL_IN_MINUTES_KEY) final int indexSummaryResizeIntervalInMinutes,
-    @JsonProperty(TRICKLE_FSYNC_KEY) final boolean trickleFsync,
-    @JsonProperty(TRICKLE_FSYNC_INTERVAL_IN_KB_KEY) final int trickleFsyncIntervalInKb,
-    @JsonProperty(STORAGE_PORT_KEY) final int storagePort,
-    @JsonProperty(SSL_STORAGE_PORT_KEY) final int sslStoragePort,
-    @JsonProperty(LISTEN_ADDRESS_KEY) final String listenAddress,
-    @JsonProperty(START_NATIVE_TRANSPORT_KEY) final boolean startNativeTransport,
-    @JsonProperty(NATIVE_TRANSPORT_PORT_KEY) final int nativeTransportPort,
-    @JsonProperty(START_RPC_KEY) final boolean startRpc,
-    @JsonProperty(RPC_ADDRESS_KEY) final String rpcAddress,
-    @JsonProperty(RPC_PORT_KEY) final int rpcPort,
-    @JsonProperty(RPC_KEEPALIVE_KEY) final boolean rpcKeepalive,
-    @JsonProperty(RPC_SERVER_TYPE_KEY) final String rpcServerType,
-    @JsonProperty(THRIFT_FRAMED_TRANSPORT_SIZE_IN_MB_KEY) final int thriftFramedTransportSizeInMb,
-    @JsonProperty(INCREMENTAL_BACKUPS_KEY) final boolean incrementalBackups,
-    @JsonProperty(SNAPSHOT_BEFORE_COMPACTION_KEY) final boolean snapshotBeforeCompaction,
-    @JsonProperty(AUTO_SNAPSHOT_KEY) final boolean autoSnapshot,
-    @JsonProperty(TOMBSTONE_WARN_THRESHOLD_KEY) final int tombstoneWarnThreshold,
-    @JsonProperty(TOMBSTONE_FAILURE_THRESHOLD_KEY) final int tombstoneFailureThreshold,
-    @JsonProperty(COLUMN_INDEX_SIZE_IN_KB_KEY) final int columnIndexSizeInKb,
-    @JsonProperty(BATCH_SIZE_WARN_THRESHOLD_IN_KB_KEY) final int batchSizeWarnThresholdInKb,
-    @JsonProperty(BATCH_SIZE_FAIL_THRESHOLD_IN_KB_KEY) final int batchSizeFailThresholdInKb,
-    @JsonProperty(COMPACTION_THROUGHPUT_MB_PER_SEC_KEY) final int compactionThroughputMbPerSec,
-    @JsonProperty
-      (COMPACTION_LARGE_PARTITION_WARNING_THRESHOLD_MB_KEY) final int compactionLargePartitionWarningThresholdMb,
-    @JsonProperty(SSTABLE_PREEMPTIVE_OPEN_INTERVAL_IN_MB_KEY) final int sstablePreemptiveOpenIntervalInMb,
-    @JsonProperty(READ_REQUEST_TIMEOUT_IN_MS_KEY) final int readRequestTimeoutInMs,
-    @JsonProperty(RANGE_REQUEST_TIMEOUT_IN_MS_KEY) final int rangeRequestTimeoutInMs,
-    @JsonProperty(WRITE_REQUEST_TIMEOUT_IN_MS_KEY) final int writeRequestTimeoutInMs,
-    @JsonProperty(COUNTER_WRITE_REQUEST_TIMEOUT_IN_MS_KEY) final int counterWriteRequestTimeoutInMs,
-    @JsonProperty(CAS_CONTENTION_TIMEOUT_IN_MS_KEY) final int casContentionTimeoutInMs,
-    @JsonProperty(TRUNCATE_REQUEST_TIMEOUT_IN_MS_KEY) final int truncateRequestTimeoutInMs,
-    @JsonProperty(REQUEST_TIMEOUT_IN_MS_KEY) final int requestTimeoutInMs,
-    @JsonProperty(CROSS_NODE_TIMEOUT_KEY) final boolean crossNodeTimeout,
-    @JsonProperty(ENDPOINT_SNITCH_KEY) final String endpointSnitch,
-    @JsonProperty(DYNAMIC_SNITCH_UPDATE_INTERVAL_IN_MS_KEY) final int dynamicSnitchUpdateIntervalInMs,
-    @JsonProperty(DYNAMIC_SNITCH_RESET_INTERVAL_IN_MS_KEY) final int dynamicSnitchResetIntervalInMs,
-    @JsonProperty(DYNAMIC_SNITCH_BADNESS_THRESHOLD_KEY) final double dynamicSnitchBadnessThreshold,
-    @JsonProperty(REQUEST_SCHEDULER_KEY) final String requestScheduler,
-    @JsonProperty(INTERNODE_COMPRESSION_KEY) final String internodeCompression,
-    @JsonProperty(INTER_DC_TCP_NODELAY_KEY) final boolean interDcTcpNodelay,
-    @JsonProperty(TRACETYPE_QUERY_TTL_KEY) final int tracetypeQueryTtl,
-    @JsonProperty(TRACETYPE_REPAIR_TTL_KEY) final int tracetypeRepairTtl,
-    @JsonProperty(ENABLE_USER_DEFINED_FUNCTIONS_KEY) final boolean enableUserDefinedFunctions,
-    @JsonProperty(WINDOWS_TIMER_INTERVAL_KEY) final int windowsTimerInterval,
-    @JsonProperty(INTERNODE_AUTHENTICATOR_KEY) final String internodeAuthenticator,
-    @JsonProperty(MAX_HINTS_FILE_SIZE_KEY) final int maxHintsFileSizeInMb,
-    @JsonProperty(HINTS_FLUSH_PERIOD_KEY) final int hintsFlushPeriodInMs,
-    @JsonProperty(CONCURRENT_MATERIALIZED_VIEWS) final int concurrentMaterializedViewWrites,
-    @JsonProperty(COMMITLOG_TOTAL_SPACE_IN_MB_KEY) final int commitlogTotalSpaceInMb,
-    @JsonProperty(ROLES_UPDATE_INTERVAL_IN_MS_KEY) final int rolesUpdateIntervalInMs,
-    @JsonProperty(PERMISSIONS_UPDATE_INTERVAL_IN_MS_KEY) final int permissionsUpdateIntervalInMs,
-    @JsonProperty(KEY_CACHE_KEYS_TO_SAVE_KEY) final int keyCacheKeysToSave,
-    @JsonProperty(ROW_CACHE_KEYS_TO_SAVE_KEY) final int rowCacheKeysToSave,
-    @JsonProperty(COUNTER_CACHE_KEYS_TO_SAVE_KEY) final int counterCacheKeysToSave,
-    @JsonProperty(FILE_CACHE_SIZE_IN_MB_KEY) final int fileCacheSizeInMb,
-    @JsonProperty(MEMTABLE_HEAP_SPACE_IN_MB_KEY) final int memtableHeapSpaceInMb,
-    @JsonProperty(MEMTABLE_OFFHEAP_SPACE_IN_MB_KEY) final int memtableOffheapSpaceInMb,
-    @JsonProperty(MEMTABLE_CLEANUP_THRESHOLD_KEY) final double metableCleanupThreshold,
-    @JsonProperty(MEMTABLE_FLUSH_WRITERS_KEY) final int memtableFlushWritersKey,
-    @JsonProperty(LISTEN_ON_BROADCAST_ADDRESS_KEY) final boolean listenOnBroadcastAddress,
-    @JsonProperty(NATIVE_TRANSPORT_MAX_THREADS_KEY) final int nativeTransportMaxThreads,
-    @JsonProperty(NATIVE_TRANSPORT_MAX_FRAME_SIZE_IN_MB_KEY) final int nativeTransportMaxFrameSizeInMb,
-    @JsonProperty(NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS_KEY) final int nativeTransportMaxConcurrentConnections,
-    @JsonProperty(NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS_PER_IP_KEY) final int nativeTransportMaxConcurrentConnectionsPerIpKey,
-    @JsonProperty(RPC_MIN_THREADS_KEY) final int rpcMinThreads,
-    @JsonProperty(RPC_MAX_THREADS_KEY) final int rpcMaxThreads,
-    @JsonProperty(RPC_SEND_BUFF_SIZE_IN_BYTES_KEY) final int rpcSendBuffSizeInBytes,
-    @JsonProperty(RPC_RECV_BUFF_SIZE_IN_BYTES_KEY) final int rpcRecvBuffSizeInBytes,
-    @JsonProperty(CONCURRENT_COMPACTORS_KEY) final int concurrentCompactors,
-    @JsonProperty(STREAM_THROUGHPUT_OUTBOUND_MEGABITS_PER_SEC_KEY) final int streamThroughputOutboundMegabitsPerSec,
-    @JsonProperty(INTER_DC_STREAM_THROUGHPUT_OUTBOUND_MEGABITS_PER_SEC_KEY) final int interDcStreamThroughputOutboundMegabitsPerSec,
-    @JsonProperty(STREAMING_SOCKET_TIMEOUT_IN_MS_KEY) final int streamingSocketTimeoutInMs,
-    @JsonProperty(PHI_CONVICT_THRESHOLD_KEY) final int phiConvictThreshold,
-    @JsonProperty(GC_WARN_THRESHOLD_IN_MS_KEY) final int gcWarnThresholdInMs,
-    @JsonProperty(BUFFER_POOL_USE_HEAP_IF_EXHAUSTED_KEY) final boolean bufferPoolUseHeapIfExhausted,
-    @JsonProperty(DISK_OPTIMIZATION_STRATEGY_KEY) final String diskOptimizationStrategy,
-    @JsonProperty(UNLOGGED_BATCH_ACROSS_PARTITIONS_WARN_THRESHOLD_KEY) final int unloggedBatchAcrossPartitionsWarnThreshold,
-    @JsonProperty(ENABLE_SCRIPTED_USER_DEFINED_FUNCTIONS_KEY) final boolean enableScriptedUserDefinedFunctions,
-    @JsonProperty(MAX_VALUE_SIZE_IN_MB_KEY) final int maxValueSizeInMb
-    ) {
+  private static CassandraApplicationConfig create(
+          @JsonProperty(CLUSTER_NAME_KEY) final String clusterName,
+          @JsonProperty(NUM_TOKENS_KEY) final int numTokens,
+          @JsonProperty(HINTED_HANDOFF_ENABLED_KEY) final boolean hintedHandoffEnabled,
+          @JsonProperty(MAX_HINT_WINDOW_IN_MS_KEY) final int maxHintWindowInMs,
+          @JsonProperty(HINTED_HANDOFF_THROTTLE_IN_KB_KEY) final int hintedHandoffThrottleInKb,
+          @JsonProperty(MAX_HINTS_DELIVERY_THREADS_KEY) final int
+                  maxHintsDeliveryThreads,
+          @JsonProperty(BATCHLOG_REPLAY_THROTTLE_IN_KB_KEY) final int
+                  batchlogReplayThrottleInKb,
+          @JsonProperty(AUTHENTICATOR_KEY) final String authenticator,
+          @JsonProperty(AUTHORIZER_KEY) final String authorizer,
+          @JsonProperty(ROLE_MANAGER_KEY) final String roleManager,
+          @JsonProperty(ROLES_VALIDITY_IN_MS_KEY) final int rolesValidityInMs,
+          @JsonProperty(PERMISSIONS_VALIDITY_IN_MS_KEY) final int permissionsValidityInMs,
+          @JsonProperty(PARTITIONER_KEY) final String partitioner,
+          @JsonProperty(DISK_FAILURE_POLICY_KEY) final String diskFailurePolicy,
+          @JsonProperty(COMMIT_FAILURE_POLICY_KEY) final String commitFailurePolicy,
+          @JsonProperty(KEY_CACHE_SIZE_IN_MB_KEY) final Integer keyCacheSizeInMb,
+          @JsonProperty(KEY_CACHE_SAVE_PERIOD_KEY) final int keyCacheSavePeriod,
+          @JsonProperty(ROW_CACHE_SIZE_IN_MB_KEY) final int rowCacheSizeInMb,
+          @JsonProperty(ROW_CACHE_SAVE_PERIOD_KEY) final int rowCacheSavePeriod,
+          @JsonProperty(COUNTER_CACHE_SIZE_IN_MB_KEY) final Integer counterCacheSizeInMb,
+          @JsonProperty(COUNTER_CACHE_SAVE_PERIOD_KEY) final int counterCacheSavePeriod,
+          @JsonProperty(COMMITLOG_SYNC_KEY) final String commitlogSync,
+          @JsonProperty(COMMITLOG_SYNC_PERIOD_IN_MS_KEY) final int commitlogSyncPeriodInMs,
+          @JsonProperty(COMMITLOG_SEGMENT_SIZE_IN_MB_KEY) final int commitlogSegmentSizeInMb,
+          @JsonProperty(SEEDS_URL_KEY) final String seedsUrl,
+          @JsonProperty(CONCURRENT_READS_KEY) final int concurrentReads,
+          @JsonProperty(CONCURRENT_WRITES_KEY) final int concurrentWrites,
+          @JsonProperty(CONCURRENT_COUNTER_WRITES_KEY) final int concurrentCounterWrites,
+          @JsonProperty(MEMTABLE_ALLOCATION_TYPE_KEY) final String memtableAllocationType,
+          @JsonProperty(INDEX_SUMMARY_CAPACITY_IN_MB_KEY) final Integer indexSummaryCapacityInMb,
+          @JsonProperty(INDEX_SUMMARY_RESIZE_INTERVAL_IN_MINUTES_KEY) final int indexSummaryResizeIntervalInMinutes,
+          @JsonProperty(TRICKLE_FSYNC_KEY) final boolean trickleFsync,
+          @JsonProperty(TRICKLE_FSYNC_INTERVAL_IN_KB_KEY) final int trickleFsyncIntervalInKb,
+          @JsonProperty(STORAGE_PORT_KEY) final int storagePort,
+          @JsonProperty(SSL_STORAGE_PORT_KEY) final int sslStoragePort,
+          @JsonProperty(LISTEN_ADDRESS_KEY) final String listenAddress,
+          @JsonProperty(START_NATIVE_TRANSPORT_KEY) final boolean startNativeTransport,
+          @JsonProperty(NATIVE_TRANSPORT_PORT_KEY) final int nativeTransportPort,
+          @JsonProperty(START_RPC_KEY) final boolean startRpc,
+          @JsonProperty(RPC_ADDRESS_KEY) final String rpcAddress,
+          @JsonProperty(RPC_PORT_KEY) final int rpcPort,
+          @JsonProperty(RPC_KEEPALIVE_KEY) final boolean rpcKeepalive,
+          @JsonProperty(RPC_SERVER_TYPE_KEY) final String rpcServerType,
+          @JsonProperty(THRIFT_FRAMED_TRANSPORT_SIZE_IN_MB_KEY) final int thriftFramedTransportSizeInMb,
+          @JsonProperty(INCREMENTAL_BACKUPS_KEY) final boolean incrementalBackups,
+          @JsonProperty(SNAPSHOT_BEFORE_COMPACTION_KEY) final boolean snapshotBeforeCompaction,
+          @JsonProperty(AUTO_SNAPSHOT_KEY) final boolean autoSnapshot,
+          @JsonProperty(TOMBSTONE_WARN_THRESHOLD_KEY) final int tombstoneWarnThreshold,
+          @JsonProperty(TOMBSTONE_FAILURE_THRESHOLD_KEY) final int tombstoneFailureThreshold,
+          @JsonProperty(COLUMN_INDEX_SIZE_IN_KB_KEY) final int columnIndexSizeInKb,
+          @JsonProperty(BATCH_SIZE_WARN_THRESHOLD_IN_KB_KEY) final int batchSizeWarnThresholdInKb,
+          @JsonProperty(BATCH_SIZE_FAIL_THRESHOLD_IN_KB_KEY) final int batchSizeFailThresholdInKb,
+          @JsonProperty(COMPACTION_THROUGHPUT_MB_PER_SEC_KEY) final int compactionThroughputMbPerSec,
+          @JsonProperty
+                  (COMPACTION_LARGE_PARTITION_WARNING_THRESHOLD_MB_KEY) final int compactionLargePartitionWarningThresholdMb,
+          @JsonProperty(SSTABLE_PREEMPTIVE_OPEN_INTERVAL_IN_MB_KEY) final int sstablePreemptiveOpenIntervalInMb,
+          @JsonProperty(READ_REQUEST_TIMEOUT_IN_MS_KEY) final int readRequestTimeoutInMs,
+          @JsonProperty(RANGE_REQUEST_TIMEOUT_IN_MS_KEY) final int rangeRequestTimeoutInMs,
+          @JsonProperty(WRITE_REQUEST_TIMEOUT_IN_MS_KEY) final int writeRequestTimeoutInMs,
+          @JsonProperty(COUNTER_WRITE_REQUEST_TIMEOUT_IN_MS_KEY) final int counterWriteRequestTimeoutInMs,
+          @JsonProperty(CAS_CONTENTION_TIMEOUT_IN_MS_KEY) final int casContentionTimeoutInMs,
+          @JsonProperty(TRUNCATE_REQUEST_TIMEOUT_IN_MS_KEY) final int truncateRequestTimeoutInMs,
+          @JsonProperty(REQUEST_TIMEOUT_IN_MS_KEY) final int requestTimeoutInMs,
+          @JsonProperty(CROSS_NODE_TIMEOUT_KEY) final boolean crossNodeTimeout,
+          @JsonProperty(ENDPOINT_SNITCH_KEY) final String endpointSnitch,
+          @JsonProperty(DYNAMIC_SNITCH_UPDATE_INTERVAL_IN_MS_KEY) final int dynamicSnitchUpdateIntervalInMs,
+          @JsonProperty(DYNAMIC_SNITCH_RESET_INTERVAL_IN_MS_KEY) final int dynamicSnitchResetIntervalInMs,
+          @JsonProperty(DYNAMIC_SNITCH_BADNESS_THRESHOLD_KEY) final double dynamicSnitchBadnessThreshold,
+          @JsonProperty(REQUEST_SCHEDULER_KEY) final String requestScheduler,
+          @JsonProperty(INTERNODE_COMPRESSION_KEY) final String internodeCompression,
+          @JsonProperty(INTER_DC_TCP_NODELAY_KEY) final boolean interDcTcpNodelay,
+          @JsonProperty(TRACETYPE_QUERY_TTL_KEY) final int tracetypeQueryTtl,
+          @JsonProperty(TRACETYPE_REPAIR_TTL_KEY) final int tracetypeRepairTtl,
+          @JsonProperty(ENABLE_USER_DEFINED_FUNCTIONS_KEY) final boolean enableUserDefinedFunctions,
+          @JsonProperty(WINDOWS_TIMER_INTERVAL_KEY) final int windowsTimerInterval,
+          @JsonProperty(INTERNODE_AUTHENTICATOR_KEY) final String internodeAuthenticator,
+          @JsonProperty(MAX_HINTS_FILE_SIZE_KEY) final int maxHintsFileSizeInMb,
+          @JsonProperty(HINTS_FLUSH_PERIOD_KEY) final int hintsFlushPeriodInMs,
+          @JsonProperty(CONCURRENT_MATERIALIZED_VIEWS) final int concurrentMaterializedViewWrites,
+          @JsonProperty(COMMITLOG_TOTAL_SPACE_IN_MB_KEY) final int commitlogTotalSpaceInMb,
+          @JsonProperty(ROLES_UPDATE_INTERVAL_IN_MS_KEY) final int rolesUpdateIntervalInMs,
+          @JsonProperty(PERMISSIONS_UPDATE_INTERVAL_IN_MS_KEY) final int permissionsUpdateIntervalInMs,
+          @JsonProperty(KEY_CACHE_KEYS_TO_SAVE_KEY) final int keyCacheKeysToSave,
+          @JsonProperty(ROW_CACHE_KEYS_TO_SAVE_KEY) final int rowCacheKeysToSave,
+          @JsonProperty(COUNTER_CACHE_KEYS_TO_SAVE_KEY) final int counterCacheKeysToSave,
+          @JsonProperty(FILE_CACHE_SIZE_IN_MB_KEY) final int fileCacheSizeInMb,
+          @JsonProperty(MEMTABLE_HEAP_SPACE_IN_MB_KEY) final int memtableHeapSpaceInMb,
+          @JsonProperty(MEMTABLE_OFFHEAP_SPACE_IN_MB_KEY) final int memtableOffheapSpaceInMb,
+          @JsonProperty(MEMTABLE_CLEANUP_THRESHOLD_KEY) final double metableCleanupThreshold,
+          @JsonProperty(MEMTABLE_FLUSH_WRITERS_KEY) final int memtableFlushWritersKey,
+          @JsonProperty(LISTEN_ON_BROADCAST_ADDRESS_KEY) final boolean listenOnBroadcastAddress,
+          @JsonProperty(NATIVE_TRANSPORT_MAX_THREADS_KEY) final int nativeTransportMaxThreads,
+          @JsonProperty(NATIVE_TRANSPORT_MAX_FRAME_SIZE_IN_MB_KEY) final int nativeTransportMaxFrameSizeInMb,
+          @JsonProperty(NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS_KEY) final int nativeTransportMaxConcurrentConnections,
+          @JsonProperty(NATIVE_TRANSPORT_MAX_CONCURRENT_CONNECTIONS_PER_IP_KEY) final int nativeTransportMaxConcurrentConnectionsPerIpKey,
+          @JsonProperty(RPC_MIN_THREADS_KEY) final int rpcMinThreads,
+          @JsonProperty(RPC_MAX_THREADS_KEY) final int rpcMaxThreads,
+          @JsonProperty(RPC_SEND_BUFF_SIZE_IN_BYTES_KEY) final int rpcSendBuffSizeInBytes,
+          @JsonProperty(RPC_RECV_BUFF_SIZE_IN_BYTES_KEY) final int rpcRecvBuffSizeInBytes,
+          @JsonProperty(CONCURRENT_COMPACTORS_KEY) final int concurrentCompactors,
+          @JsonProperty(STREAM_THROUGHPUT_OUTBOUND_MEGABITS_PER_SEC_KEY) final int streamThroughputOutboundMegabitsPerSec,
+          @JsonProperty(INTER_DC_STREAM_THROUGHPUT_OUTBOUND_MEGABITS_PER_SEC_KEY) final int interDcStreamThroughputOutboundMegabitsPerSec,
+          @JsonProperty(STREAMING_SOCKET_TIMEOUT_IN_MS_KEY) final int streamingSocketTimeoutInMs,
+          @JsonProperty(PHI_CONVICT_THRESHOLD_KEY) final int phiConvictThreshold,
+          @JsonProperty(GC_WARN_THRESHOLD_IN_MS_KEY) final int gcWarnThresholdInMs,
+          @JsonProperty(BUFFER_POOL_USE_HEAP_IF_EXHAUSTED_KEY) final boolean bufferPoolUseHeapIfExhausted,
+          @JsonProperty(DISK_OPTIMIZATION_STRATEGY_KEY) final String diskOptimizationStrategy,
+          @JsonProperty(UNLOGGED_BATCH_ACROSS_PARTITIONS_WARN_THRESHOLD_KEY) final int unloggedBatchAcrossPartitionsWarnThreshold,
+          @JsonProperty(ENABLE_SCRIPTED_USER_DEFINED_FUNCTIONS_KEY) final boolean enableScriptedUserDefinedFunctions,
+          @JsonProperty(MAX_VALUE_SIZE_IN_MB_KEY) final int maxValueSizeInMb
+  ) {
 
     return new CassandraApplicationConfig(clusterName,
       numTokens,
@@ -1039,43 +1039,43 @@ public class CassandraApplicationConfig {
     return clusterName;
   }
 
-  public int getWindowsTimerInterval() {
+  private int getWindowsTimerInterval() {
     return windowsTimerInterval;
   }
 
-  public int getDynamicSnitchUpdateIntervalInMs() {
+  private int getDynamicSnitchUpdateIntervalInMs() {
     return dynamicSnitchUpdateIntervalInMs;
   }
 
-  public int getDynamicSnitchResetIntervalInMs() {
+  private int getDynamicSnitchResetIntervalInMs() {
     return dynamicSnitchResetIntervalInMs;
   }
 
-  public double getDynamicSnitchBadnessThreshold() {
+  private double getDynamicSnitchBadnessThreshold() {
     return dynamicSnitchBadnessThreshold;
   }
 
-  public String getRequestScheduler() {
+  private String getRequestScheduler() {
     return requestScheduler;
   }
 
-  public String getInternodeCompression() {
+  private String getInternodeCompression() {
     return internodeCompression;
   }
 
-  public boolean isInterDcTcpNodelay() {
+  private boolean isInterDcTcpNodelay() {
     return interDcTcpNodelay;
   }
 
-  public int getTracetypeQueryTtl() {
+  private int getTracetypeQueryTtl() {
     return tracetypeQueryTtl;
   }
 
-  public int getTracetypeRepairTtl() {
+  private int getTracetypeRepairTtl() {
     return tracetypeRepairTtl;
   }
 
-  public boolean isEnableUserDefinedFunctions() {
+  private boolean isEnableUserDefinedFunctions() {
     return enableUserDefinedFunctions;
   }
 
@@ -1083,123 +1083,123 @@ public class CassandraApplicationConfig {
     return numTokens;
   }
 
-  public boolean isHintedHandoffEnabled() {
+  private boolean isHintedHandoffEnabled() {
     return hintedHandoffEnabled;
   }
 
-  public int getMaxHintWindowInMs() {
+  private int getMaxHintWindowInMs() {
     return maxHintWindowInMs;
   }
 
-  public int getHintedHandoffThrottleInKb() {
+  private int getHintedHandoffThrottleInKb() {
     return hintedHandoffThrottleInKb;
   }
 
-  public int getMaxHintsDeliveryThreads() {
+  private int getMaxHintsDeliveryThreads() {
     return maxHintsDeliveryThreads;
   }
 
-  public int getBatchlogReplayThrottleInKb() {
+  private int getBatchlogReplayThrottleInKb() {
     return batchlogReplayThrottleInKb;
   }
 
-  public String getAuthenticator() {
+  private String getAuthenticator() {
     return authenticator;
   }
 
-  public String getAuthorizer() {
+  private String getAuthorizer() {
     return authorizer;
   }
 
-  public String getRoleManager() {
+  private String getRoleManager() {
     return roleManager;
   }
 
-  public int getRolesValidityInMs() {
+  private int getRolesValidityInMs() {
     return rolesValidityInMs;
   }
 
-  public int getPermissionsValidityInMs() {
+  private int getPermissionsValidityInMs() {
     return permissionsValidityInMs;
   }
 
-  public String getPartitioner() {
+  private String getPartitioner() {
     return partitioner;
   }
 
-  public String getDiskFailurePolicy() {
+  private String getDiskFailurePolicy() {
     return diskFailurePolicy;
   }
 
-  public String getCommitFailurePolicy() {
+  private String getCommitFailurePolicy() {
     return commitFailurePolicy;
   }
 
-  public Integer getKeyCacheSizeInMb() {
+  private Integer getKeyCacheSizeInMb() {
     return keyCacheSizeInMb;
   }
 
-  public int getKeyCacheSavePeriod() {
+  private int getKeyCacheSavePeriod() {
     return keyCacheSavePeriod;
   }
 
-  public int getRowCacheSizeInMb() {
+  private int getRowCacheSizeInMb() {
     return rowCacheSizeInMb;
   }
 
-  public int getRowCacheSavePeriod() {
+  private int getRowCacheSavePeriod() {
     return rowCacheSavePeriod;
   }
 
-  public Integer getCounterCacheSizeInMb() {
+  private Integer getCounterCacheSizeInMb() {
     return counterCacheSizeInMb;
   }
 
-  public int getCounterCacheSavePeriod() {
+  private int getCounterCacheSavePeriod() {
     return counterCacheSavePeriod;
   }
 
-  public String getCommitlogSync() {
+  private String getCommitlogSync() {
     return commitlogSync;
   }
 
-  public int getCommitlogSyncPeriodInMs() {
+  private int getCommitlogSyncPeriodInMs() {
     return commitlogSyncPeriodInMs;
   }
 
-  public int getCommitlogSegmentSizeInMb() {
+  private int getCommitlogSegmentSizeInMb() {
     return commitlogSegmentSizeInMb;
   }
 
-  public int getConcurrentReads() {
+  private int getConcurrentReads() {
     return concurrentReads;
   }
 
-  public int getConcurrentWrites() {
+  private int getConcurrentWrites() {
     return concurrentWrites;
   }
 
-  public int getConcurrentCounterWrites() {
+  private int getConcurrentCounterWrites() {
     return concurrentCounterWrites;
   }
 
-  public String getMemtableAllocationType() {
+  private String getMemtableAllocationType() {
     return memtableAllocationType;
   }
 
-  public Integer getIndexSummaryCapacityInMb() {
+  private Integer getIndexSummaryCapacityInMb() {
     return indexSummaryCapacityInMb;
   }
 
-  public int getIndexSummaryResizeIntervalInMinutes() {
+  private int getIndexSummaryResizeIntervalInMinutes() {
     return indexSummaryResizeIntervalInMinutes;
   }
 
-  public boolean isTrickleFsync() {
+  private boolean isTrickleFsync() {
     return trickleFsync;
   }
 
-  public int getTrickleFsyncIntervalInKb() {
+  private int getTrickleFsyncIntervalInKb() {
     return trickleFsyncIntervalInKb;
   }
 
@@ -1216,7 +1216,7 @@ public class CassandraApplicationConfig {
     return listenAddress;
   }
 
-  public boolean isStartNativeTransport() {
+  private boolean isStartNativeTransport() {
     return startNativeTransport;
   }
 
@@ -1224,7 +1224,7 @@ public class CassandraApplicationConfig {
     return nativeTransportPort;
   }
 
-  public boolean isStartRpc() {
+  private boolean isStartRpc() {
     return startRpc;
   }
 
@@ -1236,83 +1236,83 @@ public class CassandraApplicationConfig {
     return rpcPort;
   }
 
-  public boolean isRpcKeepalive() {
+  private boolean isRpcKeepalive() {
     return rpcKeepalive;
   }
 
-  public String getRpcServerType() {
+  private String getRpcServerType() {
     return rpcServerType;
   }
 
-  public int getThriftFramedTransportSizeInMb() {
+  private int getThriftFramedTransportSizeInMb() {
     return thriftFramedTransportSizeInMb;
   }
 
-  public boolean isIncrementalBackups() {
+  private boolean isIncrementalBackups() {
     return incrementalBackups;
   }
 
-  public boolean isSnapshotBeforeCompaction() {
+  private boolean isSnapshotBeforeCompaction() {
     return snapshotBeforeCompaction;
   }
 
-  public boolean isAutoSnapshot() {
+  private boolean isAutoSnapshot() {
     return autoSnapshot;
   }
 
-  public int getTombstoneWarnThreshold() {
+  private int getTombstoneWarnThreshold() {
     return tombstoneWarnThreshold;
   }
 
-  public int getTombstoneFailureThreshold() {
+  private int getTombstoneFailureThreshold() {
     return tombstoneFailureThreshold;
   }
 
-  public int getColumnIndexSizeInKb() {
+  private int getColumnIndexSizeInKb() {
     return columnIndexSizeInKb;
   }
 
-  public int getBatchSizeWarnThresholdInKb() {
+  private int getBatchSizeWarnThresholdInKb() {
     return batchSizeWarnThresholdInKb;
   }
 
-  public int getBatchSizeFailThresholdInKb() {
+  private int getBatchSizeFailThresholdInKb() {
     return batchSizeFailThresholdInKb;
   }
 
-  public int getCompactionThroughputMbPerSec() {
+  private int getCompactionThroughputMbPerSec() {
     return compactionThroughputMbPerSec;
   }
 
-  public int getCompactionLargePartitionWarningThresholdMb() {
+  private int getCompactionLargePartitionWarningThresholdMb() {
     return compactionLargePartitionWarningThresholdMb;
   }
 
-  public int getSstablePreemptiveOpenIntervalInMb() {
+  private int getSstablePreemptiveOpenIntervalInMb() {
     return sstablePreemptiveOpenIntervalInMb;
   }
 
-  public int getReadRequestTimeoutInMs() {
+  private int getReadRequestTimeoutInMs() {
     return readRequestTimeoutInMs;
   }
 
-  public int getRangeRequestTimeoutInMs() {
+  private int getRangeRequestTimeoutInMs() {
     return rangeRequestTimeoutInMs;
   }
 
-  public int getWriteRequestTimeoutInMs() {
+  private int getWriteRequestTimeoutInMs() {
     return writeRequestTimeoutInMs;
   }
 
-  public int getCounterWriteRequestTimeoutInMs() {
+  private int getCounterWriteRequestTimeoutInMs() {
     return counterWriteRequestTimeoutInMs;
   }
 
-  public int getCasContentionTimeoutInMs() {
+  private int getCasContentionTimeoutInMs() {
     return casContentionTimeoutInMs;
   }
 
-  public int getTruncateRequestTimeoutInMs() {
+  private int getTruncateRequestTimeoutInMs() {
     return truncateRequestTimeoutInMs;
   }
 
@@ -1320,159 +1320,159 @@ public class CassandraApplicationConfig {
     return new Builder(this);
   }
 
-  public int getRequestTimeoutInMs() {
+  private int getRequestTimeoutInMs() {
     return requestTimeoutInMs;
   }
 
-  public boolean isCrossNodeTimeout() {
+  private boolean isCrossNodeTimeout() {
     return crossNodeTimeout;
   }
 
-  public String getEndpointSnitch() {
+  private String getEndpointSnitch() {
     return endpointSnitch;
   }
 
-  public String getInternodeAuthenticator() {
+  private String getInternodeAuthenticator() {
     return internodeAuthenticator;
   }
 
-  public int getMaxHintsFileSizeInMb() {
+  private int getMaxHintsFileSizeInMb() {
     return maxHintsFileSizeInMb;
   }
 
-  public int getHintsFlushPeriodInMs() {
+  private int getHintsFlushPeriodInMs() {
     return hintsFlushPeriodInMs;
   }
 
-  public int getConcurrentMaterializedViewWrites() {
+  private int getConcurrentMaterializedViewWrites() {
     return concurrentMaterializedViewWrites;
   }
 
-  public int getCommitlogTotalSpaceInMb() {
+  private int getCommitlogTotalSpaceInMb() {
     return commitlogTotalSpaceInMb;
   }
 
-  public int getRolesUpdateIntervalInMs() {
+  private int getRolesUpdateIntervalInMs() {
     return rolesUpdateIntervalInMs;
   }
 
-  public int getPermissionsUpdateIntervalInMs() {
+  private int getPermissionsUpdateIntervalInMs() {
     return permissionsUpdateIntervalInMs;
   }
 
-  public int getKeyCacheKeysToSave() {
+  private int getKeyCacheKeysToSave() {
     return keyCacheKeysToSave;
   }
 
-  public int getRowCacheKeysToSave() {
+  private int getRowCacheKeysToSave() {
     return rowCacheKeysToSave;
   }
 
-  public int getCounterCacheKeysToSave() {
+  private int getCounterCacheKeysToSave() {
     return counterCacheKeysToSave;
   }
 
-  public int getFileCacheSizeInMb() {
+  private int getFileCacheSizeInMb() {
     return fileCacheSizeInMb;
   }
 
-  public int getMemtableHeapSpaceInMb() {
+  private int getMemtableHeapSpaceInMb() {
     return memtableHeapSpaceInMb;
   }
 
-  public int getMemtableOffheapSpaceInMb() {
+  private int getMemtableOffheapSpaceInMb() {
     return memtableOffheapSpaceInMb;
   }
 
-  public double getMetableCleanupThreshold() {
+  private double getMetableCleanupThreshold() {
     return metableCleanupThreshold;
   }
 
-  public int getMemtableFlushWritersKey() {
+  private int getMemtableFlushWritersKey() {
     return memtableFlushWritersKey;
   }
 
-  public boolean getListenOnBroadcastAddress() {
+  private boolean getListenOnBroadcastAddress() {
     return listenOnBroadcastAddress;
   }
 
-  public int getNativeTransportMaxThreads() {
+  private int getNativeTransportMaxThreads() {
     return nativeTransportMaxThreads;
   }
 
-  public int getNativeTransportMaxFrameSizeInMb() {
+  private int getNativeTransportMaxFrameSizeInMb() {
     return nativeTransportMaxFrameSizeInMb;
   }
 
-  public int getNativeTransportMaxConcurrentConnections() {
+  private int getNativeTransportMaxConcurrentConnections() {
     return nativeTransportMaxConcurrentConnections;
   }
 
-  public int getNativeTransportMaxConcurrentConnectionsPerIpKey() {
+  private int getNativeTransportMaxConcurrentConnectionsPerIpKey() {
     return nativeTransportMaxConcurrentConnectionsPerIpKey;
   }
 
-  public int getRpcMinThreads() {
+  private int getRpcMinThreads() {
     return rpcMinThreads;
   }
 
-  public int getRpcMaxThreads() {
+  private int getRpcMaxThreads() {
     return rpcMaxThreads;
   }
 
-  public int getRpcSendBuffSizeInBytes() {
+  private int getRpcSendBuffSizeInBytes() {
     return rpcSendBuffSizeInBytes;
   }
 
-  public int getRpcRecvBuffSizeInBytes() {
+  private int getRpcRecvBuffSizeInBytes() {
     return rpcRecvBuffSizeInBytes;
   }
 
-  public int getConcurrentCompactors() {
+  private int getConcurrentCompactors() {
     return concurrentCompactors;
   }
 
-  public int getStreamThroughputOutboundMegabitsPerSec() {
+  private int getStreamThroughputOutboundMegabitsPerSec() {
     return streamThroughputOutboundMegabitsPerSec;
   }
 
-  public int getInterDcStreamThroughputOutboundMegabitsPerSec() {
+  private int getInterDcStreamThroughputOutboundMegabitsPerSec() {
     return interDcStreamThroughputOutboundMegabitsPerSec;
   }
 
-  public int getStreamingSocketTimeoutInMs() {
+  private int getStreamingSocketTimeoutInMs() {
     return streamingSocketTimeoutInMs;
   }
 
-  public int getPhiConvictThreshold() {
+  private int getPhiConvictThreshold() {
     return phiConvictThreshold;
   }
 
-  public int getGcWarnThresholdInMs() {
+  private int getGcWarnThresholdInMs() {
     return gcWarnThresholdInMs;
   }
 
-  public boolean getBufferPoolUseHeapIfExhausted() {
+  private boolean getBufferPoolUseHeapIfExhausted() {
     return bufferPoolUseHeapIfExhausted;
   }
 
-  public String getDiskOptimizationStrategy() {
+  private String getDiskOptimizationStrategy() {
     return diskOptimizationStrategy;
   }
 
-  public int getUnloggedBatchAcrossPartitionsWarnThreshold() {
+  private int getUnloggedBatchAcrossPartitionsWarnThreshold() {
     return unloggedBatchAcrossPartitionsWarnThreshold;
   }
 
-  public boolean getEnableScriptedUserDefinedFunctions() {
+  private boolean getEnableScriptedUserDefinedFunctions() {
     return enableScriptedUserDefinedFunctions;
   }
 
-  public int getMaxValueSizeInMb() {
+  private int getMaxValueSizeInMb() {
     return maxValueSizeInMb;
   }
 
-  public Map<String, Object> toMap() {
+  private Map<String, Object> toMap() {
 
     Map<String, Object> map = new HashMap<>(100);
 
@@ -1617,7 +1617,7 @@ public class CassandraApplicationConfig {
     YAML_MAPPER.writeValue(path.toFile(), toMap());
   }
 
-  public byte[] toByteArray() {
+  private byte[] toByteArray() {
     try {
       return MAPPER.writeValueAsBytes(this);
     } catch (JsonProcessingException ex) {

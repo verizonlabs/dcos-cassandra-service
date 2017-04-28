@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class CassandraDaemonTaskTest {
     private static final String TEST_DAEMON_NAME = "test-daemon-task-name";
     private static final UUID TEST_CONFIG_ID = UUID.randomUUID();
-    public static final String TEST_CONFIG_NAME = TEST_CONFIG_ID.toString();
+    private static final String TEST_CONFIG_NAME = TEST_CONFIG_ID.toString();
 
     private CassandraDaemonTask.Factory testTaskFactory;
     private ExecutorConfig testExecutorConfig;

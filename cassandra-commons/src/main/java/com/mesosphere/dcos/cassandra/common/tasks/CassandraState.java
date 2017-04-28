@@ -251,7 +251,7 @@ public class CassandraState extends SchedulerState implements Managed {
     }
 
 
-    public BackupSnapshotTask createBackupSnapshotTask(
+    private BackupSnapshotTask createBackupSnapshotTask(
             CassandraDaemonTask daemon,
             BackupRestoreContext context) throws PersistenceException {
 
@@ -265,7 +265,7 @@ public class CassandraState extends SchedulerState implements Managed {
 
     }
 
-    public BackupUploadTask createBackupUploadTask(
+    private BackupUploadTask createBackupUploadTask(
             CassandraDaemonTask daemon,
             BackupRestoreContext context) throws PersistenceException {
 
@@ -278,7 +278,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public DownloadSnapshotTask createDownloadSnapshotTask(
+    private DownloadSnapshotTask createDownloadSnapshotTask(
             CassandraDaemonTask daemon,
             BackupRestoreContext context) throws PersistenceException {
 
@@ -291,7 +291,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public RestoreSnapshotTask createRestoreSnapshotTask(
+    private RestoreSnapshotTask createRestoreSnapshotTask(
             CassandraDaemonTask daemon,
             BackupRestoreContext context) throws PersistenceException {
 
@@ -304,7 +304,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public CleanupTask createCleanupTask(
+    private CleanupTask createCleanupTask(
             CassandraDaemonTask daemon,
             CleanupContext context) throws PersistenceException {
 
@@ -317,7 +317,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public RepairTask createRepairTask(
+    private RepairTask createRepairTask(
             CassandraDaemonTask daemon,
             RepairContext context) throws PersistenceException {
         Optional<Protos.TaskInfo> template = getTemplate(daemon);
@@ -329,7 +329,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public CassandraDaemonTask getOrCreateDaemon(String name) throws
+    private CassandraDaemonTask getOrCreateDaemon(String name) throws
             PersistenceException, ConfigStoreException {
         if (getDaemons().containsKey(name)) {
             return getDaemons().get(name);
@@ -437,7 +437,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public void update(CassandraTask task) throws PersistenceException {
+    private void update(CassandraTask task) throws PersistenceException {
         synchronized (getStateStore()) {
             getStateStore().storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(task.getTaskInfo())));
             if (tasks.containsKey(task.getName())) {

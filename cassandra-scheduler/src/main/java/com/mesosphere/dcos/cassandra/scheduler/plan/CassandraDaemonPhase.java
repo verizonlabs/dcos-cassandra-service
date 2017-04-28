@@ -81,7 +81,7 @@ public class CassandraDaemonPhase extends DefaultPhase {
     }
 
 
-    public CassandraDaemonPhase(
+    private CassandraDaemonPhase(
             final List<CassandraDaemonBlock> blocks,
             final List<String> errors) {
         super(UUID.randomUUID(), "Deploy", blocks);

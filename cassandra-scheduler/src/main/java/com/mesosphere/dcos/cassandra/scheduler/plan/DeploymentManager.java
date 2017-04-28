@@ -43,7 +43,7 @@ public class DeploymentManager extends DefaultObservable implements Observer {
     private final CassandraDaemonPhase deploy;
     private final SyncDataCenterPhase syncDc;
 
-    public DeploymentManager(
+    private DeploymentManager(
             final PersistentOfferRequirementProvider provider,
             final DefaultConfigurationManager defaultConfigurationManager,
             final CassandraState cassandraState,

@@ -33,7 +33,7 @@ import java.util.concurrent.Future;
  * the snapshot to a BackupStorageDriver implementation and the clearing of
  * the local snapshot to CassandraDaemonProcess.
  */
-public class UploadSnapshot implements ExecutorTask {
+class UploadSnapshot implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(
         UploadSnapshot.class);
     private final CassandraDaemonProcess daemon;

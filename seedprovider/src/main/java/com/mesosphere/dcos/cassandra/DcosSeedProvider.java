@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class DcosSeedProvider implements SeedProvider {
+class DcosSeedProvider implements SeedProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger
             (DcosSeedProvider.class);
@@ -28,7 +28,7 @@ public class DcosSeedProvider implements SeedProvider {
 
     private final String seedsUrl;
 
-    public DcosSeedProvider(final Map<String, String> properties) {
+    private DcosSeedProvider(final Map<String, String> properties) {
 
         seedsUrl = properties.get("seeds_url");
 
@@ -47,7 +47,7 @@ public class DcosSeedProvider implements SeedProvider {
     }
 
 
-    public List<InetAddress> getRemoteSeeds() throws IOException {
+    private List<InetAddress> getRemoteSeeds() throws IOException {
 
         HttpURLConnection connection =
                 (HttpURLConnection) new URL(seedsUrl).openConnection();

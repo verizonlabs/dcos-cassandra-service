@@ -36,7 +36,7 @@ public class RestoreSnapshotTask extends CassandraTask {
     /**
      * Prefix for the name of RestoreSnapshotTasks.
      */
-    public static final String NAME_PREFIX = "restore-";
+    private static final String NAME_PREFIX = "restore-";
 
     /**
      * Gets the name of a RestoreSnapshotTask for a CassandraDaemonTask.

@@ -43,7 +43,7 @@ public class CleanupTask extends CassandraTask {
     /**
      * The name prefix for a CleanupTask.
      */
-    public static final String NAME_PREFIX = "cleanup-";
+    private static final String NAME_PREFIX = "cleanup-";
 
     /**
      * Gets the name of a CleanupTask for a CassandraDaemonTask.

@@ -72,7 +72,7 @@ public class CassandraTaskExecutor {
      * @param info The ExecutorInfo that contains a CassandraTaskExecutor.
      * @return A CassandraTaskExecutor parsed from info.
      */
-    public static final CassandraTaskExecutor parse(
+    private static CassandraTaskExecutor parse(
             final Protos.ExecutorInfo info) {
         return new CassandraTaskExecutor(info);
     }
@@ -176,12 +176,12 @@ public class CassandraTaskExecutor {
                 );
     }
 
-    public String getName() {
+    private String getName() {
         return info.getName();
     }
 
 
-    public Set<String> getURIs() {
+    private Set<String> getURIs() {
         return toSet(info.getCommand().getUrisList());
     }
 
@@ -201,7 +201,7 @@ public class CassandraTaskExecutor {
      *
      * @return The command used to launch the executor.
      */
-    public String getCommand() {
+    private String getCommand() {
         return info.getCommand().getValue();
     }
 
@@ -218,7 +218,7 @@ public class CassandraTaskExecutor {
      *
      * @return The cpu shares allocated to the executor.
      */
-    public double getCpus() {
+    private double getCpus() {
         return getResourceCpus(info.getResourcesList());
     }
 
@@ -227,7 +227,7 @@ public class CassandraTaskExecutor {
      *
      * @return The size of the executor's JVM heap in Mb.
      */
-    public int getHeapMb() {
+    private int getHeapMb() {
         return Integer.parseInt(
                 getValue("JAVA_OPTS", info.getCommand().getEnvironment())
                         .replace("-Xmx", "")

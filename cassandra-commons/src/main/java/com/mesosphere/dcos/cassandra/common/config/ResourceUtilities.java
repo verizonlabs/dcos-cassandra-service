@@ -20,10 +20,10 @@ import java.util.Objects;
 /**
  * This class encapsulates common methods for manipulating Resources.
  */
-public class ResourceUtilities {
+class ResourceUtilities {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResourceUtilities.class);
 
-    public static Protos.Resource getUnreservedResource(String name, Protos.Value value) {
+    private static Protos.Resource getUnreservedResource(String name, Protos.Value value) {
         return setResource(Protos.Resource.newBuilder().setRole("*"), name, value);
     }
 
@@ -156,7 +156,7 @@ public class ResourceUtilities {
         return resBuilder.build();
     }
 
-    public static Protos.Resource getDesiredResource(String role, String principal, String name, Protos.Value value) {
+    private static Protos.Resource getDesiredResource(String role, String principal, String name, Protos.Value value) {
         return Protos.Resource.newBuilder(getUnreservedResource(name, value))
                 .setRole(role)
                 .setReservation(getDesiredReservationInfo(principal))
@@ -283,7 +283,7 @@ public class ResourceUtilities {
         return taskInfoBuilder.build();
     }
 
-    public static Protos.ExecutorInfo clearResourceIds(Protos.ExecutorInfo executorInfo) {
+    private static Protos.ExecutorInfo clearResourceIds(Protos.ExecutorInfo executorInfo) {
         List<Protos.Resource> clearedResources = clearResourceIds(executorInfo.getResourcesList());
         return Protos.ExecutorInfo.newBuilder(executorInfo)
                 .clearResources()
@@ -392,7 +392,7 @@ public class ResourceUtilities {
                 .build();
     }
 
-    public static Protos.Labels setResourceId(Protos.Labels labels, String resourceId) {
+    private static Protos.Labels setResourceId(Protos.Labels labels, String resourceId) {
         Protos.Labels.Builder labelsBuilder = Protos.Labels.newBuilder();
 
         // Copy everything except blank resource ID label

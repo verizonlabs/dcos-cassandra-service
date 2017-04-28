@@ -32,7 +32,7 @@ import java.util.concurrent.Future;
  * delegating download of the snapshotted tables to a BackupStorageDriver
  * implementation.
  */
-public class DownloadSnapshot implements ExecutorTask {
+class DownloadSnapshot implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             DownloadSnapshot.class);
     private ExecutorDriver driver;

@@ -17,7 +17,7 @@
 package com.mesosphere.dcos.cassandra.scheduler.client;
 
 
-public class SchedulerClientException extends Exception {
+class SchedulerClientException extends Exception {
     public SchedulerClientException() {
     }
 
