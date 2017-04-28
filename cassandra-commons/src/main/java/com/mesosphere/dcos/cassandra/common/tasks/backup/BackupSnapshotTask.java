@@ -139,9 +139,7 @@ public class BackupSnapshotTask extends CassandraTask {
             Optional<String> message) {
 
         Protos.TaskStatus.Builder builder = getStatusBuilder();
-        if (message.isPresent()) {
-            builder.setMessage(message.get());
-        }
+        message.ifPresent(builder::setMessage);
 
         return BackupSnapshotStatus.create(builder
                 .setData(CassandraData.createBackupSnapshotStatusData().getBytes())

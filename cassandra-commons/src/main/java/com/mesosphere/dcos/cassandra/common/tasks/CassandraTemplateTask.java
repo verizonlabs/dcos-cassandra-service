@@ -76,9 +76,7 @@ public class CassandraTemplateTask extends CassandraTask  {
     public CassandraTaskStatus createStatus(Protos.TaskState state, Optional<String> message) {
 
         Protos.TaskStatus.Builder builder = getStatusBuilder();
-        if (message.isPresent()) {
-            builder.setMessage(message.get());
-        }
+        message.ifPresent(builder::setMessage);
 
         return TemplateTaskStatus.create(builder
                 .setData(CassandraData.createTemplateData().getBytes())

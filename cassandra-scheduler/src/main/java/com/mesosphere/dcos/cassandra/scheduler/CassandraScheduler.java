@@ -252,9 +252,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
                         recoveryScheduler.resourceOffers(
                                 driver,
                                 unacceptedOffers,
-                                (currentBlock.isPresent()) ?
-                                        ImmutableSet.of(currentBlock.get().getName()) :
-                                        Collections.emptySet()));
+                                currentBlock.<Set<String>>map(block -> ImmutableSet.of(block.getName())).orElseGet(Collections::emptySet)));
             } catch (Throwable t) {
                 LOGGER.error("Error occured with plan scheduler: {}", t);
             }

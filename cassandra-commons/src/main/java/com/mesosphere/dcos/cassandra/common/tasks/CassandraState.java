@@ -194,11 +194,7 @@ public class CassandraState extends SchedulerState implements Managed {
 
     public CassandraTemplateTask getOrCreateTemplateTask(String name, CassandraDaemonTask daemonTask) {
         final Optional<CassandraTask> cassandraTask = get(name);
-        if (cassandraTask.isPresent()) {
-            return (CassandraTemplateTask) cassandraTask.get();
-        } else {
-            return CassandraTemplateTask.create(daemonTask, clusterTaskConfig);
-        }
+        return cassandraTask.map(cassandraTask1 -> (CassandraTemplateTask) cassandraTask1).orElseGet(() -> CassandraTemplateTask.create(daemonTask, clusterTaskConfig));
     }
 
     public CassandraDaemonTask createDaemon(String name) throws
@@ -228,10 +224,8 @@ public class CassandraState extends SchedulerState implements Managed {
         update(updated);
 
         Optional<Protos.TaskInfo> templateOptional = getTemplate(updated);
-        if (templateOptional.isPresent()) {
-            getStateStore().storeTasks(
-                    Collections.singletonList(CassandraTemplateTask.create(updated, clusterTaskConfig).getTaskInfo()));
-        }
+        templateOptional.ifPresent(taskInfo -> getStateStore().storeTasks(
+                Collections.singletonList(CassandraTemplateTask.create(updated, clusterTaskConfig).getTaskInfo())));
 
         return updated;
     }
@@ -450,7 +444,7 @@ public class CassandraState extends SchedulerState implements Managed {
             }
 
             Optional<Protos.TaskStatus> status = getStateStore().fetchStatus(task.getName());
-            task.setTaskStatus(status.isPresent() ? status.get() : null);
+            task.setTaskStatus(status.orElse(null));
 
             byId.put(task.getId(), task.getName());
             byStatus.put(task.getName(), status);
@@ -539,11 +533,7 @@ public class CassandraState extends SchedulerState implements Managed {
             final Collection<String> taskNames = getStateStore().fetchTaskNames();
             if (CollectionUtils.isNotEmpty(taskNames) && taskNames.contains(name)) {
                 final Optional<Protos.TaskStatus> status = getStateStore().fetchStatus(name);
-                if (status.isPresent()) {
-                    return CassandraDaemonStatus.isTerminated(status.get().getState());
-                } else {
-                    return false;
-                }
+                return status.filter(taskStatus -> CassandraDaemonStatus.isTerminated(taskStatus.getState())).isPresent();
             }
         } catch (StateStoreException e) {
             LOGGER.error(e.getMessage(), e);

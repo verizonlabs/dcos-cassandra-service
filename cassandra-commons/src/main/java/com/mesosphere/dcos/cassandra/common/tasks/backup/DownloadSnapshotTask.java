@@ -133,9 +133,7 @@ public class DownloadSnapshotTask extends CassandraTask {
             Optional<String> message) {
 
         Protos.TaskStatus.Builder builder = getStatusBuilder();
-        if (message.isPresent()) {
-            builder.setMessage(message.get());
-        }
+        message.ifPresent(builder::setMessage);
 
         return DownloadSnapshotStatus.create(builder
                 .setData(CassandraData.createSnapshotDownloadStatusData().getBytes())
