@@ -227,7 +227,7 @@ public class HeapConfig {
       if (writer != null) {
         try {
           writer.close();
-        } catch (IOException ex) {
+        } catch (IOException ignored) {
         }
       }
     }

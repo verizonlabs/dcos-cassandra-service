@@ -42,7 +42,7 @@ class CassandraDropwizardAppRule<C extends MutableSchedulerConfiguration> extend
             server.start();
             curator.start();
             super.before();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
