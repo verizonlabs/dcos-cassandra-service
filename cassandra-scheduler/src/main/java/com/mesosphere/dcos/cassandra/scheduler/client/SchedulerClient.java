@@ -42,7 +42,7 @@ public class SchedulerClient {
         return failed;
     }
 
-    public static final SchedulerClient create(
+    public static SchedulerClient create(
             final HttpClient client,
             final ExecutorService service) {
         return new SchedulerClient(client, service);

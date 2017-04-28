@@ -154,7 +154,7 @@ public class CassandraDaemonProcess extends ProcessTask {
      * @throws IOException If an error occurs attempting to start the
      *                     CassandraProcess or connect to it via NodeProbe.
      */
-    public static final CassandraDaemonProcess create(
+    public static CassandraDaemonProcess create(
             final ScheduledExecutorService scheduledExecutorService,
             final Protos.TaskInfo taskInfo,
             final ExecutorDriver driver) throws IOException {

@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 
 public class DeploymentManager extends DefaultObservable implements Observer {
 
-    public static final DeploymentManager create(
+    public static DeploymentManager create(
             final PersistentOfferRequirementProvider provider,
             final ConfigurationManager configurationManager,
             final DefaultConfigurationManager defaultConfigurationManager,

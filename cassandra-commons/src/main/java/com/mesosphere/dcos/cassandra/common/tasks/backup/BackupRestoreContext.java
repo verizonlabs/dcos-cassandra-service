@@ -34,7 +34,7 @@ import java.util.Objects;
 public class BackupRestoreContext implements ClusterTaskContext {
 
     @JsonCreator
-    public static final BackupRestoreContext create(
+    public static BackupRestoreContext create(
         @JsonProperty("node_id")
         final String nodeId,
         @JsonProperty("name")

@@ -9,14 +9,14 @@ import java.util.Collections;
 import java.util.UUID;
 
 public class TestUtils {
-    public static final Protos.FrameworkID generateFrameworkId() {
+    public static Protos.FrameworkID generateFrameworkId() {
         return Protos.FrameworkID
                 .newBuilder()
                 .setValue(UUID.randomUUID().toString())
                 .build();
     }
 
-    public static final Protos.MasterInfo generateMasterInfo() {
+    public static Protos.MasterInfo generateMasterInfo() {
         return Protos.MasterInfo.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setIp(ipToInt("127.0.0.1"))

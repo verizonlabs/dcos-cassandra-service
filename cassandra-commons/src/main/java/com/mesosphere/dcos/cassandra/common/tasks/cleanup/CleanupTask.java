@@ -51,7 +51,7 @@ public class CleanupTask extends CassandraTask {
      * @param daemonName The name of the CassandraDaemonTask.
      * @return The name of the  CleanupTask for daemonName.
      */
-    public static final String nameForDaemon(final String daemonName) {
+    public static String nameForDaemon(final String daemonName) {
         return NAME_PREFIX + daemonName;
     }
 
@@ -62,7 +62,7 @@ public class CleanupTask extends CassandraTask {
      *               uploaded.
      * @return The name of the  CleanupTask for daemon.
      */
-    public static final String nameForDaemon(final CassandraDaemonTask daemon) {
+    public static String nameForDaemon(final CassandraDaemonTask daemon) {
         return nameForDaemon(daemon.getName());
     }
 

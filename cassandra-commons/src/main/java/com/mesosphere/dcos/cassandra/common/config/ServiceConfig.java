@@ -55,7 +55,7 @@ public class ServiceConfig {
 
 
   @JsonCreator
-  public static final ServiceConfig create(
+  public static ServiceConfig create(
     @JsonProperty("name") final String name,
     @JsonProperty("id") final String id,
     @JsonProperty("version") final String version,
