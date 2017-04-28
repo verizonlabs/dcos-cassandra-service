@@ -176,10 +176,7 @@ public class Location {
 
         Location location = (Location) o;
 
-        if (rack != null ? !rack.equals(location.rack) : location.rack != null)
-            return false;
-        return dataCenter != null ? dataCenter.equals(location.dataCenter) :
-                location.dataCenter == null;
+        return (rack != null ? rack.equals(location.rack) : location.rack == null) && (dataCenter != null ? dataCenter.equals(location.dataCenter) : location.dataCenter == null);
 
     }
 

@@ -236,14 +236,13 @@ public class HeapConfig {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
 
-    HeapConfig that = (HeapConfig) o;
+      HeapConfig that = (HeapConfig) o;
 
-    if (sizeMb != that.sizeMb) return false;
-    if (newMb != that.newMb) return false;
-    return gcType == that.gcType;
+      if (sizeMb != that.sizeMb) return false;
+      return newMb == that.newMb && gcType == that.gcType;
 
   }
 

@@ -78,9 +78,7 @@ public class MesosConfig {
                 that.getServers()) : that.getServers() != null) return false;
         if (getPath() != null ? !getPath().equals(
                 that.getPath()) : that.getPath() != null) return false;
-        if (getRefuseSeconds() != that.getRefuseSeconds()) return false;
-        return getTimeout() != null ? getTimeout().equals(
-                that.getTimeout()) : that.getTimeout() == null;
+        return getRefuseSeconds() == that.getRefuseSeconds() && (getTimeout() != null ? getTimeout().equals(that.getTimeout()) : that.getTimeout() == null);
 
     }
 

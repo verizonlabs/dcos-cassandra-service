@@ -1,9 +1,5 @@
 package com.mesosphere.dcos.cassandra.common.config;
 
-/**
- * Created by hansti2 on 10/19/16.
- */
-
 import org.apache.mesos.Protos;
 import org.apache.mesos.Protos.Resource.DiskInfo;
 import org.apache.mesos.Protos.Resource.DiskInfo.Source;

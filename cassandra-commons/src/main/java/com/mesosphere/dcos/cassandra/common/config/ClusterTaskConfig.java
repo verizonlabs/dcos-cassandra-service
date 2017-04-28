@@ -262,8 +262,7 @@ public class ClusterTaskConfig {
         ClusterTaskConfig that = (ClusterTaskConfig) o;
 
         if (Double.compare(that.cpus, cpus) != 0) return false;
-        if (memoryMb != that.memoryMb) return false;
-        return diskMb == that.diskMb;
+        return memoryMb == that.memoryMb && diskMb == that.diskMb;
 
     }
 

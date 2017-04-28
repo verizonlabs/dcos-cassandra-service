@@ -195,11 +195,7 @@ public class S3StorageDriver implements BackupStorageDriver {
 
     private boolean hasValidSuffix(File file, BackupRestoreContext backupRestoreContext) {
         LOGGER.info("hasValidSuffix() BackupRestoreContext: " + backupRestoreContext);
-        if (backupRestoreContext.usesEmc()) {
-            return !file.getName().endsWith(".json");
-        } else {
-            return true;
-        }
+        return !backupRestoreContext.usesEmc() || !file.getName().endsWith(".json");
     }
 
     private void uploadDirectory(

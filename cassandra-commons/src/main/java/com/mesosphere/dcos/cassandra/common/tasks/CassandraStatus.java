@@ -262,10 +262,8 @@ public class CassandraStatus {
         if (getDataCenter() != null ? !getDataCenter().equals(
                 that.getDataCenter()) : that.getDataCenter() != null)
             return false;
-        if (getRack() != null ? !getRack().equals(
-                that.getRack()) : that.getRack() != null) return false;
-        return getVersion() != null ? getVersion().equals(
-                that.getVersion()) : that.getVersion() == null;
+        return (getRack() != null ? getRack().equals(
+                that.getRack()) : that.getRack() == null) && (getVersion() != null ? getVersion().equals(that.getVersion()) : that.getVersion() == null);
 
     }
 
