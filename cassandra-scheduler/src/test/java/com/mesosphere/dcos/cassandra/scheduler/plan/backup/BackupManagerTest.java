@@ -137,10 +137,10 @@ public class BackupManagerTest {
         assertEquals(2, manager.getPhases().size());
 
         Mockito.when(daemonTask.getState()).thenReturn(Protos.TaskState.TASK_RUNNING);
-        Map<String, BackupUploadTask> previousUploadTasks = new HashMap<String, BackupUploadTask>();
+        Map<String, BackupUploadTask> previousUploadTasks = new HashMap<>();
         previousUploadTasks.put("hey", BackupUploadTask.parse(TaskInfo.getDefaultInstance()));
         Map<String, BackupSnapshotTask> previousBackupTasks =
-                new HashMap<String, BackupSnapshotTask>();
+                new HashMap<>();
         previousBackupTasks.put("hi", BackupSnapshotTask.parse(TaskInfo.getDefaultInstance()));
         when(mockCassandraState.getBackupUploadTasks()).thenReturn(previousUploadTasks);
         when(mockCassandraState.getBackupSnapshotTasks()).thenReturn(previousBackupTasks);

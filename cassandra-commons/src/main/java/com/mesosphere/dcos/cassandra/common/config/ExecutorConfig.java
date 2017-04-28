@@ -293,7 +293,7 @@ public class ExecutorConfig {
 
     @JsonIgnore
     public Set<String> getURIs() {
-        Set<String> uris = new HashSet<String>();
+        Set<String> uris = new HashSet<>();
         if (!dvdcli.toString().isEmpty()) {
             uris.add(dvdcli.toString());
         }

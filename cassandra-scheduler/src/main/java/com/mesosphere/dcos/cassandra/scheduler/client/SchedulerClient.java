@@ -114,7 +114,7 @@ public class SchedulerClient {
 
     private CompletionStage<Boolean> delete(String url) {
         LOGGER.debug("Executing delete: url = {}", url);
-        CompletableFuture<Boolean> promise = new CompletableFuture<Boolean>();
+        CompletableFuture<Boolean> promise = new CompletableFuture<>();
         executor.submit(() -> {
            HttpDelete delete = new HttpDelete(url);
             try {
@@ -159,7 +159,7 @@ public class SchedulerClient {
 
     private CompletionStage<Boolean> put(String url, Object json) {
         LOGGER.debug("Executing put: url = {}, data = {}", url, json);
-        CompletableFuture<Boolean> promise = new CompletableFuture<Boolean>();
+        CompletableFuture<Boolean> promise = new CompletableFuture<>();
         executor.submit(() -> {
             HttpPut put = new HttpPut(url);
             try {
