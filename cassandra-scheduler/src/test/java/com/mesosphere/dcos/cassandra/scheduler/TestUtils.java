@@ -5,7 +5,6 @@ import com.mesosphere.dcos.cassandra.common.tasks.CassandraMode;
 import org.apache.mesos.Protos;
 import org.apache.mesos.offer.ResourceUtils;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
