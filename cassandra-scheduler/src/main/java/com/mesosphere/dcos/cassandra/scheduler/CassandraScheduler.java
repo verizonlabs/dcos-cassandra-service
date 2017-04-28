@@ -138,7 +138,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         final String frameworkIdValue = frameworkId.getValue();
         LOGGER.info("Framework registered : id = {}", frameworkIdValue);
         try {
-            this.taskKiller = new DefaultTaskKiller(
+            taskKiller = new DefaultTaskKiller(
                     stateStore,
                     new DefaultTaskFailureListener(stateStore),
                     driver);
