@@ -204,7 +204,7 @@ public class SeedsManager implements Runnable {
                 (List::stream).collect(Collectors.toList());
     }
 
-    public void update(final DataCenterInfo info) throws PersistenceException, SerializationException {
+    public void update(final DataCenterInfo info) throws SerializationException {
         LOGGER.info("Updating data center {}", info);
         synchronized (stateStore) {
             final String propertyKey = DATA_CENTERS_KEY + "." + info.getDatacenter();

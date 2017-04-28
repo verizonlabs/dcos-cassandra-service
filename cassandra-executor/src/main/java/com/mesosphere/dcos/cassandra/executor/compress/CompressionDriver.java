@@ -30,7 +30,7 @@ interface CompressionDriver {
      * @param sourcePath      Source path to compress.
      * @param destinationPath Destination path.
      */
-    void compress(String sourcePath, String destinationPath) throws IOException;
+    void compress(String sourcePath, String destinationPath);
 
     /**
      * Decompresses the file/directory from source and stores it at destination.

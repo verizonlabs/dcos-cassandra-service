@@ -105,8 +105,7 @@ public class ExecutorConfig {
             @JsonProperty("volume_driver") String volumeDriver,
             @JsonProperty("volume_name") String volumeName,
             @JsonProperty("host_path") String hostPath,
-            @JsonProperty("container_path") String containerPath)
-            throws URISyntaxException, UnsupportedEncodingException {
+            @JsonProperty("container_path") String containerPath) {
 
         return create(
                 command,

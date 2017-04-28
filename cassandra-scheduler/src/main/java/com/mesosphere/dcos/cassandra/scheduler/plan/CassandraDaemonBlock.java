@@ -37,7 +37,7 @@ public class CassandraDaemonBlock extends DefaultObservable implements Block {
         return isComplete(Optional.of(status));
     }
 
-    private static boolean isComplete(Optional<Protos.TaskStatus> status) throws IOException {
+    private static boolean isComplete(Optional<Protos.TaskStatus> status) {
         if (!status.isPresent()) {
             return false;
         }

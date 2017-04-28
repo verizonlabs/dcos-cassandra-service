@@ -99,7 +99,7 @@ public class CassandraState extends SchedulerState implements Managed {
     }
 
 
-    private void removeTask(final String name) throws PersistenceException {
+    private void removeTask(final String name) {
         getStateStore().clearTask(name);
         if (tasks.containsKey(name)) {
             byId.remove(tasks.get(name).getId());
@@ -170,14 +170,14 @@ public class CassandraState extends SchedulerState implements Managed {
                         (RepairTask) entry.getValue())));
     }
 
-    public CassandraContainer createCassandraContainer(CassandraDaemonTask daemonTask) throws PersistenceException {
+    public CassandraContainer createCassandraContainer(CassandraDaemonTask daemonTask) {
         CassandraTemplateTask templateTask = CassandraTemplateTask.create(
                 daemonTask, clusterTaskConfig);
         return CassandraContainer.create(daemonTask, templateTask);
     }
 
     public CassandraContainer createCassandraContainer(CassandraDaemonTask daemonTask,
-                                                       CassandraTemplateTask templateTask) throws PersistenceException {
+                                                       CassandraTemplateTask templateTask) {
         return CassandraContainer.create(daemonTask, templateTask);
     }
 
@@ -202,7 +202,7 @@ public class CassandraState extends SchedulerState implements Managed {
     }
 
     public CassandraDaemonTask createDaemon(String name) throws
-            PersistenceException, ConfigStoreException {
+            ConfigStoreException {
         final CassandraSchedulerConfiguration targetConfig = configuration.getTargetConfig();
         final UUID targetConfigName = configuration.getTargetConfigName();
         final ServiceConfig serviceConfig = targetConfig.getServiceConfig();
@@ -423,21 +423,20 @@ public class CassandraState extends SchedulerState implements Managed {
         return !configuration.hasCurrentConfig(daemon);
     }
 
-    public CassandraDaemonTask replaceDaemon(CassandraDaemonTask task)
-            throws PersistenceException {
+    public CassandraDaemonTask replaceDaemon(CassandraDaemonTask task) {
         synchronized (getStateStore()) {
             return configuration.replaceDaemon(task);
         }
     }
 
     public CassandraDaemonTask reconfigureDaemon(
-            final CassandraDaemonTask daemon) throws PersistenceException, ConfigStoreException {
+            final CassandraDaemonTask daemon) throws ConfigStoreException {
         synchronized (getStateStore()) {
             return configuration.updateConfig(daemon);
         }
     }
 
-    private void update(CassandraTask task) throws PersistenceException {
+    private void update(CassandraTask task) {
         synchronized (getStateStore()) {
             getStateStore().storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(task.getTaskInfo())));
             if (tasks.containsKey(task.getName())) {

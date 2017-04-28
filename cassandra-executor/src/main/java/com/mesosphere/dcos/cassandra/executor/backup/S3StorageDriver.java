@@ -292,7 +292,7 @@ public class S3StorageDriver implements BackupStorageDriver {
                               String bucketName,
                               AmazonS3Client amazonS3Client,
                               String fileKey,
-                              Long sizeInBytes) throws IOException {
+                              Long sizeInBytes) {
         LOGGER.info(
                 "DownloadFile | Local location: {} | Bucket Name: {} | fileKey: {} | Size in bytes: {}",
                 localLocation, bucketName, fileKey, sizeInBytes);
