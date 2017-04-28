@@ -72,7 +72,7 @@ public class CleanupManager extends ChainedObserver implements ClusterTaskManage
             stateStore.storeProperty(CLEANUP_KEY, CleanupContext.JSON_SERIALIZER.serialize(context));
             this.phase = new CleanupPhase(context, cassandraState, provider);
             this.activeContext = context;
-        } catch (SerializationException | PersistenceException e) {
+        } catch (SerializationException e) {
             LOGGER.error(
                     "Error storing cleanup context into persistence store" +
                             ". Reason: ",
@@ -84,14 +84,8 @@ public class CleanupManager extends ChainedObserver implements ClusterTaskManage
 
     public void stop() {
         LOGGER.info("Stopping cleanup");
-        try {
-            stateStore.clearProperty(CLEANUP_KEY);
-            cassandraState.remove(cassandraState.getCleanupTasks().keySet());
-        } catch (PersistenceException e) {
-            LOGGER.error(
-                    "Error deleting cleanup context from persistence store. Reason: {}",
-                    e);
-        }
+        stateStore.clearProperty(CLEANUP_KEY);
+        cassandraState.remove(cassandraState.getCleanupTasks().keySet());
         this.activeContext = null;
 
         notifyObservers();

@@ -72,7 +72,7 @@ public class RepairManager extends ChainedObserver implements ClusterTaskManager
             this.phase = new RepairPhase(context, cassandraState, provider);
             this.phase.subscribe(this);
             this.activeContext = context;
-        } catch (SerializationException | PersistenceException e) {
+        } catch (SerializationException e) {
             LOGGER.error("Error storing repair context into persistence store. " +
                     "Reason: ", e);
 
@@ -83,15 +83,8 @@ public class RepairManager extends ChainedObserver implements ClusterTaskManager
 
     public void stop() {
         LOGGER.info("Stopping repair");
-        try {
-            stateStore.clearProperty(REPAIR_KEY);
-            cassandraState.remove(cassandraState.getRepairTasks().keySet());
-        } catch (PersistenceException e) {
-            LOGGER.error(
-                    "Error deleting repair context from persistence store. " +
-                            "Reason: {}",
-                    e);
-        }
+        stateStore.clearProperty(REPAIR_KEY);
+        cassandraState.remove(cassandraState.getRepairTasks().keySet());
         this.activeContext = null;
 
         notifyObservers();

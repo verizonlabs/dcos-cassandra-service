@@ -77,7 +77,7 @@ class CassandraRecoveryScheduler extends ChainedObserver {
                 }
 
 
-            } catch (PersistenceException | ConfigStoreException ex) {
+            } catch (ConfigStoreException ex) {
                 LOGGER.error(
                         String.format("Persistence error recovering " +
                                 "terminated task %s", terminatedOption),

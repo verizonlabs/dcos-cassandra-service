@@ -182,11 +182,11 @@ public class CassandraState extends SchedulerState implements Managed {
     }
 
     public CassandraContainer moveCassandraContainer(CassandraDaemonTask name)
-            throws PersistenceException, ConfigStoreException {
+            throws ConfigStoreException {
         return createCassandraContainer(moveDaemon(name));
     }
 
-    public CassandraContainer getOrCreateContainer(String name) throws PersistenceException, ConfigStoreException {
+    public CassandraContainer getOrCreateContainer(String name) throws ConfigStoreException {
         final CassandraDaemonTask daemonTask = getOrCreateDaemon(name);
         return createCassandraContainer(daemonTask,
                 getOrCreateTemplateTask(CassandraTemplateTask.toTemplateTaskName(name), daemonTask));
@@ -553,7 +553,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public void remove(Set<String> names) throws PersistenceException {
+    public void remove(Set<String> names) {
         for (String name : names) {
             remove(name);
         }
