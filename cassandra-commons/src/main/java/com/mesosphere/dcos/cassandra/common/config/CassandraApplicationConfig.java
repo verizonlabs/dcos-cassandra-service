@@ -186,8 +186,8 @@ public class CassandraApplicationConfig {
   private static final int DEFAULT_COMMITLOG_SYNC_PERIOD_IN_MS = 10000;
   private static final int DEFAULT_COMMITLOG_SEGMENT_SIZE_IN_MB = 32;
   public static final List<Map<String, Object>> DEFAULT_SEED_PROVIDER =
-    ImmutableList.<Map<String, Object>>of(
-      ImmutableMap.<String, Object>of(
+    ImmutableList.of(
+      ImmutableMap.of(
         "class_name",
         "org.apache.cassandra.locator.SimpleSeedProvider",
         "parameters", ImmutableList.of(ImmutableMap.of
@@ -245,7 +245,7 @@ public class CassandraApplicationConfig {
   private static final boolean DEFAULT_ENABLE_USER_DEFINED_FUNCTIONS = false;
   private static final int DEFAULT_WINDOWS_TIMER_INTERVAL = 1;
   private static final Map<String, Object> DEFAULT_SERVER_ENCRYPTION_OPTIONS =
-    ImmutableMap.<String, Object>of(
+    ImmutableMap.of(
       "internode_encryption", "none",
       "keystore", "conf/.keystore",
       "keystore_password", "cassandra",
@@ -253,7 +253,7 @@ public class CassandraApplicationConfig {
       "truststore_password", "cassandra");
 
   private static final Map<String, Object> DEFAULT_CLIENT_ENCRYPTION_OPTIONS =
-    ImmutableMap.<String, Object>of(
+    ImmutableMap.of(
       "enabled", false,
       "optional", false,
       "keystore", "conf/.keystore",
@@ -332,8 +332,8 @@ public class CassandraApplicationConfig {
    */
   public static List<Map<String, Object>> createSimpleSeedProvider(
     List<String> seeds) {
-    return ImmutableList.<Map<String, Object>>of(
-      ImmutableMap.<String, Object>of(
+    return ImmutableList.of(
+      ImmutableMap.of(
         "class_name",
         "org.apache.cassandra.locator.SimpleSeedProvider",
         "parameters", ImmutableList.of(ImmutableMap.of
@@ -351,8 +351,8 @@ public class CassandraApplicationConfig {
    * from the host indicated by url.
    */
   private static List<Map<String, Object>> createDcosSeedProvider(String url) {
-    return ImmutableList.<Map<String, Object>>of(
-      ImmutableMap.<String, Object>of(
+    return ImmutableList.of(
+      ImmutableMap.of(
         "class_name",
         "com.mesosphere.dcos.cassandra.DcosSeedProvider",
         "parameters", ImmutableList.of(ImmutableMap.of

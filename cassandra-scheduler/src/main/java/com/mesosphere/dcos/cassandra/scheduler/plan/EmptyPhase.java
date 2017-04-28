@@ -20,6 +20,6 @@ public class EmptyPhase extends DefaultPhase {
     }
 
     private EmptyPhase() {
-        super(EMPTY_PHASE_ID, "EmptyPhase", Collections.<Block>emptyList());
+        super(EMPTY_PHASE_ID, "EmptyPhase", Collections.emptyList());
     }
 }

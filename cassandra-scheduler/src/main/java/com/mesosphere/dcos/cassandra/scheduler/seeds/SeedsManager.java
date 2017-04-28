@@ -108,7 +108,7 @@ public class SeedsManager implements Runnable {
         this.serializer = serializer;
         this.configurationManager = configurationManager;
         ImmutableMap.Builder<String, DataCenterInfo> builder =
-                ImmutableMap.<String, DataCenterInfo>builder();
+                ImmutableMap.builder();
         this.client = client;
         try {
             synchronized (stateStore) {
