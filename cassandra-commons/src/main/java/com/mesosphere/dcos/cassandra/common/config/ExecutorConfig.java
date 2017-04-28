@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class ExecutorConfig {
-    public static Serializer<ExecutorConfig> JSON_SERIALIZER =
+    public static final Serializer<ExecutorConfig> JSON_SERIALIZER =
             new Serializer<ExecutorConfig>() {
                 @Override
                 public byte[] serialize(ExecutorConfig value)

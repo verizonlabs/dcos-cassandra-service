@@ -6,7 +6,7 @@ import java.util.*;
 
 public class ConfigValidator {
 
-    private ConfigValidation serversValidation = (oldConfig, newConfig) -> {
+    private final ConfigValidation serversValidation = (oldConfig, newConfig) -> {
         List<ConfigValidationError> errors = new LinkedList<>();
         if (oldConfig == null) {
             return errors;
@@ -25,7 +25,7 @@ public class ConfigValidator {
         return errors;
     };
 
-    private ConfigValidation seedValidation = (oldConfig, newConfig) -> {
+    private final ConfigValidation seedValidation = (oldConfig, newConfig) -> {
         CassandraSchedulerConfiguration newConfiguration = (CassandraSchedulerConfiguration) newConfig;
         List<ConfigValidationError> errors = new LinkedList<>();
         if (newConfiguration.getServers() < newConfiguration.getSeeds()) {
@@ -41,7 +41,7 @@ public class ConfigValidator {
         return errors;
     };
 
-    private ConfigValidation diskTypeValidation = (oldConfig, newConfig) -> {
+    private final ConfigValidation diskTypeValidation = (oldConfig, newConfig) -> {
         List<ConfigValidationError> errors = new LinkedList<>();
         if (oldConfig == null) {
             return errors;
@@ -61,7 +61,7 @@ public class ConfigValidator {
         return errors;
     };
 
-    private ConfigValidation diskSizeValidation = (oldConfig, newConfig) -> {
+    private final ConfigValidation diskSizeValidation = (oldConfig, newConfig) -> {
         List<ConfigValidationError> errors = new LinkedList<>();
         if (oldConfig == null) {
             return errors;
@@ -81,7 +81,7 @@ public class ConfigValidator {
         return errors;
     };
 
-    private ConfigValidation frameworkNameValidation = ((oldConfig, newConfig) -> {
+    private final ConfigValidation frameworkNameValidation = ((oldConfig, newConfig) -> {
         List<ConfigValidationError> errors = new LinkedList<>();
         if (oldConfig == null) {
             return errors;
@@ -99,7 +99,7 @@ public class ConfigValidator {
         return errors;
     });
 
-    private ConfigValidation principalValidation = ((oldConfig, newConfig) -> {
+    private final ConfigValidation principalValidation = ((oldConfig, newConfig) -> {
         List<ConfigValidationError> errors = new LinkedList<>();
         if (oldConfig == null) {
             return errors;
@@ -117,7 +117,7 @@ public class ConfigValidator {
         return errors;
     });
 
-    private ConfigValidation roleValidation = ((oldConfig, newConfig) -> {
+    private final ConfigValidation roleValidation = ((oldConfig, newConfig) -> {
         List<ConfigValidationError> errors = new LinkedList<>();
         if (oldConfig == null) {
             return errors;
@@ -135,7 +135,7 @@ public class ConfigValidator {
         return errors;
     });
 
-    private ConfigValidation clusterValidation = ((oldConfig, newConfig) -> {
+    private final ConfigValidation clusterValidation = ((oldConfig, newConfig) -> {
         List<ConfigValidationError> errors = new LinkedList<>();
         if (oldConfig == null) {
             return errors;
@@ -153,7 +153,7 @@ public class ConfigValidator {
         return errors;
     });
 
-    private Collection<ConfigValidation> validations = Arrays.asList(
+    private final Collection<ConfigValidation> validations = Arrays.asList(
             serversValidation,
             seedValidation,
             diskTypeValidation,

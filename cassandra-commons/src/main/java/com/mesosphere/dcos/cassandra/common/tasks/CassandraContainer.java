@@ -10,8 +10,8 @@ import java.util.Collection;
  * Backup, Restore, Upload and Download.
  */
 public class CassandraContainer {
-    private CassandraDaemonTask daemonTask;
-    private CassandraTemplateTask clusterTemplateTask;
+    private final CassandraDaemonTask daemonTask;
+    private final CassandraTemplateTask clusterTemplateTask;
 
     public static CassandraContainer create(
             CassandraDaemonTask daemonTask,

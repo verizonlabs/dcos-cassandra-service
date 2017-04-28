@@ -23,12 +23,12 @@ public class RestoreManager extends ChainedObserver implements ClusterTaskManage
     private static final Logger LOGGER = LoggerFactory.getLogger(RestoreManager.class);
     static final String RESTORE_KEY = "restore";
 
-    private CassandraState cassandraState;
+    private final CassandraState cassandraState;
     private final ClusterTaskOfferRequirementProvider provider;
     private volatile BackupRestoreContext activeContext = null;
     private volatile DownloadSnapshotPhase download = null;
     private volatile RestoreSnapshotPhase restore = null;
-    private StateStore stateStore;
+    private final StateStore stateStore;
 
     @Inject
     public RestoreManager(

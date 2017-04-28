@@ -40,7 +40,7 @@ public class AzureStorageDriver implements BackupStorageDriver {
   private static final int DEFAULT_PART_SIZE_UPLOAD = 4 * 1024 * 1024; // Chunk size set to 4MB
   private static final int DEFAULT_PART_SIZE_DOWNLOAD = 4 * 1024 * 1024; // Chunk size set to 4MB
 
-  private StorageUtil storageUtil = new StorageUtil();
+  private final StorageUtil storageUtil = new StorageUtil();
 
   @Override
   public void upload(BackupRestoreContext ctx) throws IOException {

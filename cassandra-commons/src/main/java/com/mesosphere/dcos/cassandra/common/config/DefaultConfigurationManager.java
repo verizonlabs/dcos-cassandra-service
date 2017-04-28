@@ -20,8 +20,8 @@ public class DefaultConfigurationManager {
     private final ConfigStore<Configuration> configStore;
     private final Class<?> configClass;
 
-    private List<ConfigValidationError> validationErrors;
-    private StateStore stateStore;
+    private final List<ConfigValidationError> validationErrors;
+    private final StateStore stateStore;
 
     public DefaultConfigurationManager(
             Class<?> configClass,

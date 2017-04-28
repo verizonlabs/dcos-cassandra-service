@@ -28,7 +28,7 @@ public class RepairManager extends ChainedObserver implements ClusterTaskManager
     private final ClusterTaskOfferRequirementProvider provider;
     private volatile RepairPhase phase = null;
     private volatile RepairContext activeContext = null;
-    private StateStore stateStore;
+    private final StateStore stateStore;
 
     @Inject
     public RepairManager(

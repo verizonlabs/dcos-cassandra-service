@@ -49,13 +49,13 @@ import java.util.Optional;
 
 public abstract class CassandraTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CassandraTask.class);
-    private static Protos.SlaveID EMPTY_SLAVE_ID = Protos.SlaveID
+    private static final Protos.SlaveID EMPTY_SLAVE_ID = Protos.SlaveID
         .newBuilder().setValue("").build();
 
     /**
      * Serializer that serializes CassandraTasks to and from JSON Objects.
      */
-    public static Serializer<CassandraTask> PROTO_SERIALIZER = new
+    public static final Serializer<CassandraTask> PROTO_SERIALIZER = new
         Serializer<CassandraTask>() {
             @Override
             public byte[] serialize(CassandraTask value)

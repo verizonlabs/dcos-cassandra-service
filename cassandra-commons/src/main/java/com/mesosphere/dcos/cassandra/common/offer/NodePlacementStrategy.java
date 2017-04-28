@@ -17,7 +17,7 @@ class NodePlacementStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             NodePlacementStrategy.class);
 
-    private CassandraState cassandraState;
+    private final CassandraState cassandraState;
 
     public NodePlacementStrategy(CassandraState cassandraState) {
         this.cassandraState = cassandraState;

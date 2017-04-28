@@ -10,7 +10,7 @@ import org.apache.mesos.config.Configuration;
 import org.apache.mesos.config.ConfigurationFactory;
 
 class YAMLConfigurationFactory implements ConfigurationFactory<Configuration> {
-    private Class<?> typeParameterClass;
+    private final Class<?> typeParameterClass;
 
     public YAMLConfigurationFactory(Class<?> typeParameterClass) {
         this.typeParameterClass = typeParameterClass;

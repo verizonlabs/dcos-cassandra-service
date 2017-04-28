@@ -28,7 +28,7 @@ public class CleanupManager extends ChainedObserver implements ClusterTaskManage
     private final ClusterTaskOfferRequirementProvider provider;
     private volatile CleanupPhase phase = null;
     private volatile CleanupContext activeContext = null;
-    private StateStore stateStore;
+    private final StateStore stateStore;
 
     @Inject
     public CleanupManager(

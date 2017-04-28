@@ -78,7 +78,7 @@ public class CassandraTaskExecutor {
     }
 
 
-    private Protos.ExecutorInfo info;
+    private final Protos.ExecutorInfo info;
 
     /**
      * Constructs a CassandraTaskExecutor.

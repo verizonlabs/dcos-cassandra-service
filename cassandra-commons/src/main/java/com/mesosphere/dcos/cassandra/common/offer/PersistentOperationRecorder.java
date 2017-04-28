@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public class PersistentOperationRecorder implements OperationRecorder {
     private final static Logger LOGGER = LoggerFactory.getLogger(
             PersistentOperationRecorder.class);
-    private CassandraState cassandraState;
+    private final CassandraState cassandraState;
     public PersistentOperationRecorder(
             CassandraState cassandraState) {
         this.cassandraState = cassandraState;

@@ -38,9 +38,9 @@ public class SeedsManager implements Runnable {
     private static final String DATA_CENTERS_KEY = "datacenters";
     private volatile ImmutableMap<String, DataCenterInfo> dataCenters;
     private final SchedulerClient client;
-    private DefaultConfigurationManager configurationManager;
-    private StateStore stateStore;
-    private Serializer<DataCenterInfo> serializer;
+    private final DefaultConfigurationManager configurationManager;
+    private final StateStore stateStore;
+    private final Serializer<DataCenterInfo> serializer;
 
     private boolean putLocalInfo(String url) {
         try {

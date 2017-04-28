@@ -50,7 +50,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
     private final ConfigurationManager configurationManager;
     private final MesosConfig mesosConfig;
     private final PlanManager planManager;
-    private CassandraRecoveryScheduler recoveryScheduler;
+    private final CassandraRecoveryScheduler recoveryScheduler;
     private final OfferAccepter offerAccepter;
     private final PersistentOfferRequirementProvider offerRequirementProvider;
     private final CassandraState cassandraState;

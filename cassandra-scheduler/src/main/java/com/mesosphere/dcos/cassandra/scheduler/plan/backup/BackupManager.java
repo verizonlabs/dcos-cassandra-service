@@ -34,7 +34,7 @@ public class BackupManager extends DefaultObservable implements ClusterTaskManag
     private final ClusterTaskOfferRequirementProvider provider;
     private volatile BackupSnapshotPhase backup = null;
     private volatile UploadBackupPhase upload = null;
-    private StateStore stateStore;
+    private final StateStore stateStore;
     private volatile BackupRestoreContext activeContext = null;
 
     @Inject

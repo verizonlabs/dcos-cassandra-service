@@ -35,9 +35,9 @@ import java.util.concurrent.Future;
 class BackupSnapshot implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             BackupSnapshot.class);
-    private CassandraDaemonProcess daemon;
-    private ExecutorDriver driver;
-    private BackupSnapshotTask cassandraTask;
+    private final CassandraDaemonProcess daemon;
+    private final ExecutorDriver driver;
+    private final BackupSnapshotTask cassandraTask;
 
     private void sendStatus(ExecutorDriver driver,
                             Protos.TaskState state,

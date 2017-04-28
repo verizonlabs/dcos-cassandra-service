@@ -45,7 +45,7 @@ import java.util.Optional;
 public class S3StorageDriver implements BackupStorageDriver {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             S3StorageDriver.class);
-    private StorageUtil storageUtil = new StorageUtil();
+    private final StorageUtil storageUtil = new StorageUtil();
 
     String getBucketName(BackupRestoreContext ctx) throws URISyntaxException {
         URI uri = new URI(ctx.getExternalLocation());

@@ -35,10 +35,10 @@ import java.util.concurrent.Future;
 class DownloadSnapshot implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             DownloadSnapshot.class);
-    private ExecutorDriver driver;
-    private BackupRestoreContext context;
-    private DownloadSnapshotTask cassandraTask;
-    private BackupStorageDriver backupStorageDriver;
+    private final ExecutorDriver driver;
+    private final BackupRestoreContext context;
+    private final DownloadSnapshotTask cassandraTask;
+    private final BackupStorageDriver backupStorageDriver;
 
     private void sendStatus(ExecutorDriver driver,
                             Protos.TaskState state,

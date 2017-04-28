@@ -18,8 +18,8 @@ import java.util.*;
 public class PersistentOfferRequirementProvider {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             PersistentOfferRequirementProvider.class);
-    private DefaultConfigurationManager configurationManager;
-    private CassandraState cassandraState;
+    private final DefaultConfigurationManager configurationManager;
+    private final CassandraState cassandraState;
     public static final String CONFIG_TARGET_KEY = "config_target";
 
     @Inject

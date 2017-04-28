@@ -40,9 +40,9 @@ public class CassandraStateTest {
     private static IdentityManager identity;
     private static ConfigurationManager configuration;
     private static ClusterTaskConfig clusterTaskConfig;
-    private static String testDaemonName = "test-daemon-name";
-    private static String testHostName = "test-host-name";
-    private static String testTaskId = "test-task-id__1234";
+    private static final String testDaemonName = "test-daemon-name";
+    private static final String testHostName = "test-host-name";
+    private static final String testTaskId = "test-task-id__1234";
     private CassandraState cassandraState;
     private static StateStore stateStore;
 

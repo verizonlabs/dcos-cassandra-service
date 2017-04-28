@@ -17,7 +17,7 @@ public class IdentityManager implements Managed {
     private static final String IDENTITY = "serviceConfig";
 
     private volatile ServiceConfig serviceConfig;
-    private StateStore stateStore;
+    private final StateStore stateStore;
 
     public static IdentityManager create(
             final ServiceConfig configured,

@@ -43,7 +43,7 @@ public class CassandraTaskFactoryTest {
     private static IdentityManager identity;
     private static ConfigurationManager configuration;
     private static ClusterTaskConfig clusterTaskConfig;
-    private static String testDaemonName = "test-daemon-name";
+    private static final String testDaemonName = "test-daemon-name";
     private CassandraState cassandraState;
     private static StateStore stateStore;
 

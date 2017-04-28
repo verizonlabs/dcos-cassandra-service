@@ -17,10 +17,10 @@ public class CassandraTemplateTask extends CassandraTask  {
         return daemonTaskName + CLUSTER_TASK_TEMPLATE_SUFFIX;
     }
 
-    private static Protos.SlaveID EMPTY_SLAVE_ID = Protos.SlaveID
+    private static final Protos.SlaveID EMPTY_SLAVE_ID = Protos.SlaveID
             .newBuilder().setValue("").build();
 
-    private static Protos.TaskID EMPTY_TASK_ID = Protos.TaskID
+    private static final Protos.TaskID EMPTY_TASK_ID = Protos.TaskID
             .newBuilder().setValue("").build();
 
     private CassandraTemplateTask(Protos.TaskInfo taskInfo) {

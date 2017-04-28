@@ -531,7 +531,7 @@ public class CassandraConfig {
     private final int diskMb;
 
     @JsonProperty("disk_type")
-    private VolumeRequirement.VolumeType diskType;
+    private final VolumeRequirement.VolumeType diskType;
 
     @JsonProperty("replace_ip")
     private final String replaceIp;
