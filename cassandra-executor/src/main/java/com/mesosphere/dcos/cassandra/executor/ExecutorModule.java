@@ -28,8 +28,6 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class ExecutorModule extends AbstractModule {
 
-    private final CassandraExecutorConfiguration configuration;
-
     /**
      * Creates a new ExecutorModule given the application configuration.
      * @param configuration The application Configuration used to inject
@@ -47,7 +45,7 @@ public class ExecutorModule extends AbstractModule {
      *                      dependencies.
      */
     public ExecutorModule(final CassandraExecutorConfiguration configuration) {
-        this.configuration = configuration;
+        CassandraExecutorConfiguration configuration1 = configuration;
     }
 
 

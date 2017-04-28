@@ -38,7 +38,6 @@ import java.util.concurrent.ScheduledExecutorService;
 public class CassandraExecutor implements Executor {
     private static final Logger LOGGER = LoggerFactory.getLogger(CassandraExecutor.class);
 
-    private final ScheduledExecutorService executor;
     private final ExecutorService clusterJobExecutorService;
     private CassandraTaskFactory cassandraTaskFactory;
     private CustomExecutor customExecutor;
@@ -55,7 +54,7 @@ public class CassandraExecutor implements Executor {
     @Inject
     public CassandraExecutor(final ScheduledExecutorService executor,
                              final ExecutorService clusterJobExecutorService) {
-        this.executor = executor;
+        ScheduledExecutorService executor1 = executor;
         this.clusterJobExecutorService = clusterJobExecutorService;
     }
 

@@ -43,7 +43,6 @@ public class CassandraTaskExecutor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CassandraTaskExecutor.class);
     private static final String CNI_NETWORK = "CNI";
-    private String VolumeName = "";
 
     /**
      * Creates a new CassandraTaskExecutor.
@@ -96,7 +95,7 @@ public class CassandraTaskExecutor {
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
         String commandString = config.getCommand();
 
-        this.VolumeName = name.replace("node-", config.getVolumeName() + "_").replace("_executor", "");
+        String volumeName = name.replace("node-", config.getVolumeName() + "_").replace("_executor", "");
 
         Map<String, String> map = new HashMap<>();
         map.put("JAVA_HOME", config.getJavaHome());
@@ -110,11 +109,11 @@ public class CassandraTaskExecutor {
 
         // Iterate over a list of approved docker volume drivers, or do we only want to support certain storage systems?
         if (config.getVolumeDriver().equalsIgnoreCase("rexray")) {
-            commandString = setDvdcliCommand(this.VolumeName, config);
-            containerInfo = setDvdcliContainerOptions(containerInfo, this.VolumeName, config.getVolumeDriver());
+            commandString = setDvdcliCommand(volumeName, config);
+            containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
         } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")) {
-            commandString = setDvdcliCommand(this.VolumeName, config);
-            containerInfo = setDvdcliContainerOptions(containerInfo, this.VolumeName, config.getVolumeDriver());
+            commandString = setDvdcliCommand(volumeName, config);
+            containerInfo = setDvdcliContainerOptions(containerInfo, volumeName, config.getVolumeDriver());
 
         }
 

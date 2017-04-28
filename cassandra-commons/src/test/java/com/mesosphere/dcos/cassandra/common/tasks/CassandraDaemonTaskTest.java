@@ -29,7 +29,6 @@ public class CassandraDaemonTaskTest {
     private static final String TEST_CONFIG_NAME = TEST_CONFIG_ID.toString();
 
     private CassandraDaemonTask.Factory testTaskFactory;
-    private ExecutorConfig testExecutorConfig;
     private CassandraTaskExecutor testTaskExecutor;
 
     @Before
@@ -37,7 +36,7 @@ public class CassandraDaemonTaskTest {
         Capabilities mockCapabilities = Mockito.mock(Capabilities.class);
         when(mockCapabilities.supportsNamedVips()).thenReturn(true);
         testTaskFactory = new CassandraDaemonTask.Factory(mockCapabilities);
-        testExecutorConfig = ExecutorConfig.create(
+        ExecutorConfig testExecutorConfig = ExecutorConfig.create(
                 "test-cmd",
                 Collections.singletonList("arg0"),
                 1.0,

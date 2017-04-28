@@ -55,27 +55,14 @@ public class CassandraSchedulerTest {
     @Mock private CompletableFuture<Boolean> mockFuture;
 
     private CassandraScheduler scheduler;
-    private ConfigurationManager configurationManager;
     private PlanManager planManager;
-    private PersistentOfferRequirementProvider offerRequirementProvider;
     private CassandraState cassandraState;
-    private Reconciler reconciler;
-    private EventBus eventBus;
     private SchedulerClient client;
-    private BackupManager backup;
-    private RestoreManager restore;
-    private CleanupManager cleanup;
-    private RepairManager repair;
-    private SeedsManager seeds;
-    private ExecutorService executorService;
-    private MesosConfig mesosConfig;
     private Protos.FrameworkID frameworkId;
     private Protos.MasterInfo masterInfo;
     private StateStore stateStore;
-    private static MutableSchedulerConfiguration config;
     private static TestingServer server;
     private QueuedSchedulerDriver driver;
-    private ConfigurationFactory<MutableSchedulerConfiguration> factory;
 
     @Before
     public void beforeEach() throws Exception {
@@ -86,25 +73,25 @@ public class CassandraSchedulerTest {
 
     private void beforeHelper(String configName) throws Exception {
         MockitoAnnotations.initMocks(this);
-        mesosConfig = Mockito.mock(MesosConfig.class);
+        MesosConfig mesosConfig = Mockito.mock(MesosConfig.class);
 
         client = Mockito.mock(SchedulerClient.class);
         Mockito.when(mockFuture.get()).thenReturn(true);
         Mockito.when(mockStage.toCompletableFuture()).thenReturn(mockFuture);
-        backup = Mockito.mock(BackupManager.class);
-        restore = Mockito.mock(RestoreManager.class);
-        cleanup = Mockito.mock(CleanupManager.class);
-        repair = Mockito.mock(RepairManager.class);
-        seeds = Mockito.mock(SeedsManager.class);
+        BackupManager backup = Mockito.mock(BackupManager.class);
+        RestoreManager restore = Mockito.mock(RestoreManager.class);
+        CleanupManager cleanup = Mockito.mock(CleanupManager.class);
+        RepairManager repair = Mockito.mock(RepairManager.class);
+        SeedsManager seeds = Mockito.mock(SeedsManager.class);
 
-        executorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newCachedThreadPool();
         frameworkId = TestUtils.generateFrameworkId();
-        eventBus = new EventBus();
+        EventBus eventBus = new EventBus();
 
         planManager = new CassandraPlanManager(
                 new CassandraPhaseStrategies("org.apache.mesos.scheduler.plan.DefaultInstallStrategy"));
 
-        factory = new YamlConfigurationFactory<>(
+        ConfigurationFactory<MutableSchedulerConfiguration> factory = new YamlConfigurationFactory<>(
                 MutableSchedulerConfiguration.class,
                 BaseValidator.newValidator(),
                 Jackson.newObjectMapper().registerModule(
@@ -112,7 +99,7 @@ public class CassandraSchedulerTest {
                         .registerModule(new Jdk8Module()),
                 "dw");
 
-        config = factory.build(
+        MutableSchedulerConfiguration config = factory.build(
                 new SubstitutingSourceProvider(
                         new FileConfigurationSourceProvider(),
                         new EnvironmentVariableSubstitutor(false, true)),
@@ -135,7 +122,7 @@ public class CassandraSchedulerTest {
 
         Capabilities mockCapabilities = Mockito.mock(Capabilities.class);
         when(mockCapabilities.supportsNamedVips()).thenReturn(true);
-        configurationManager = new ConfigurationManager(
+        ConfigurationManager configurationManager = new ConfigurationManager(
                 new CassandraDaemonTask.Factory(mockCapabilities),
                 defaultConfigurationManager);
 
@@ -144,9 +131,9 @@ public class CassandraSchedulerTest {
                 configurationManager,
                 clusterTaskConfig,
                 stateStore);
-        reconciler = new DefaultReconciler(cassandraState.getStateStore());
+        Reconciler reconciler = new DefaultReconciler(cassandraState.getStateStore());
 
-        offerRequirementProvider = new PersistentOfferRequirementProvider(defaultConfigurationManager, cassandraState);
+        PersistentOfferRequirementProvider offerRequirementProvider = new PersistentOfferRequirementProvider(defaultConfigurationManager, cassandraState);
         scheduler = new CassandraScheduler(
                 configurationManager,
                 mesosConfig,

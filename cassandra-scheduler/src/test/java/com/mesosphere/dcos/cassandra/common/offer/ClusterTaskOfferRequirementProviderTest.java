@@ -32,7 +32,6 @@ import static org.mockito.Mockito.when;
 public class ClusterTaskOfferRequirementProviderTest {
     private static TestingServer server;
     private static CassandraSchedulerConfiguration config;
-    private static IdentityManager identity;
     private static ConfigurationManager configuration;
     private static ClusterTaskConfig clusterTaskConfig;
     private static CassandraState cassandraState;
@@ -138,8 +137,8 @@ public class ClusterTaskOfferRequirementProviderTest {
                 retryPolicy);
         stateStore.storeFrameworkId(Protos.FrameworkID.newBuilder().setValue("1234").build());
 
-        identity = new IdentityManager(
-                initial,stateStore);
+        IdentityManager identity = new IdentityManager(
+                initial, stateStore);
 
         identity.register("test_id");
 

@@ -58,7 +58,6 @@ public class CassandraDaemonProcess extends ProcessTask {
 
     private static final Object CLOSED = new Object();
     private final CassandraDaemonTask task;
-    private final CassandraPaths paths;
     private final AtomicBoolean open = new AtomicBoolean(true);
     private final AtomicReference<CassandraMode> mode;
     private final Probe probe;
@@ -186,7 +185,7 @@ public class CassandraDaemonProcess extends ProcessTask {
             boolean exitOnTermination) throws InvalidProtocolBufferException {
         super(executorDriver, taskInfo, processBuilder, exitOnTermination);
         this.task = cassandraTask;
-        this.paths = cassandraPaths;
+        CassandraPaths paths = cassandraPaths;
 
         this.probe = new Probe(cassandraTask);
         this.mode = new AtomicReference<>(CassandraMode.STARTING);

@@ -47,17 +47,15 @@ public class CassandraDaemonBlockTest {
     @Mock
     private CompletableFuture<Boolean> mockFuture;
 
-    private static TestingServer server;
     private static CassandraDaemonTask.Factory taskFactory;
     private static MutableSchedulerConfiguration config;
-    private static ClusterTaskConfig clusterTaskConfig;
     private static StateStore stateStore;
     private static DefaultConfigurationManager configurationManager;
 
     @Before
     public void beforeEach() throws Exception {
         MockitoAnnotations.initMocks(this);
-        server = new TestingServer();
+        TestingServer server = new TestingServer();
         server.start();
 
         Capabilities mockCapabilities = mock(Capabilities.class);
@@ -80,7 +78,7 @@ public class CassandraDaemonBlockTest {
                 Resources.getResource("scheduler.yml").getFile());
 
         final CassandraSchedulerConfiguration targetConfig = config.createConfig();
-        clusterTaskConfig = targetConfig.getClusterTaskConfig();
+        ClusterTaskConfig clusterTaskConfig = targetConfig.getClusterTaskConfig();
 
         final CuratorFrameworkConfig curatorConfig = config.getCuratorConfig();
         RetryPolicy retryPolicy =

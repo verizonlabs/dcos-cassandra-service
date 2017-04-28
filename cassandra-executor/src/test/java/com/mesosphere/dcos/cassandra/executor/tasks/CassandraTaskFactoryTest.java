@@ -39,13 +39,8 @@ import static org.mockito.Mockito.when;
 public class CassandraTaskFactoryTest {
     private static CassandraTaskFactory taskFactory;
     private static TestingServer server;
-    private static MutableSchedulerConfiguration config;
-    private static IdentityManager identity;
-    private static ConfigurationManager configuration;
-    private static ClusterTaskConfig clusterTaskConfig;
     private static final String testDaemonName = "test-daemon-name";
     private CassandraState cassandraState;
-    private static StateStore stateStore;
 
     @Mock
     private ExecutorDriver executorDriver;
@@ -65,7 +60,7 @@ public class CassandraTaskFactoryTest {
                                 .registerModule(new Jdk8Module()),
                         "dw");
 
-        config = factory.build(
+        MutableSchedulerConfiguration config = factory.build(
                 new SubstitutingSourceProvider(
                         new FileConfigurationSourceProvider(),
                         new EnvironmentVariableSubstitutor(false, true)),
@@ -74,7 +69,7 @@ public class CassandraTaskFactoryTest {
         ServiceConfig initial = config.createConfig().getServiceConfig();
 
         final CassandraSchedulerConfiguration targetConfig = config.createConfig();
-        clusterTaskConfig = targetConfig.getClusterTaskConfig();
+        ClusterTaskConfig clusterTaskConfig = targetConfig.getClusterTaskConfig();
 
         final CuratorFrameworkConfig curatorConfig = config.getCuratorConfig();
         RetryPolicy retryPolicy =
@@ -86,12 +81,12 @@ public class CassandraTaskFactoryTest {
                                 , (int) curatorConfig.getBackoffMs()) :
                         new RetryForever((int) curatorConfig.getBackoffMs());
 
-        stateStore = new CuratorStateStore(
+        StateStore stateStore = new CuratorStateStore(
                 targetConfig.getServiceConfig().getName(),
                 server.getConnectString(),
                 retryPolicy);
         stateStore.storeFrameworkId(Protos.FrameworkID.newBuilder().setValue("1234").build());
-        identity = new IdentityManager(initial,stateStore);
+        IdentityManager identity = new IdentityManager(initial, stateStore);
 
         identity.register("test_id");
 
@@ -105,7 +100,7 @@ public class CassandraTaskFactoryTest {
 
         Capabilities mockCapabilities = Mockito.mock(Capabilities.class);
         when(mockCapabilities.supportsNamedVips()).thenReturn(true);
-        configuration = new ConfigurationManager(
+        ConfigurationManager configuration = new ConfigurationManager(
                 new CassandraDaemonTask.Factory(mockCapabilities),
                 configurationManager);
 

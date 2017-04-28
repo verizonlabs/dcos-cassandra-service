@@ -36,10 +36,6 @@ import static org.mockito.Mockito.when;
  */
 public class CassandraStateTest {
     private static TestingServer server;
-    private static MutableSchedulerConfiguration config;
-    private static IdentityManager identity;
-    private static ConfigurationManager configuration;
-    private static ClusterTaskConfig clusterTaskConfig;
     private static final String testDaemonName = "test-daemon-name";
     private static final String testHostName = "test-host-name";
     private static final String testTaskId = "test-task-id__1234";
@@ -61,7 +57,7 @@ public class CassandraStateTest {
                                 .registerModule(new Jdk8Module()),
                         "dw");
 
-        config = factory.build(
+        MutableSchedulerConfiguration config = factory.build(
                 new SubstitutingSourceProvider(
                         new FileConfigurationSourceProvider(),
                         new EnvironmentVariableSubstitutor(false, true)),
@@ -70,7 +66,7 @@ public class CassandraStateTest {
         ServiceConfig initial = config.createConfig().getServiceConfig();
 
         final CassandraSchedulerConfiguration targetConfig = config.createConfig();
-        clusterTaskConfig = targetConfig.getClusterTaskConfig();
+        ClusterTaskConfig clusterTaskConfig = targetConfig.getClusterTaskConfig();
 
         final CuratorFrameworkConfig curatorConfig = config.getCuratorConfig();
         RetryPolicy retryPolicy =
@@ -87,8 +83,8 @@ public class CassandraStateTest {
                 server.getConnectString(),
                 retryPolicy);
         stateStore.storeFrameworkId(Protos.FrameworkID.newBuilder().setValue("1234").build());
-        identity = new IdentityManager(
-                initial,stateStore);
+        IdentityManager identity = new IdentityManager(
+                initial, stateStore);
 
         identity.register("test_id");
 
@@ -102,7 +98,7 @@ public class CassandraStateTest {
 
         Capabilities mockCapabilities = Mockito.mock(Capabilities.class);
         when(mockCapabilities.supportsNamedVips()).thenReturn(true);
-        configuration = new ConfigurationManager(
+        ConfigurationManager configuration = new ConfigurationManager(
                 new CassandraDaemonTask.Factory(mockCapabilities),
                 configurationManager);
 
