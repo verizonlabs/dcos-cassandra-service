@@ -45,7 +45,7 @@ public class CassandraDaemonController {
 
     private final CassandraExecutor executor;
 
-    private final CassandraDaemonProcess getDaemon() {
+    private CassandraDaemonProcess getDaemon() {
 
         Optional<CassandraDaemonProcess> process = executor
                 .getCassandraDaemon();

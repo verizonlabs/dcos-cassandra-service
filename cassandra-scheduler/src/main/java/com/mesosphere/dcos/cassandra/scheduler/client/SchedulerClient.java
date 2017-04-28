@@ -26,12 +26,12 @@ public class SchedulerClient {
             LoggerFactory.getLogger(SchedulerClient.class);
     private static final String SCHEME = "http";
 
-    private static final String host(String hostname, int port) {
+    private static String host(String hostname, int port) {
         return hostname + ":" + port;
     }
 
 
-    private static final boolean isSuccessful(HttpResponse response) {
+    private static boolean isSuccessful(HttpResponse response) {
         int status = response.getStatusLine().getStatusCode();
         return (200 <= status && status < 300);
     }

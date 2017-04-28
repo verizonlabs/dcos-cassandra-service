@@ -129,7 +129,7 @@ public class CassandraDaemonProcess extends ProcessTask {
                 probe.getReleaseVersion());
     }
 
-    private static final String getListenAddress() throws UnknownHostException {
+    private static String getListenAddress() throws UnknownHostException {
 
         String address = System.getenv("LIBPROCESS_IP");
 

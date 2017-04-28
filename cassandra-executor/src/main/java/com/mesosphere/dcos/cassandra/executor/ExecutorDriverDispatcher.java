@@ -33,7 +33,7 @@ class ExecutorDriverDispatcher implements Runnable, Managed {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(ExecutorDriverDispatcher.class);
 
-    private static final int exitCode(final Protos.Status status) {
+    private static int exitCode(final Protos.Status status) {
         return (status == Protos.Status.DRIVER_ABORTED ||
                 status == Protos.Status.DRIVER_NOT_STARTED) ?
                 -1 : 0;
