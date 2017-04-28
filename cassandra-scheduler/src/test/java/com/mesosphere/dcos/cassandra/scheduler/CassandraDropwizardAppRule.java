@@ -35,21 +35,6 @@ class CassandraDropwizardAppRule<C extends MutableSchedulerConfiguration> extend
     }
 
     @Override
-    public Environment getEnvironment() {
-        return super.getEnvironment();
-    }
-
-    @Override
-    public ObjectMapper getObjectMapper() {
-        return super.getObjectMapper();
-    }
-
-    @Override
-    public DropwizardTestSupport<C> getTestSupport() {
-        return super.getTestSupport();
-    }
-
-    @Override
     public MutableSchedulerConfiguration getConfiguration() {
         return (MutableSchedulerConfiguration) super.getConfiguration();
     }

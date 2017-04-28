@@ -42,11 +42,6 @@ public class LogLayout extends LayoutBase<ILoggingEvent> {
         patternLayout.stop();
     }
 
-    @Override
-    public boolean isStarted() {
-        return super.isStarted();
-    }
-
     public void setPattern(String value) {
         patternLayout = new PatternLayout();
         patternLayout.setPattern(value);

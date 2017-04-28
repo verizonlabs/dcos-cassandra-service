@@ -159,10 +159,6 @@ public class ClusterTaskOfferRequirementProviderTest {
         provider = new ClusterTaskOfferRequirementProvider();
     }
 
-    @After
-    public void afterEach() {
-    }
-
     @AfterClass
     public static void afterAll() throws Exception {
         server.close();
