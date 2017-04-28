@@ -7,8 +7,6 @@ import java.util.List;
 
 /**
  * Interface for managers of ClusterTask execution (e.g Backup, Restore, Cleanup, ... )
- *
- * @param <Context> the {@link ClusterTaskContext} used by the implementing manager
  */
 public interface ClusterTaskManager<R extends ClusterTaskRequest> extends Completable {
 
