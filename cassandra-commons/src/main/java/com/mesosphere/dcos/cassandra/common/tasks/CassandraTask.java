@@ -223,7 +223,7 @@ public abstract class CassandraTask {
 
         String path = getDataDirectory(executor);
 
-        if (!path.equals(CassandraConfig.VOLUME_PATH)) {
+        if (path.equals(CassandraConfig.VOLUME_PATH)) {
             if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
                 if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
                     builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, path));
@@ -249,12 +249,12 @@ public abstract class CassandraTask {
         if (isDockerVolume == 0){
             return CassandraConfig.VOLUME_PATH;
         }
-        return ""; // We're using a rexray volume if we get here.
+        return CassandraConfig.EXTERNAL_VOLUME_PATH; // We're using a rexray volume if we get here.
     }
 
     /**
      * Gets the unique identifier for the task.
-     *
+     *K
      * @return The universally unique identifier for the task.
      */
     public String getId() {

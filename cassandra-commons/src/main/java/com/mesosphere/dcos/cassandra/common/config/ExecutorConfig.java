@@ -105,6 +105,10 @@ public class ExecutorConfig {
             @JsonProperty("host_path") String hostPath,
             @JsonProperty("container_path") String containerPath) {
 
+        if (dvdcli == null) {
+            dvdcli = "";
+        }
+
         return create(
                 command,
                 arguments,
@@ -118,7 +122,7 @@ public class ExecutorConfig {
                 URI.create(jreLocation),
                 URI.create(executorLocation),
                 URI.create(cassandraLocation),
-                URI.create(dvdcli),
+                URI.create(dvdcli), // Null pointer exception when scheduler config is parsed unless we make sure it's never null.
                 volumeDriver,
                 volumeName,
                 hostPath,
@@ -278,6 +282,10 @@ public class ExecutorConfig {
 
     @JsonProperty("dvdcli")
     public String getDvdcliString() {
+        if (dvdcli == null) {
+            return "";
+        }
+
         return dvdcli.toString();
     }
 
@@ -298,6 +306,9 @@ public class ExecutorConfig {
         uris.add(executorLocation.toString());
         uris.add(cassandraLocation.toString());
         uris.add(jreLocation.toString());
+        if(System.getenv().containsKey("LOGGER_LOCATION")) {
+            uris.add(System.getenv("LOGGER_LOCATION"));
+        }
 
         return uris;
     }
