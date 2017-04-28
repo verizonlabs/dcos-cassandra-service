@@ -140,11 +140,8 @@ public class Location {
     public void writeProperties(Path path) throws IOException {
 
         logger.info("Writing properties to path: " + path.toAbsolutePath());
-        FileOutputStream stream = new FileOutputStream(path.toFile());
-        try {
+        try (FileOutputStream stream = new FileOutputStream(path.toFile())) {
             toProperties().store(stream, "DCOS got yo Cassandra!");
-        } finally {
-            stream.close();
         }
     }
 
