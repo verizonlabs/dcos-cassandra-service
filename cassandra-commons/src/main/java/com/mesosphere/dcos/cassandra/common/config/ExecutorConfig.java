@@ -108,7 +108,7 @@ public class ExecutorConfig {
             @JsonProperty("container_path") String containerPath)
             throws URISyntaxException, UnsupportedEncodingException {
 
-        ExecutorConfig config = create(
+        return create(
                 command,
                 arguments,
                 cpus,
@@ -126,8 +126,6 @@ public class ExecutorConfig {
                 volumeName,
                 hostPath,
                 containerPath);
-
-        return config;
     }
 
     @JsonProperty("command")

@@ -46,12 +46,10 @@ public class NodePlacementStrategy {
         final String taskIdValue = taskId.getValue();
         final Map<String, CassandraDaemonTask> daemons = cassandraState.getDaemons();
 
-        final List<Protos.TaskInfo> others = daemons.values().stream()
+        return daemons.values().stream()
                 .filter(task -> !task.getId().equals(taskIdValue))
                 .map(task -> task.getTaskInfo())
                 .collect(Collectors.toList());
-
-        return others;
     }
 
 }
