@@ -173,10 +173,9 @@ public abstract class CassandraTask {
         return status;
     }
 
-    CassandraTask setTaskStatus(Protos.TaskStatus status) {
+    void setTaskStatus(Protos.TaskStatus status) {
         this.status = status;
 
-        return this;
     }
 
     public Protos.TaskState getState(){
