@@ -26,8 +26,6 @@ public class CassandraPhaseStrategies implements PhaseStrategyFactory {
         }
     }
 
-    ;
-
     @Override
     public PhaseStrategy getStrategy(Phase phase) {
         if (phase instanceof EmptyPhase) {
