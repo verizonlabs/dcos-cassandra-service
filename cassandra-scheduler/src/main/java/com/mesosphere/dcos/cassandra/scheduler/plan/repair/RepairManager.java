@@ -111,7 +111,7 @@ public class RepairManager extends ChainedObserver implements ClusterTaskManager
         if (phase == null) {
             return Collections.emptyList();
         } else {
-            return Arrays.asList(phase);
+            return Collections.singletonList(phase);
         }
     }
 }

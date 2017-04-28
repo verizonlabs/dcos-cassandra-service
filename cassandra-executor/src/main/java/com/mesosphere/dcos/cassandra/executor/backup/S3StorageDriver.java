@@ -69,18 +69,18 @@ public class S3StorageDriver implements BackupStorageDriver {
         String[] segments = uri.getPath().split("/");
 
         int startIndex = uri.getScheme().equals(AmazonS3Client.S3_SERVICE_NAME) ? 1 : 2;
-        String prefixKey = "";
+        StringBuilder prefixKey = new StringBuilder();
         for (int i=startIndex; i<segments.length; i++) {
-            prefixKey += segments[i];
+            prefixKey.append(segments[i]);
             if (i < segments.length - 1) {
-                prefixKey += "/";
+                prefixKey.append("/");
             }
         }
 
-        prefixKey = (prefixKey.length() > 0 && !prefixKey.endsWith("/")) ? prefixKey + "/" : prefixKey;
-        prefixKey += ctx.getName(); // append backup name
+        prefixKey = new StringBuilder((prefixKey.length() > 0 && !prefixKey.toString().endsWith("/")) ? prefixKey + "/" : prefixKey.toString());
+        prefixKey.append(ctx.getName()); // append backup name
 
-        return prefixKey;
+        return prefixKey.toString();
     }
 
     String getEndpoint(BackupRestoreContext ctx) throws URISyntaxException {

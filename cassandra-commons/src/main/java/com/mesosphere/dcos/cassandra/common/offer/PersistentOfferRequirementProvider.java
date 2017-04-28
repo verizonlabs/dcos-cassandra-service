@@ -144,7 +144,7 @@ public class PersistentOfferRequirementProvider {
         try {
             return new OfferRequirement(
                     type,
-                    Arrays.asList(taskInfo),
+                    Collections.singletonList(taskInfo),
                     Optional.of(execInfo),
                     Optional.empty());
         } catch (InvalidRequirementException e) {

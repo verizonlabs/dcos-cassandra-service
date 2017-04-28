@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -90,21 +91,21 @@ public class Cleanup implements ExecutorTask {
                 LOGGER.info("Starting cleanup : keySpace = {}, " +
                         "columnFamilies = {}",
                     keyspace,
-                    Arrays.asList(columnFamilies));
+                        Collections.singletonList(columnFamilies));
 
                 daemon.cleanup(keyspace, columnFamilies);
 
                 LOGGER.info("Completed cleanup : keySpace = {}, " +
                         "columnFamilies = {}",
                     keyspace,
-                    Arrays.asList(columnFamilies));
+                        Collections.singletonList(columnFamilies));
             }
 
             sendStatus(driver, Protos.TaskState.TASK_FINISHED,
                 String.format("Completed cleanup: keySpaces = %s, " +
                         "columnFamilies = %s",
                     keySpaces,
-                    Arrays.asList(columnFamilies)));
+                        Collections.singletonList(columnFamilies)));
         } catch (final Throwable t) {
             LOGGER.error("Cleanup failed", t);
             sendStatus(driver, Protos.TaskState.TASK_FAILED, t.getMessage());

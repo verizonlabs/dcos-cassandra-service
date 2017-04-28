@@ -141,7 +141,7 @@ public class CassandraTaskExecutor {
                             Arrays.asList(
                                     createCpus(config.getCpus(), role, principal),
                                     createMemoryMb(config.getMemoryMb(), role, principal),
-                                    createPorts(Arrays.asList(config.getApiPort()), role, principal)));
+                                    createPorts(Collections.singletonList(config.getApiPort()), role, principal)));
             this.info = executorBuilder.build();
         }
     }
@@ -151,15 +151,12 @@ public class CassandraTaskExecutor {
     }
 
     private String setDvdcliCommand(String volumeName, ExecutorConfig config) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("./dvdcli mount --volumename=");
-        stringBuilder.append(volumeName);
-        stringBuilder.append(" --volumedriver=");
-        stringBuilder.append(config.getVolumeDriver().trim().toLowerCase());
-        stringBuilder.append(" && ");
-        stringBuilder.append(config.getCommand());
-
-        return stringBuilder.toString();
+        return "./dvdcli mount --volumename=" +
+                volumeName +
+                " --volumedriver=" +
+                config.getVolumeDriver().trim().toLowerCase() +
+                " && " +
+                config.getCommand();
     }
 
     private Protos.ContainerInfo.Builder setDvdcliContainerOptions(Protos.ContainerInfo.Builder builder, String volumeName, String volumeDriver) {

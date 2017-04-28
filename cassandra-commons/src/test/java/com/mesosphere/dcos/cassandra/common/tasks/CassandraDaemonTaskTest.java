@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +40,7 @@ public class CassandraDaemonTaskTest {
         testTaskFactory = new CassandraDaemonTask.Factory(mockCapabilities);
         testExecutorConfig = ExecutorConfig.create(
                 "test-cmd",
-                Arrays.asList("arg0"),
+                Collections.singletonList("arg0"),
                 1.0,
                 256,
                 500,

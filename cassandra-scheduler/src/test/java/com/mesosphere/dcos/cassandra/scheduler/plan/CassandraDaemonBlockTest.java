@@ -165,7 +165,7 @@ public class CassandraDaemonBlockTest {
         Protos.TaskInfo taskInfo = task.getTaskInfo();
         taskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                 .setSlaveId(Protos.SlaveID.newBuilder().setValue("1.2.3.4").build()).build();
-        stateStore.storeTasks(Arrays.asList(TaskUtils.packTaskInfo(taskInfo)));
+        stateStore.storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(taskInfo)));
 
         final Protos.TaskStatus status = TestUtils.generateStatus(taskInfo.getTaskId(),
                 Protos.TaskState.TASK_RUNNING, CassandraMode.NORMAL);
@@ -193,7 +193,7 @@ public class CassandraDaemonBlockTest {
         Protos.TaskInfo taskInfo = task.getTaskInfo();
         taskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                 .setSlaveId(Protos.SlaveID.newBuilder().setValue("1.2.3.4").build()).build();
-        stateStore.storeTasks(Arrays.asList(TaskUtils.packTaskInfo(taskInfo)));
+        stateStore.storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(taskInfo)));
 
         Protos.TaskStatus status = TestUtils.generateStatus(taskInfo.getTaskId(),
                 Protos.TaskState.TASK_RUNNING, CassandraMode.NORMAL);
@@ -234,7 +234,7 @@ public class CassandraDaemonBlockTest {
         Protos.TaskInfo taskInfo = task.getTaskInfo();
         taskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                 .setSlaveId(Protos.SlaveID.newBuilder().setValue("1.2.3.4").build()).build();
-        stateStore.storeTasks(Arrays.asList(TaskUtils.packTaskInfo(taskInfo)));
+        stateStore.storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(taskInfo)));
 
         Protos.TaskStatus status = TestUtils.generateStatus(taskInfo.getTaskId(),
                 Protos.TaskState.TASK_RUNNING, CassandraMode.NORMAL);
@@ -274,7 +274,7 @@ public class CassandraDaemonBlockTest {
         Protos.TaskInfo taskInfo = task.getTaskInfo();
         taskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                 .setSlaveId(Protos.SlaveID.newBuilder().setValue("1.2.3.4").build()).build();
-        stateStore.storeTasks(Arrays.asList(TaskUtils.packTaskInfo(taskInfo)));
+        stateStore.storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(taskInfo)));
 
         final Protos.TaskStatus status = TestUtils.generateStatus(taskInfo.getTaskId(),
                 Protos.TaskState.TASK_FINISHED);
@@ -304,7 +304,7 @@ public class CassandraDaemonBlockTest {
         Protos.TaskInfo taskInfo = task.getTaskInfo();
         taskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                 .setSlaveId(Protos.SlaveID.newBuilder().setValue("1.2.3.4").build()).build();
-        stateStore.storeTasks(Arrays.asList(TaskUtils.packTaskInfo(taskInfo)));
+        stateStore.storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(taskInfo)));
 
         final Protos.TaskStatus status = TestUtils.generateStatus(taskInfo.getTaskId(),
                 Protos.TaskState.TASK_FAILED);
@@ -339,7 +339,7 @@ public class CassandraDaemonBlockTest {
         Protos.TaskInfo taskInfo = task.getTaskInfo();
         taskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                 .setSlaveId(Protos.SlaveID.newBuilder().setValue("1.2.3.4").build()).build();
-        stateStore.storeTasks(Arrays.asList(TaskUtils.packTaskInfo(taskInfo)));
+        stateStore.storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(taskInfo)));
 
         final Protos.TaskStatus status = TestUtils.generateStatus(taskInfo.getTaskId(),
                 Protos.TaskState.TASK_STAGING);
@@ -374,7 +374,7 @@ public class CassandraDaemonBlockTest {
         Protos.TaskInfo taskInfo = task.getTaskInfo();
         taskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                 .setSlaveId(Protos.SlaveID.newBuilder().setValue("1.2.3.4").build()).build();
-        stateStore.storeTasks(Arrays.asList(taskInfo));
+        stateStore.storeTasks(Collections.singletonList(taskInfo));
         block.updateOfferStatus(Collections.singleton(null));
         final Protos.TaskStatus status = TestUtils.generateStatus(taskInfo.getTaskId(),
                 Protos.TaskState.TASK_RUNNING, CassandraMode.NORMAL);
@@ -401,7 +401,7 @@ public class CassandraDaemonBlockTest {
         Protos.TaskInfo taskInfo = task.getTaskInfo();
         taskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                 .setSlaveId(Protos.SlaveID.newBuilder().setValue("1.2.3.4").build()).build();
-        stateStore.storeTasks(Arrays.asList(taskInfo));
+        stateStore.storeTasks(Collections.singletonList(taskInfo));
         block.updateOfferStatus(Collections.singleton(null));
         final Protos.TaskStatus status = TestUtils.generateStatus(taskInfo.getTaskId(),
                 Protos.TaskState.TASK_RUNNING);

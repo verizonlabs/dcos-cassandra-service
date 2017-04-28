@@ -24,6 +24,7 @@ import org.junit.*;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -80,7 +81,7 @@ public class ClusterTaskOfferRequirementProviderTest {
         Protos.Value.Range range = Protos.Value.Range.newBuilder().setBegin(testPortBegin).setEnd(testPortEnd).build();
         Protos.Resource ports = ResourceUtils.getExpectedRanges(
                 "ports",
-                Arrays.asList(range),
+                Collections.singletonList(range),
                 testResourceId,
                 testRole,
                 testPrincipal);

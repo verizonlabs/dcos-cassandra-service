@@ -230,7 +230,7 @@ public class CassandraState extends SchedulerState implements Managed {
         Optional<Protos.TaskInfo> templateOptional = getTemplate(updated);
         if (templateOptional.isPresent()) {
             getStateStore().storeTasks(
-                    Arrays.asList(CassandraTemplateTask.create(updated, clusterTaskConfig).getTaskInfo()));
+                    Collections.singletonList(CassandraTemplateTask.create(updated, clusterTaskConfig).getTaskInfo()));
         }
 
         return updated;
@@ -439,7 +439,7 @@ public class CassandraState extends SchedulerState implements Managed {
 
     public void update(CassandraTask task) throws PersistenceException {
         synchronized (getStateStore()) {
-            getStateStore().storeTasks(Arrays.asList(TaskUtils.packTaskInfo(task.getTaskInfo())));
+            getStateStore().storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(task.getTaskInfo())));
             if (tasks.containsKey(task.getName())) {
                 byId.remove(tasks.get(task.getName()).getId());
             }
@@ -473,7 +473,7 @@ public class CassandraState extends SchedulerState implements Managed {
         try {
             CassandraTask task = CassandraTask.parse(taskInfo);
             task = task.update(offer);
-            getStateStore().storeTasks(Arrays.asList(TaskUtils.packTaskInfo(task.getTaskInfo())));
+            getStateStore().storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(task.getTaskInfo())));
             update(task);
         } catch (Exception e) {
             LOGGER.error("Error storing task: {}, reason: {}", taskInfo, e);

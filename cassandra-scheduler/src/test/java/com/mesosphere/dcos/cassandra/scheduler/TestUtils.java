@@ -6,6 +6,7 @@ import org.apache.mesos.Protos;
 import org.apache.mesos.offer.ResourceUtils;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 
 public class TestUtils {
@@ -69,7 +70,7 @@ public class TestUtils {
                 .addAttributes(Protos.Attribute.newBuilder().setText(Protos.Value.Text.newBuilder().setValue("POD1")).setName("POD1").setType(Protos.Value.Type.TEXT))
                 .addResources(ResourceUtils.getUnreservedRanges(
                         "ports",
-                        Arrays.asList(Protos.Value.Range.newBuilder().setBegin(5000).setEnd(40000).build())))
+                        Collections.singletonList(Protos.Value.Range.newBuilder().setBegin(5000).setEnd(40000).build())))
                 .build();
     }
 

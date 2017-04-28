@@ -141,7 +141,7 @@ public class DefaultConfigurationManager {
 
                     final Protos.TaskInfo updatedTaskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                             .setLabels(labels).build();
-                    stateStore.storeTasks(Arrays.asList(updatedTaskInfo));
+                    stateStore.storeTasks(Collections.singletonList(updatedTaskInfo));
                     LOGGER.info("Updated task: {} from duplicate config: {} to current target: {}",
                             updatedTaskInfo.getName(), taskConfigName, targetConfigName);
                     return;

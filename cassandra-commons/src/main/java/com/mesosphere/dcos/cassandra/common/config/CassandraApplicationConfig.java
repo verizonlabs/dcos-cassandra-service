@@ -1490,8 +1490,8 @@ public class CassandraApplicationConfig {
     map.put(PERMISSIONS_VALIDITY_IN_MS_KEY, permissionsValidityInMs);
     map.put(PARTITIONER_KEY, partitioner);
     map.put(DATA_FILE_DIRECTORIES_KEY,
-      Arrays.asList(Paths.get(CassandraConfig.VOLUME_PATH, "data")
-        .toAbsolutePath().toString()));
+            Collections.singletonList(Paths.get(CassandraConfig.VOLUME_PATH, "data")
+                    .toAbsolutePath().toString()));
     map.put(COMMITLOG_DIRECTORY_KEY,
       Paths.get(CassandraConfig.VOLUME_PATH, "commitlog")
         .toAbsolutePath().toString());

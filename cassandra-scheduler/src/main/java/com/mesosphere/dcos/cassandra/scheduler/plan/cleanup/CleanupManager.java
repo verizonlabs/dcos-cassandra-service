@@ -111,7 +111,7 @@ public class CleanupManager extends ChainedObserver implements ClusterTaskManage
         if (phase == null) {
             return Collections.emptyList();
         } else {
-            return Arrays.asList(phase);
+            return Collections.singletonList(phase);
         }
     }
 }
