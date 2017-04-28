@@ -199,8 +199,7 @@ public class CassandraSchedulerConfiguration implements Configuration {
     if (externalDcs == null || externalDcs.isEmpty())
       return Collections.emptyList();
     else {
-      return Arrays.asList(externalDcs.split(","))
-        .stream()
+      return Arrays.stream(externalDcs.split(","))
         .filter(dc -> !dc.isEmpty())
         .collect(Collectors.toList());
     }

@@ -26,7 +26,7 @@ class NodePlacementStrategy {
     public List<String> getAgentsToAvoid(Protos.TaskInfo taskInfo) {
         List<String> agentsToAvoid = new ArrayList<>();
         final List<Protos.TaskInfo> otherTaskInfos = getOtherTaskInfos(taskInfo);
-        otherTaskInfos.stream().forEach(otherTaskInfo -> {
+        otherTaskInfos.forEach(otherTaskInfo -> {
             final Protos.SlaveID slaveId = otherTaskInfo.getSlaveId();
 
             if (slaveId != null && slaveId.hasValue() && StringUtils.isNotBlank(slaveId.getValue())) {
