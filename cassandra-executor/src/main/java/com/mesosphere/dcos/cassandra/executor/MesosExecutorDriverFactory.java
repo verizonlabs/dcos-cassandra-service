@@ -1,9 +1,3 @@
-/**
- * Creates a new ExecutorModule given the application configuration.
- * @param configuration The application Configuration used to inject
- *                      dependencies.
- * @return The ExecutorModule constructed using configuration.
- */
 package com.mesosphere.dcos.cassandra.executor;
 
 import org.apache.mesos.Executor;

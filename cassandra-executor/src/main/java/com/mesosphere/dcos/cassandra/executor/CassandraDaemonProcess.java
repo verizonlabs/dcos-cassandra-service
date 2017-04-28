@@ -149,9 +149,6 @@ public class CassandraDaemonProcess extends ProcessTask {
      * and a process watchdog. After calling this method the Cassandra
      * process is running and the NodeProbe instance is connected.
      *
-     * @param task     The CassandraDaemonTask that corresponds to the process.
-     * @param executor The ScheduledExecutorService to use for background
-     *                 Runnables (The watchdog and status reporter).
      * @param driver   The ExecutorDriver for the CassandraExecutor.
      * @return A CassandraDaemonProcess constructed from the
      * @throws IOException If an error occurs attempting to start the
