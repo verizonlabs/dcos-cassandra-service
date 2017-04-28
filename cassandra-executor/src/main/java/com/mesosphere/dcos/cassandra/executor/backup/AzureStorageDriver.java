@@ -151,7 +151,7 @@ public class AzureStorageDriver implements BackupStorageDriver {
   }
 
   @Override
-  public void download(BackupRestoreContext ctx) throws IOException {
+  public void download(BackupRestoreContext ctx) {
 
     final String accountName = ctx.getAccountId();
     final String accountKey = ctx.getSecretKey();

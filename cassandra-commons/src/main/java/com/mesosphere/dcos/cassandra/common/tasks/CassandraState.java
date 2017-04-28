@@ -213,7 +213,7 @@ public class CassandraState extends SchedulerState implements Managed {
     }
 
     public CassandraDaemonTask moveDaemon(CassandraDaemonTask daemon)
-            throws PersistenceException, ConfigStoreException {
+            throws ConfigStoreException {
         final CassandraSchedulerConfiguration targetConfig = configuration.getTargetConfig();
         final ServiceConfig serviceConfig = targetConfig.getServiceConfig();
         CassandraDaemonTask updated = configuration.moveDaemon(
@@ -324,7 +324,7 @@ public class CassandraState extends SchedulerState implements Managed {
     }
 
     private CassandraDaemonTask getOrCreateDaemon(String name) throws
-            PersistenceException, ConfigStoreException {
+            ConfigStoreException {
         if (getDaemons().containsKey(name)) {
             return getDaemons().get(name);
         } else {
@@ -545,7 +545,7 @@ public class CassandraState extends SchedulerState implements Managed {
         loadTasks();
     }
 
-    public void remove(String name) throws PersistenceException {
+    public void remove(String name) {
         synchronized (getStateStore()) {
             if (tasks.containsKey(name)) {
                 removeTask(name);

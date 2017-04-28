@@ -267,7 +267,7 @@ public class S3StorageDriver implements BackupStorageDriver {
     }
 
     @Override
-    public void download(BackupRestoreContext ctx) throws IOException, URISyntaxException {
+    public void download(BackupRestoreContext ctx) throws URISyntaxException {
         // Ex: data/<keyspace>/<cf>/snapshots/</snapshot-dir>/<files>
 
         // Location of data directory, where the data will be copied.

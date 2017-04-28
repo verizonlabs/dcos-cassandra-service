@@ -38,5 +38,5 @@ public interface BackupStorageDriver {
      * @param ctx The context of the restore.
      * @throws IOException If the download from the remote location fails.
      */
-    void download(BackupRestoreContext ctx) throws IOException, URISyntaxException;
+    void download(BackupRestoreContext ctx) throws URISyntaxException;
 }
