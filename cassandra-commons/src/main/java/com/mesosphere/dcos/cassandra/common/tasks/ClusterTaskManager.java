@@ -12,16 +12,16 @@ import java.util.List;
  */
 public interface ClusterTaskManager<R extends ClusterTaskRequest> extends Completable {
 
-    public static boolean canStart(ClusterTaskManager<?> manager) {
+    static boolean canStart(ClusterTaskManager<?> manager) {
         return !manager.isInProgress();
     }
-    public static boolean canStop(ClusterTaskManager<?> manager) {
+    static boolean canStop(ClusterTaskManager<?> manager) {
         return manager.isInProgress();
     }
 
-    public void start(R request);
-    public void stop();
-    public boolean isInProgress();
-    public boolean isComplete();
-    public List<Phase> getPhases();
+    void start(R request);
+    void stop();
+    boolean isInProgress();
+    boolean isComplete();
+    List<Phase> getPhases();
 }
