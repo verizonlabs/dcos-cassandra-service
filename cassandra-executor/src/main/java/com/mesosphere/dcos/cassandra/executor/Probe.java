@@ -36,7 +36,7 @@ class Probe {
                 logger.info("Connection to server failed backing off for 500 ms");
                 try {
                     Thread.sleep(500);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }

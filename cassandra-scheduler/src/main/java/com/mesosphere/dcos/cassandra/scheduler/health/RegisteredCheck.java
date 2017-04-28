@@ -18,21 +18,17 @@ public class RegisteredCheck extends HealthCheck {
     }
 
     protected Result check() throws Exception {
-        try {
-            final Result unhealthyResult = Result.unhealthy("Framework is not yet registered");
-            final Optional<Protos.FrameworkID> frameworkID = stateStore.fetchFrameworkId();
-            if (frameworkID.isPresent()) {
-                String id = frameworkID.get().getValue();
-                if (!id.isEmpty()) {
-                    return Result.healthy("Framework registered with id = " + id);
-                } else {
-                    return unhealthyResult;
-                }
+        final Result unhealthyResult = Result.unhealthy("Framework is not yet registered");
+        final Optional<Protos.FrameworkID> frameworkID = stateStore.fetchFrameworkId();
+        if (frameworkID.isPresent()) {
+            String id = frameworkID.get().getValue();
+            if (!id.isEmpty()) {
+                return Result.healthy("Framework registered with id = " + id);
             } else {
                 return unhealthyResult;
             }
-        } catch (Throwable t) {
-            throw t;
+        } else {
+            return unhealthyResult;
         }
     }
 }
