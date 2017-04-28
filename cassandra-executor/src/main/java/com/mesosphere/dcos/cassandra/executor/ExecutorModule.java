@@ -45,7 +45,6 @@ public class ExecutorModule extends AbstractModule {
      *                      dependencies.
      */
     public ExecutorModule(final CassandraExecutorConfiguration configuration) {
-        CassandraExecutorConfiguration configuration1 = configuration;
     }
 
 

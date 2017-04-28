@@ -185,7 +185,6 @@ public class CassandraDaemonProcess extends ProcessTask {
             boolean exitOnTermination) throws InvalidProtocolBufferException {
         super(executorDriver, taskInfo, processBuilder, exitOnTermination);
         this.task = cassandraTask;
-        CassandraPaths paths = cassandraPaths;
 
         this.probe = new Probe(cassandraTask);
         this.mode = new AtomicReference<>(CassandraMode.STARTING);

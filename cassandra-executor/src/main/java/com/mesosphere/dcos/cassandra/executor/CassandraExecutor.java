@@ -54,7 +54,6 @@ public class CassandraExecutor implements Executor {
     @Inject
     public CassandraExecutor(final ScheduledExecutorService executor,
                              final ExecutorService clusterJobExecutorService) {
-        ScheduledExecutorService executor1 = executor;
         this.clusterJobExecutorService = clusterJobExecutorService;
     }
 
