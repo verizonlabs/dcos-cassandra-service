@@ -17,7 +17,7 @@ public class RegisteredCheck extends HealthCheck {
         this.stateStore = stateStore;
     }
 
-    protected Result check() throws Exception {
+    protected Result check() {
         final Result unhealthyResult = Result.unhealthy("Framework is not yet registered");
         final Optional<Protos.FrameworkID> frameworkID = stateStore.fetchFrameworkId();
         if (frameworkID.isPresent()) {
