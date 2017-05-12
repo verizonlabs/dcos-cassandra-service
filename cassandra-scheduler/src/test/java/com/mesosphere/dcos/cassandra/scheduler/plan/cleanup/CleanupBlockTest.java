@@ -25,15 +25,15 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class CleanupBlockTest {
-    public static final String CLEANUP_NODE_0 = "cleanup-node-0";
-    public static final String NODE_0 = "node-0";
+    private static final String CLEANUP_NODE_0 = "cleanup-node-0";
+    private static final String NODE_0 = "node-0";
     @Mock
     private ClusterTaskOfferRequirementProvider provider;
     @Mock
     private CassandraState cassandraState;
     @Mock
     private SchedulerClient client;
-    public static final CleanupContext CONTEXT = CleanupContext.create(Collections.emptyList(),
+    private static final CleanupContext CONTEXT = CleanupContext.create(Collections.emptyList(),
             Collections.emptyList(), Collections.emptyList());
 
     @Before

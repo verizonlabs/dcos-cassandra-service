@@ -29,11 +29,11 @@ import java.util.concurrent.ExecutorService;
  * The ExecutorDriverDispatcher executes the Mesos Executor in a separate
  * thread of execution so that is asynchronous to the main thread.
  */
-public class ExecutorDriverDispatcher implements Runnable, Managed {
+class ExecutorDriverDispatcher implements Runnable, Managed {
     private static final Logger LOGGER =
             LoggerFactory.getLogger(ExecutorDriverDispatcher.class);
 
-    private static final int exitCode(final Protos.Status status) {
+    private static int exitCode(final Protos.Status status) {
         return (status == Protos.Status.DRIVER_ABORTED ||
                 status == Protos.Status.DRIVER_NOT_STARTED) ?
                 -1 : 0;

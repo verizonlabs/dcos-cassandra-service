@@ -33,7 +33,7 @@ public class ClusterTaskConfig {
     /**
      * The default config is 1 CPU, 256 Mb mem, and 0 disk.
      */
-    public static final ClusterTaskConfig DEFAULT =
+    private static final ClusterTaskConfig DEFAULT =
             ClusterTaskConfig.create(
                     1,
                     256,
@@ -184,7 +184,7 @@ public class ClusterTaskConfig {
      * parameters.
      */
     @JsonCreator
-    public static ClusterTaskConfig create(
+    private static ClusterTaskConfig create(
             @JsonProperty("cpus") double cpus,
             @JsonProperty("memory_mb") int memoryMb,
             @JsonProperty("disk_mb") int diskMb) {
@@ -262,8 +262,7 @@ public class ClusterTaskConfig {
         ClusterTaskConfig that = (ClusterTaskConfig) o;
 
         if (Double.compare(that.cpus, cpus) != 0) return false;
-        if (memoryMb != that.memoryMb) return false;
-        return diskMb == that.diskMb;
+        return memoryMb == that.memoryMb && diskMb == that.diskMb;
 
     }
 

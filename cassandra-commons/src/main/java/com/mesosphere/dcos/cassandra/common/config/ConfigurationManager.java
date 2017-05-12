@@ -28,10 +28,10 @@ public class ConfigurationManager implements Managed {
         this.configurationManager = configurationManager;
     }
 
-    public CassandraTaskExecutor createExecutor(String frameworkId,
-                                                String name,
-                                                String role,
-                                                String principal) throws ConfigStoreException {
+    private CassandraTaskExecutor createExecutor(String frameworkId,
+                                                 String name,
+                                                 String role,
+                                                 String principal) throws ConfigStoreException {
         final ExecutorConfig executorConfig = getTargetConfig().getExecutorConfig();
         return CassandraTaskExecutor.create(
             frameworkId,

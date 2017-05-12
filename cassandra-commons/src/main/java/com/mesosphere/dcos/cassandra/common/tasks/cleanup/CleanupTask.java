@@ -43,7 +43,7 @@ public class CleanupTask extends CassandraTask {
     /**
      * The name prefix for a CleanupTask.
      */
-    public static final String NAME_PREFIX = "cleanup-";
+    private static final String NAME_PREFIX = "cleanup-";
 
     /**
      * Gets the name of a CleanupTask for a CassandraDaemonTask.
@@ -51,7 +51,7 @@ public class CleanupTask extends CassandraTask {
      * @param daemonName The name of the CassandraDaemonTask.
      * @return The name of the  CleanupTask for daemonName.
      */
-    public static final String nameForDaemon(final String daemonName) {
+    public static String nameForDaemon(final String daemonName) {
         return NAME_PREFIX + daemonName;
     }
 
@@ -62,7 +62,7 @@ public class CleanupTask extends CassandraTask {
      *               uploaded.
      * @return The name of the  CleanupTask for daemon.
      */
-    public static final String nameForDaemon(final CassandraDaemonTask daemon) {
+    public static String nameForDaemon(final CassandraDaemonTask daemon) {
         return nameForDaemon(daemon.getName());
     }
 
@@ -131,9 +131,7 @@ public class CleanupTask extends CassandraTask {
             Optional<String> message) {
 
         Protos.TaskStatus.Builder builder = getStatusBuilder();
-        if (message.isPresent()) {
-            builder.setMessage(message.get());
-        }
+        message.ifPresent(builder::setMessage);
 
         return CleanupStatus.create(builder
             .setData(CassandraData.createCleanupStatusData().getBytes())

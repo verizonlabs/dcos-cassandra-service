@@ -34,7 +34,7 @@ public class BackupManager extends DefaultObservable implements ClusterTaskManag
     private final ClusterTaskOfferRequirementProvider provider;
     private volatile BackupSnapshotPhase backup = null;
     private volatile UploadBackupPhase upload = null;
-    private StateStore stateStore;
+    private final StateStore stateStore;
     private volatile BackupRestoreContext activeContext = null;
 
     @Inject
@@ -94,7 +94,7 @@ public class BackupManager extends DefaultObservable implements ClusterTaskManag
             upload.subscribe(this);
             //this volatile signals that backup is started
             activeContext = context;
-        } catch (SerializationException | PersistenceException e) {
+        } catch (SerializationException e) {
             LOGGER.error(
                     "Error storing backup context into persistence store. Reason: ",
                     e);
@@ -106,14 +106,8 @@ public class BackupManager extends DefaultObservable implements ClusterTaskManag
     public void stop() {
         LOGGER.info("Stopping backup");
         stateStore.clearProperty(BACKUP_KEY);
-        try {
-            cassandraState.remove(cassandraState.getBackupSnapshotTasks().keySet());
-            cassandraState.remove(cassandraState.getBackupUploadTasks().keySet());
-        } catch (PersistenceException e) {
-            LOGGER.error(
-                    "Error stopping backup. Reason: ",
-                    e);
-        }
+        cassandraState.remove(cassandraState.getBackupSnapshotTasks().keySet());
+        cassandraState.remove(cassandraState.getBackupUploadTasks().keySet());
         this.activeContext = null;
 
         notifyObservers();

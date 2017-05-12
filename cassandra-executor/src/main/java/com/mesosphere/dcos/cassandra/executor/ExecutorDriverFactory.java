@@ -22,7 +22,7 @@ import org.apache.mesos.ExecutorDriver;
  * The interface for the creation of ExecutorDrivers. This is necessary for
  * dependency injection.
  */
-public interface ExecutorDriverFactory {
+interface ExecutorDriverFactory {
 
     /**
      * Gets a driver.

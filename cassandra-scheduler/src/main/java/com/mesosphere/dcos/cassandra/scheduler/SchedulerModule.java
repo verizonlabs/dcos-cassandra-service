@@ -46,7 +46,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-public class SchedulerModule extends AbstractModule {
+class SchedulerModule extends AbstractModule {
 
     private final CassandraSchedulerConfiguration configuration;
     private final Environment environment;

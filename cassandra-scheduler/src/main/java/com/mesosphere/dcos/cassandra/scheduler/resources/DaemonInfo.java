@@ -44,7 +44,7 @@ public class DaemonInfo {
     @JsonProperty("operating_mode")
     private final CassandraMode mode;
 
-    public DaemonInfo(final CassandraDaemonTask task) {
+    private DaemonInfo(final CassandraDaemonTask task) {
         name = task.getName();
         id = task.getId();
         hostname = task.getHostname();
@@ -53,27 +53,27 @@ public class DaemonInfo {
         mode = task.getMode();
     }
 
-    public String getHostname() {
+    private String getHostname() {
         return hostname;
     }
 
-    public String getId() {
+    private String getId() {
         return id;
     }
 
-    public CassandraMode getMode() {
+    private CassandraMode getMode() {
         return mode;
     }
 
-    public String getName() {
+    private String getName() {
         return name;
     }
 
-    public String getSlaveId() {
+    private String getSlaveId() {
         return slaveId;
     }
 
-    public Protos.TaskState getState() {
+    private Protos.TaskState getState() {
         return state;
     }
 

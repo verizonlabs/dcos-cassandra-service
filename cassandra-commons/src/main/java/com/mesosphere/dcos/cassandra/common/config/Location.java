@@ -57,7 +57,7 @@ public class Location {
      * @return A Location constructed from the parameters.
      */
     @JsonCreator
-    public static Location create(
+    private static Location create(
             @JsonProperty("rack") final String rack,
             @JsonProperty("data_center") final String dataCenter) {
         return new Location(rack, dataCenter);
@@ -93,7 +93,7 @@ public class Location {
      * @param rack       The rack for the Cassandra node.
      * @param dataCenter The data center for the Cassandra node.
      */
-    public Location(final String rack, final String dataCenter) {
+    private Location(final String rack, final String dataCenter) {
         this.rack = rack;
         this.dataCenter = dataCenter;
     }
@@ -123,7 +123,7 @@ public class Location {
      * @return A Properties object indicating the rack and data center
      * contained in the location.
      */
-    public Properties toProperties() {
+    private Properties toProperties() {
 
         Properties properties = new Properties();
         properties.setProperty("rack", rack);
@@ -140,11 +140,8 @@ public class Location {
     public void writeProperties(Path path) throws IOException {
 
         logger.info("Writing properties to path: " + path.toAbsolutePath());
-        FileOutputStream stream = new FileOutputStream(path.toFile());
-        try {
+        try (FileOutputStream stream = new FileOutputStream(path.toFile())) {
             toProperties().store(stream, "DCOS got yo Cassandra!");
-        } finally {
-            stream.close();
         }
     }
 
@@ -179,10 +176,7 @@ public class Location {
 
         Location location = (Location) o;
 
-        if (rack != null ? !rack.equals(location.rack) : location.rack != null)
-            return false;
-        return dataCenter != null ? dataCenter.equals(location.dataCenter) :
-                location.dataCenter == null;
+        return (rack != null ? rack.equals(location.rack) : location.rack == null) && (dataCenter != null ? dataCenter.equals(location.dataCenter) : location.dataCenter == null);
 
     }
 

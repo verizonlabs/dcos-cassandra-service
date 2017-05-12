@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 public class CassandraPlan extends DefaultObservable implements Plan, Observer {
 
-    public static final CassandraPlan create(
+    public static CassandraPlan create(
             final DefaultConfigurationManager defaultConfigurationManager,
             final DeploymentManager deployment,
             final BackupManager backup,
@@ -41,7 +41,7 @@ public class CassandraPlan extends DefaultObservable implements Plan, Observer {
     private final DeploymentManager deployment;
     private final List<ClusterTaskManager<?>> managers;
 
-    public CassandraPlan(
+    private CassandraPlan(
             final DefaultConfigurationManager defaultConfigurationManager,
             final DeploymentManager deployment,
             final BackupManager backup,

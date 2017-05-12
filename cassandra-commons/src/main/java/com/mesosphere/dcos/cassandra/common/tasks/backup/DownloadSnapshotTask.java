@@ -40,7 +40,7 @@ public class DownloadSnapshotTask extends CassandraTask {
     /**
      * The prefix for the name of DownloadSnapshotTasks.
      */
-    public static final String NAME_PREFIX = "download-";
+    private static final String NAME_PREFIX = "download-";
 
     /**
      * Gets the name of a DownloadSnapshotTask for a CassandraDaemonTask.
@@ -48,7 +48,7 @@ public class DownloadSnapshotTask extends CassandraTask {
      * @param daemonName The name of the CassandraDaemonTask.
      * @return The name of the  DownloadSnapshotTaskfor daemonName.
      */
-    public static final String nameForDaemon(final String daemonName) {
+    public static String nameForDaemon(final String daemonName) {
         return NAME_PREFIX + daemonName;
     }
 
@@ -59,7 +59,7 @@ public class DownloadSnapshotTask extends CassandraTask {
      *               uploaded.
      * @return The name of the  DownloadSnapshotTask for daemon.
      */
-    public static final String nameForDaemon(final CassandraDaemonTask daemon) {
+    public static String nameForDaemon(final CassandraDaemonTask daemon) {
         return nameForDaemon(daemon.getName());
     }
 
@@ -133,9 +133,7 @@ public class DownloadSnapshotTask extends CassandraTask {
             Optional<String> message) {
 
         Protos.TaskStatus.Builder builder = getStatusBuilder();
-        if (message.isPresent()) {
-            builder.setMessage(message.get());
-        }
+        message.ifPresent(builder::setMessage);
 
         return DownloadSnapshotStatus.create(builder
                 .setData(CassandraData.createSnapshotDownloadStatusData().getBytes())

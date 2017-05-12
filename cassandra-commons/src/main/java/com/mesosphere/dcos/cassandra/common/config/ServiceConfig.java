@@ -55,7 +55,7 @@ public class ServiceConfig {
 
 
   @JsonCreator
-  public static final ServiceConfig create(
+  public static ServiceConfig create(
     @JsonProperty("name") final String name,
     @JsonProperty("id") final String id,
     @JsonProperty("version") final String version,
@@ -81,17 +81,17 @@ public class ServiceConfig {
 
   }
 
-  public static final ServiceConfig create(
-    final String name,
-    final String id,
-    final String version,
-    final String user,
-    final String cluster,
-    final String role,
-    final String principal,
-    final Duration failoverTimeout,
-    final String secret,
-    final boolean checkpoint) {
+  private static ServiceConfig create(
+          final String name,
+          final String id,
+          final String version,
+          final String user,
+          final String cluster,
+          final String role,
+          final String principal,
+          final Duration failoverTimeout,
+          final String secret,
+          final boolean checkpoint) {
     return new ServiceConfig(
       name,
       id,

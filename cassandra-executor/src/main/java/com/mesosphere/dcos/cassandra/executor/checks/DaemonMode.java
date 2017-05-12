@@ -27,7 +27,7 @@ import java.util.Optional;
  * DaemonMode implements a health check that tests if the Cassandra Daemon's
  * mode is normal.
  */
-public class DaemonMode extends HealthCheck {
+class DaemonMode extends HealthCheck {
 
     private final CassandraExecutor executor;
 
@@ -51,14 +51,10 @@ public class DaemonMode extends HealthCheck {
         Optional<CassandraDaemonProcess> daemon =
                 executor.getCassandraDaemon();
 
-        if (daemon.isPresent()) {
-            return (daemon.get().getMode() == CassandraMode.NORMAL) ?
-                    Result.healthy() : Result.unhealthy("Cassandra Daemon " +
-                    "mode is " + daemon.get().getMode());
-        } else {
-            return Result.unhealthy("Cassandra Daemon is " +
-                    "not running");
-        }
+        return daemon.map(cassandraDaemonProcess -> (cassandraDaemonProcess.getMode() == CassandraMode.NORMAL) ?
+                Result.healthy() : Result.unhealthy("Cassandra Daemon " +
+                "mode is " + cassandraDaemonProcess.getMode())).orElseGet(() -> Result.unhealthy("Cassandra Daemon is " +
+                "not running"));
 
     }
 }

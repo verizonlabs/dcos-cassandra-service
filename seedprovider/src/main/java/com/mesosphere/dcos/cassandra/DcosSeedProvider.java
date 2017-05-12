@@ -47,7 +47,7 @@ public class DcosSeedProvider implements SeedProvider {
     }
 
 
-    public List<InetAddress> getRemoteSeeds() throws IOException {
+    private List<InetAddress> getRemoteSeeds() throws IOException {
 
         HttpURLConnection connection =
                 (HttpURLConnection) new URL(seedsUrl).openConnection();

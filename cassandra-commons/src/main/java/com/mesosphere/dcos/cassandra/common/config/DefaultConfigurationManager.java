@@ -20,8 +20,8 @@ public class DefaultConfigurationManager {
     private final ConfigStore<Configuration> configStore;
     private final Class<?> configClass;
 
-    private List<ConfigValidationError> validationErrors;
-    private StateStore stateStore;
+    private final List<ConfigValidationError> validationErrors;
+    private final StateStore stateStore;
 
     public DefaultConfigurationManager(
             Class<?> configClass,
@@ -141,7 +141,7 @@ public class DefaultConfigurationManager {
 
                     final Protos.TaskInfo updatedTaskInfo = Protos.TaskInfo.newBuilder(taskInfo)
                             .setLabels(labels).build();
-                    stateStore.storeTasks(Arrays.asList(updatedTaskInfo));
+                    stateStore.storeTasks(Collections.singletonList(updatedTaskInfo));
                     LOGGER.info("Updated task: {} from duplicate config: {} to current target: {}",
                             updatedTaskInfo.getName(), taskConfigName, targetConfigName);
                     return;

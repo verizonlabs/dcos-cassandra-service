@@ -87,7 +87,7 @@ public abstract class CassandraTaskStatus {
      * @param state The state to test.
      * @return True if the state is Finished.
      */
-    public static boolean isFinished(final Protos.TaskState state) {
+    private static boolean isFinished(final Protos.TaskState state) {
         return Protos.TaskState.TASK_FINISHED.equals(state);
     }
 
@@ -121,7 +121,7 @@ public abstract class CassandraTaskStatus {
         this.status = status;
     }
 
-    protected CassandraData getData() {
+    CassandraData getData() {
         return CassandraData.parse(status.getData());
     }
 

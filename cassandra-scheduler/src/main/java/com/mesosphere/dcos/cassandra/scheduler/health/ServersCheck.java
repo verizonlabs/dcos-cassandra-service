@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class ServersCheck extends HealthCheck {
     public static final String NAME = "serverCount";
 
-    private CassandraState tasks;
+    private final CassandraState tasks;
 
     @Inject
     public ServersCheck(final CassandraState tasks) {

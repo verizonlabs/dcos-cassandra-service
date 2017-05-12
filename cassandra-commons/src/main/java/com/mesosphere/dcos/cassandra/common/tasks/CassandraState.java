@@ -99,7 +99,7 @@ public class CassandraState extends SchedulerState implements Managed {
     }
 
 
-    private void removeTask(final String name) throws PersistenceException {
+    private void removeTask(final String name) {
         getStateStore().clearTask(name);
         if (tasks.containsKey(name)) {
             byId.remove(tasks.get(name).getId());
@@ -170,23 +170,23 @@ public class CassandraState extends SchedulerState implements Managed {
                         (RepairTask) entry.getValue())));
     }
 
-    public CassandraContainer createCassandraContainer(CassandraDaemonTask daemonTask) throws PersistenceException {
+    public CassandraContainer createCassandraContainer(CassandraDaemonTask daemonTask) {
         CassandraTemplateTask templateTask = CassandraTemplateTask.create(
                 daemonTask, clusterTaskConfig);
         return CassandraContainer.create(daemonTask, templateTask);
     }
 
     public CassandraContainer createCassandraContainer(CassandraDaemonTask daemonTask,
-                                                       CassandraTemplateTask templateTask) throws PersistenceException {
+                                                       CassandraTemplateTask templateTask) {
         return CassandraContainer.create(daemonTask, templateTask);
     }
 
     public CassandraContainer moveCassandraContainer(CassandraDaemonTask name)
-            throws PersistenceException, ConfigStoreException {
+            throws ConfigStoreException {
         return createCassandraContainer(moveDaemon(name));
     }
 
-    public CassandraContainer getOrCreateContainer(String name) throws PersistenceException, ConfigStoreException {
+    public CassandraContainer getOrCreateContainer(String name) throws ConfigStoreException {
         final CassandraDaemonTask daemonTask = getOrCreateDaemon(name);
         return createCassandraContainer(daemonTask,
                 getOrCreateTemplateTask(CassandraTemplateTask.toTemplateTaskName(name), daemonTask));
@@ -194,15 +194,11 @@ public class CassandraState extends SchedulerState implements Managed {
 
     public CassandraTemplateTask getOrCreateTemplateTask(String name, CassandraDaemonTask daemonTask) {
         final Optional<CassandraTask> cassandraTask = get(name);
-        if (cassandraTask.isPresent()) {
-            return (CassandraTemplateTask) cassandraTask.get();
-        } else {
-            return CassandraTemplateTask.create(daemonTask, clusterTaskConfig);
-        }
+        return cassandraTask.map(cassandraTask1 -> (CassandraTemplateTask) cassandraTask1).orElseGet(() -> CassandraTemplateTask.create(daemonTask, clusterTaskConfig));
     }
 
     public CassandraDaemonTask createDaemon(String name) throws
-            PersistenceException, ConfigStoreException {
+            ConfigStoreException {
         final CassandraSchedulerConfiguration targetConfig = configuration.getTargetConfig();
         final UUID targetConfigName = configuration.getTargetConfigName();
         final ServiceConfig serviceConfig = targetConfig.getServiceConfig();
@@ -217,7 +213,7 @@ public class CassandraState extends SchedulerState implements Managed {
     }
 
     public CassandraDaemonTask moveDaemon(CassandraDaemonTask daemon)
-            throws PersistenceException, ConfigStoreException {
+            throws ConfigStoreException {
         final CassandraSchedulerConfiguration targetConfig = configuration.getTargetConfig();
         final ServiceConfig serviceConfig = targetConfig.getServiceConfig();
         CassandraDaemonTask updated = configuration.moveDaemon(
@@ -228,10 +224,8 @@ public class CassandraState extends SchedulerState implements Managed {
         update(updated);
 
         Optional<Protos.TaskInfo> templateOptional = getTemplate(updated);
-        if (templateOptional.isPresent()) {
-            getStateStore().storeTasks(
-                    Arrays.asList(CassandraTemplateTask.create(updated, clusterTaskConfig).getTaskInfo()));
-        }
+        templateOptional.ifPresent(taskInfo -> getStateStore().storeTasks(
+                Collections.singletonList(CassandraTemplateTask.create(updated, clusterTaskConfig).getTaskInfo())));
 
         return updated;
     }
@@ -251,7 +245,7 @@ public class CassandraState extends SchedulerState implements Managed {
     }
 
 
-    public BackupSnapshotTask createBackupSnapshotTask(
+    private BackupSnapshotTask createBackupSnapshotTask(
             CassandraDaemonTask daemon,
             BackupRestoreContext context) throws PersistenceException {
 
@@ -265,7 +259,7 @@ public class CassandraState extends SchedulerState implements Managed {
 
     }
 
-    public BackupUploadTask createBackupUploadTask(
+    private BackupUploadTask createBackupUploadTask(
             CassandraDaemonTask daemon,
             BackupRestoreContext context) throws PersistenceException {
 
@@ -278,7 +272,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public DownloadSnapshotTask createDownloadSnapshotTask(
+    private DownloadSnapshotTask createDownloadSnapshotTask(
             CassandraDaemonTask daemon,
             BackupRestoreContext context) throws PersistenceException {
 
@@ -291,7 +285,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public RestoreSnapshotTask createRestoreSnapshotTask(
+    private RestoreSnapshotTask createRestoreSnapshotTask(
             CassandraDaemonTask daemon,
             BackupRestoreContext context) throws PersistenceException {
 
@@ -304,7 +298,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public CleanupTask createCleanupTask(
+    private CleanupTask createCleanupTask(
             CassandraDaemonTask daemon,
             CleanupContext context) throws PersistenceException {
 
@@ -317,7 +311,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public RepairTask createRepairTask(
+    private RepairTask createRepairTask(
             CassandraDaemonTask daemon,
             RepairContext context) throws PersistenceException {
         Optional<Protos.TaskInfo> template = getTemplate(daemon);
@@ -329,8 +323,8 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public CassandraDaemonTask getOrCreateDaemon(String name) throws
-            PersistenceException, ConfigStoreException {
+    private CassandraDaemonTask getOrCreateDaemon(String name) throws
+            ConfigStoreException {
         if (getDaemons().containsKey(name)) {
             return getDaemons().get(name);
         } else {
@@ -423,23 +417,22 @@ public class CassandraState extends SchedulerState implements Managed {
         return !configuration.hasCurrentConfig(daemon);
     }
 
-    public CassandraDaemonTask replaceDaemon(CassandraDaemonTask task)
-            throws PersistenceException {
+    public CassandraDaemonTask replaceDaemon(CassandraDaemonTask task) {
         synchronized (getStateStore()) {
             return configuration.replaceDaemon(task);
         }
     }
 
     public CassandraDaemonTask reconfigureDaemon(
-            final CassandraDaemonTask daemon) throws PersistenceException, ConfigStoreException {
+            final CassandraDaemonTask daemon) throws ConfigStoreException {
         synchronized (getStateStore()) {
             return configuration.updateConfig(daemon);
         }
     }
 
-    public void update(CassandraTask task) throws PersistenceException {
+    private void update(CassandraTask task) {
         synchronized (getStateStore()) {
-            getStateStore().storeTasks(Arrays.asList(TaskUtils.packTaskInfo(task.getTaskInfo())));
+            getStateStore().storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(task.getTaskInfo())));
             if (tasks.containsKey(task.getName())) {
                 byId.remove(tasks.get(task.getName()).getId());
             }
@@ -451,7 +444,7 @@ public class CassandraState extends SchedulerState implements Managed {
             }
 
             Optional<Protos.TaskStatus> status = getStateStore().fetchStatus(task.getName());
-            task.setTaskStatus(status.isPresent() ? status.get() : null);
+            task.setTaskStatus(status.orElse(null));
 
             byId.put(task.getId(), task.getName());
             byStatus.put(task.getName(), status);
@@ -473,7 +466,7 @@ public class CassandraState extends SchedulerState implements Managed {
         try {
             CassandraTask task = CassandraTask.parse(taskInfo);
             task = task.update(offer);
-            getStateStore().storeTasks(Arrays.asList(TaskUtils.packTaskInfo(task.getTaskInfo())));
+            getStateStore().storeTasks(Collections.singletonList(TaskUtils.packTaskInfo(task.getTaskInfo())));
             update(task);
         } catch (Exception e) {
             LOGGER.error("Error storing task: {}, reason: {}", taskInfo, e);
@@ -540,11 +533,7 @@ public class CassandraState extends SchedulerState implements Managed {
             final Collection<String> taskNames = getStateStore().fetchTaskNames();
             if (CollectionUtils.isNotEmpty(taskNames) && taskNames.contains(name)) {
                 final Optional<Protos.TaskStatus> status = getStateStore().fetchStatus(name);
-                if (status.isPresent()) {
-                    return CassandraDaemonStatus.isTerminated(status.get().getState());
-                } else {
-                    return false;
-                }
+                return status.filter(taskStatus -> CassandraDaemonStatus.isTerminated(taskStatus.getState())).isPresent();
             }
         } catch (StateStoreException e) {
             LOGGER.error(e.getMessage(), e);
@@ -556,7 +545,7 @@ public class CassandraState extends SchedulerState implements Managed {
         loadTasks();
     }
 
-    public void remove(String name) throws PersistenceException {
+    public void remove(String name) {
         synchronized (getStateStore()) {
             if (tasks.containsKey(name)) {
                 removeTask(name);
@@ -564,7 +553,7 @@ public class CassandraState extends SchedulerState implements Managed {
         }
     }
 
-    public void remove(Set<String> names) throws PersistenceException {
+    public void remove(Set<String> names) {
         for (String name : names) {
             remove(name);
         }

@@ -11,7 +11,7 @@ import io.dropwizard.logging.LoggingUtil;
 public class LoggerFactory implements LoggingFactory {
 
     @JsonIgnore
-    private LoggerContext loggerContext;
+    private final LoggerContext loggerContext;
     @JsonIgnore
     private final ContextInitializer contextInitializer;
 

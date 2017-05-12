@@ -4,7 +4,7 @@ import com.codahale.metrics.health.HealthCheck;
 import com.google.inject.Inject;
 import org.apache.mesos.reconciliation.Reconciler;
 
-public class ReconciledCheck extends HealthCheck {
+class ReconciledCheck extends HealthCheck {
     public static final String NAME = "reconciled";
     private final Reconciler reconciler;
 

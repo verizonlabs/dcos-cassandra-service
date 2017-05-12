@@ -45,7 +45,7 @@ import java.util.Optional;
 public class S3StorageDriver implements BackupStorageDriver {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             S3StorageDriver.class);
-    private StorageUtil storageUtil = new StorageUtil();
+    private final StorageUtil storageUtil = new StorageUtil();
 
     String getBucketName(BackupRestoreContext ctx) throws URISyntaxException {
         URI uri = new URI(ctx.getExternalLocation());
@@ -69,18 +69,18 @@ public class S3StorageDriver implements BackupStorageDriver {
         String[] segments = uri.getPath().split("/");
 
         int startIndex = uri.getScheme().equals(AmazonS3Client.S3_SERVICE_NAME) ? 1 : 2;
-        String prefixKey = "";
+        StringBuilder prefixKey = new StringBuilder();
         for (int i=startIndex; i<segments.length; i++) {
-            prefixKey += segments[i];
+            prefixKey.append(segments[i]);
             if (i < segments.length - 1) {
-                prefixKey += "/";
+                prefixKey.append("/");
             }
         }
 
-        prefixKey = (prefixKey.length() > 0 && !prefixKey.endsWith("/")) ? prefixKey + "/" : prefixKey;
-        prefixKey += ctx.getName(); // append backup name
+        prefixKey = new StringBuilder((prefixKey.length() > 0 && !prefixKey.toString().endsWith("/")) ? prefixKey + "/" : prefixKey.toString());
+        prefixKey.append(ctx.getName()); // append backup name
 
-        return prefixKey;
+        return prefixKey.toString();
     }
 
     String getEndpoint(BackupRestoreContext ctx) throws URISyntaxException {
@@ -195,11 +195,7 @@ public class S3StorageDriver implements BackupStorageDriver {
 
     private boolean hasValidSuffix(File file, BackupRestoreContext backupRestoreContext) {
         LOGGER.info("hasValidSuffix() BackupRestoreContext: " + backupRestoreContext);
-        if (backupRestoreContext.usesEmc()) {
-            return !file.getName().endsWith(".json");
-        } else {
-            return true;
-        }
+        return !backupRestoreContext.usesEmc() || !file.getName().endsWith(".json");
     }
 
     private void uploadDirectory(
@@ -267,7 +263,7 @@ public class S3StorageDriver implements BackupStorageDriver {
     }
 
     @Override
-    public void download(BackupRestoreContext ctx) throws IOException, URISyntaxException {
+    public void download(BackupRestoreContext ctx) throws URISyntaxException {
         // Ex: data/<keyspace>/<cf>/snapshots/</snapshot-dir>/<files>
 
         // Location of data directory, where the data will be copied.
@@ -292,7 +288,7 @@ public class S3StorageDriver implements BackupStorageDriver {
                               String bucketName,
                               AmazonS3Client amazonS3Client,
                               String fileKey,
-                              Long sizeInBytes) throws IOException {
+                              Long sizeInBytes) {
         LOGGER.info(
                 "DownloadFile | Local location: {} | Bucket Name: {} | fileKey: {} | Size in bytes: {}",
                 localLocation, bucketName, fileKey, sizeInBytes);
@@ -317,9 +313,9 @@ public class S3StorageDriver implements BackupStorageDriver {
               file);
     }
 
-    public Map<String, Long> listSnapshotFiles(AmazonS3Client amazonS3Client,
-                                               String bucketName,
-                                               String backupName) {
+    private Map<String, Long> listSnapshotFiles(AmazonS3Client amazonS3Client,
+                                                String bucketName,
+                                                String backupName) {
         Map<String, Long> snapshotFiles = new HashMap<>();
         ObjectListing objectListing;
         ListObjectsRequest listObjectsRequest = new ListObjectsRequest()

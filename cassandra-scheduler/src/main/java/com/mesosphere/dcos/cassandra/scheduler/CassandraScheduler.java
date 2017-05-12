@@ -50,7 +50,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
     private final ConfigurationManager configurationManager;
     private final MesosConfig mesosConfig;
     private final PlanManager planManager;
-    private CassandraRecoveryScheduler recoveryScheduler;
+    private final CassandraRecoveryScheduler recoveryScheduler;
     private final OfferAccepter offerAccepter;
     private final PersistentOfferRequirementProvider offerRequirementProvider;
     private final CassandraState cassandraState;
@@ -138,7 +138,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
         final String frameworkIdValue = frameworkId.getValue();
         LOGGER.info("Framework registered : id = {}", frameworkIdValue);
         try {
-            this.taskKiller = new DefaultTaskKiller(
+            taskKiller = new DefaultTaskKiller(
                     stateStore,
                     new DefaultTaskFailureListener(stateStore),
                     driver);
@@ -252,9 +252,7 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
                         recoveryScheduler.resourceOffers(
                                 driver,
                                 unacceptedOffers,
-                                (currentBlock.isPresent()) ?
-                                        ImmutableSet.of(currentBlock.get().getName()) :
-                                        Collections.emptySet()));
+                                currentBlock.<Set<String>>map(block -> ImmutableSet.of(block.getName())).orElseGet(Collections::emptySet)));
             } catch (Throwable t) {
                 LOGGER.error("Error occured with plan scheduler: {}", t);
             }

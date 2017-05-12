@@ -84,10 +84,10 @@ public class HeapConfig {
    * @return A HeapConfig constructed from the parameters.
    */
   @JsonCreator
-  public static HeapConfig create(
-    @JsonProperty("size_mb") final int sizeMb,
-    @JsonProperty("new_mb") final int newMb,
-    @JsonProperty("gc_type") final GC_TYPE gcType) {
+  private static HeapConfig create(
+          @JsonProperty("size_mb") final int sizeMb,
+          @JsonProperty("new_mb") final int newMb,
+          @JsonProperty("gc_type") final GC_TYPE gcType) {
     return new HeapConfig(sizeMb, newMb, gcType);
   }
 
@@ -124,7 +124,7 @@ public class HeapConfig {
    * @param sizeMb The size of the JVM heap in Mb.
    * @param newMb  The size of the new generation in Mb.
    */
-  public HeapConfig(final int sizeMb, final int newMb, final GC_TYPE gcType) {
+  private HeapConfig(final int sizeMb, final int newMb, final GC_TYPE gcType) {
     this.newMb = newMb;
     this.sizeMb = sizeMb;
     this.gcType = gcType;
@@ -186,22 +186,22 @@ public class HeapConfig {
   }
 
   @JsonIgnore
-  protected String getXmx() {
+  private String getXmx() {
     return "-Xmx" + sizeMb + "M";
   }
 
   @JsonIgnore
-  protected String getXms() {
+  private String getXms() {
     return "-Xms" + sizeMb + "M";
   }
 
   @JsonIgnore
-  protected String getXmn() {
+  private String getXmn() {
     return "-Xmn" + newMb + "M";
   }
 
   @JsonIgnore
-  public List<String> getHeapSettings() {
+  private List<String> getHeapSettings() {
     List<String> config = new ArrayList<>();
     config.add(getXms());
     config.add(getXmx());
@@ -227,7 +227,7 @@ public class HeapConfig {
       if (writer != null) {
         try {
           writer.close();
-        } catch (IOException ex) {
+        } catch (IOException ignored) {
         }
       }
     }
@@ -236,14 +236,13 @@ public class HeapConfig {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
 
-    HeapConfig that = (HeapConfig) o;
+      HeapConfig that = (HeapConfig) o;
 
-    if (sizeMb != that.sizeMb) return false;
-    if (newMb != that.newMb) return false;
-    return gcType == that.gcType;
+      if (sizeMb != that.sizeMb) return false;
+      return newMb == that.newMb && gcType == that.gcType;
 
   }
 

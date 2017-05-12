@@ -2,7 +2,7 @@ package com.mesosphere.dcos.cassandra.common.config;
 
 import java.util.Collection;
 
-public class ConfigValidationException extends Exception {
+class ConfigValidationException extends Exception {
     private final Collection<ConfigValidationError> validationErrors;
 
     public ConfigValidationException(Collection<ConfigValidationError> validationErrors) {

@@ -17,15 +17,15 @@ import java.util.List;
  */
 public class CassandraData {
 
-    public static final CassandraData parse(final ByteString bytes) {
+    public static CassandraData parse(final ByteString bytes) {
         return new CassandraData(bytes);
     }
 
-    public static final CassandraData createTemplateData() {
+    public static CassandraData createTemplateData() {
         return new CassandraData();
     }
 
-    public static final CassandraData createDaemonData(
+    public static CassandraData createDaemonData(
         final String hostname,
         final CassandraMode mode,
         final CassandraConfig config) {
@@ -37,7 +37,7 @@ public class CassandraData {
             config);
     }
 
-    public static final CassandraData createDaemonStatusData(
+    public static CassandraData createDaemonStatusData(
         final CassandraMode mode) {
 
         return new CassandraData(
@@ -45,7 +45,7 @@ public class CassandraData {
             mode);
     }
 
-    public static final CassandraData createRepairData(
+    public static CassandraData createRepairData(
         final String hostname,
         final RepairContext context) {
 
@@ -57,11 +57,11 @@ public class CassandraData {
             context.getColumnFamilies());
     }
 
-    public static final CassandraData createRepairStatusData() {
+    public static CassandraData createRepairStatusData() {
         return new CassandraData(CassandraTask.TYPE.REPAIR);
     }
 
-    public static final CassandraData createCleanupData(
+    public static CassandraData createCleanupData(
         final String hostname,
         final CleanupContext context) {
 
@@ -73,12 +73,12 @@ public class CassandraData {
             context.getColumnFamilies());
     }
 
-    public static final CassandraData createCleanupStatusData() {
+    public static CassandraData createCleanupStatusData() {
         return new CassandraData(CassandraTask.TYPE.CLEANUP);
     }
 
 
-    public static final CassandraData createBackupSnapshotData(
+    public static CassandraData createBackupSnapshotData(
         final String hostname,
         final BackupRestoreContext context) {
 
@@ -94,11 +94,11 @@ public class CassandraData {
             context.getUsesEmc());
     }
 
-    public static final CassandraData createBackupSnapshotStatusData() {
+    public static CassandraData createBackupSnapshotStatusData() {
         return new CassandraData(CassandraTask.TYPE.BACKUP_SNAPSHOT);
     }
 
-    public static final CassandraData createBackupUploadData(
+    public static CassandraData createBackupUploadData(
         final String hostname,
         final BackupRestoreContext context) {
         return new CassandraData(
@@ -113,12 +113,12 @@ public class CassandraData {
             context.getUsesEmc());
     }
 
-    public static final CassandraData createBackupUploadStatusData() {
+    public static CassandraData createBackupUploadStatusData() {
         return new CassandraData(CassandraTask.TYPE.BACKUP_UPLOAD);
     }
 
 
-    public static final CassandraData createSnapshotDownloadData(
+    public static CassandraData createSnapshotDownloadData(
         final String hostname,
         final BackupRestoreContext context) {
         return new CassandraData(
@@ -133,11 +133,11 @@ public class CassandraData {
             context.getUsesEmc());
     }
 
-    public static final CassandraData createSnapshotDownloadStatusData() {
+    public static CassandraData createSnapshotDownloadStatusData() {
         return new CassandraData(CassandraTask.TYPE.SNAPSHOT_DOWNLOAD);
     }
 
-    public static final CassandraData createRestoreSnapshotData(
+    public static CassandraData createRestoreSnapshotData(
         final String hostname,
         final BackupRestoreContext context) {
         return new CassandraData(
@@ -152,7 +152,7 @@ public class CassandraData {
             context.getUsesEmc());
     }
 
-    public static final CassandraData createRestoreSnapshotStatusData() {
+    public static CassandraData createRestoreSnapshotStatusData() {
         return new CassandraData(CassandraTask.TYPE.SNAPSHOT_RESTORE);
     }
 

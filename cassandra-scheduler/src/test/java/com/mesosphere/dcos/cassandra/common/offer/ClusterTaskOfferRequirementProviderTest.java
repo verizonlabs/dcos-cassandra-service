@@ -24,6 +24,7 @@ import org.junit.*;
 import org.mockito.Mockito;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -31,7 +32,6 @@ import static org.mockito.Mockito.when;
 public class ClusterTaskOfferRequirementProviderTest {
     private static TestingServer server;
     private static CassandraSchedulerConfiguration config;
-    private static IdentityManager identity;
     private static ConfigurationManager configuration;
     private static ClusterTaskConfig clusterTaskConfig;
     private static CassandraState cassandraState;
@@ -80,7 +80,7 @@ public class ClusterTaskOfferRequirementProviderTest {
         Protos.Value.Range range = Protos.Value.Range.newBuilder().setBegin(testPortBegin).setEnd(testPortEnd).build();
         Protos.Resource ports = ResourceUtils.getExpectedRanges(
                 "ports",
-                Arrays.asList(range),
+                Collections.singletonList(range),
                 testResourceId,
                 testRole,
                 testPrincipal);
@@ -137,8 +137,8 @@ public class ClusterTaskOfferRequirementProviderTest {
                 retryPolicy);
         stateStore.storeFrameworkId(Protos.FrameworkID.newBuilder().setValue("1234").build());
 
-        identity = new IdentityManager(
-                initial,stateStore);
+        IdentityManager identity = new IdentityManager(
+                initial, stateStore);
 
         identity.register("test_id");
 
@@ -156,10 +156,6 @@ public class ClusterTaskOfferRequirementProviderTest {
                 configurationManager);
 
         provider = new ClusterTaskOfferRequirementProvider();
-    }
-
-    @After
-    public void afterEach() {
     }
 
     @AfterClass

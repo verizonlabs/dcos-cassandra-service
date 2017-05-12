@@ -26,12 +26,12 @@ public class SchedulerClient {
             LoggerFactory.getLogger(SchedulerClient.class);
     private static final String SCHEME = "http";
 
-    private static final String host(String hostname, int port) {
+    private static String host(String hostname, int port) {
         return hostname + ":" + port;
     }
 
 
-    private static final boolean isSuccessful(HttpResponse response) {
+    private static boolean isSuccessful(HttpResponse response) {
         int status = response.getStatusLine().getStatusCode();
         return (200 <= status && status < 300);
     }
@@ -42,7 +42,7 @@ public class SchedulerClient {
         return failed;
     }
 
-    public static final SchedulerClient create(
+    public static SchedulerClient create(
             final HttpClient client,
             final ExecutorService service) {
         return new SchedulerClient(client, service);
@@ -114,7 +114,7 @@ public class SchedulerClient {
 
     private CompletionStage<Boolean> delete(String url) {
         LOGGER.debug("Executing delete: url = {}", url);
-        CompletableFuture<Boolean> promise = new CompletableFuture<Boolean>();
+        CompletableFuture<Boolean> promise = new CompletableFuture<>();
         executor.submit(() -> {
            HttpDelete delete = new HttpDelete(url);
             try {
@@ -159,7 +159,7 @@ public class SchedulerClient {
 
     private CompletionStage<Boolean> put(String url, Object json) {
         LOGGER.debug("Executing put: url = {}, data = {}", url, json);
-        CompletableFuture<Boolean> promise = new CompletableFuture<Boolean>();
+        CompletableFuture<Boolean> promise = new CompletableFuture<>();
         executor.submit(() -> {
             HttpPut put = new HttpPut(url);
             try {

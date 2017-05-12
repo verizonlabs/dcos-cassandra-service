@@ -32,7 +32,7 @@ public abstract class AbstractClusterTaskBlock<C extends ClusterTaskContext> ext
     protected abstract Optional<CassandraTask> getOrCreateTask(C context)
             throws PersistenceException;
 
-    protected OfferRequirement getOfferRequirement(CassandraTask task) {
+    private OfferRequirement getOfferRequirement(CassandraTask task) {
         if (Protos.TaskState.TASK_FINISHED.equals(
                 task.getState())) {
             // Task is already finished
@@ -104,7 +104,7 @@ public abstract class AbstractClusterTaskBlock<C extends ClusterTaskContext> ext
         }
     }
 
-    public AbstractClusterTaskBlock(
+    protected AbstractClusterTaskBlock(
             final String daemon,
             final CassandraState cassandraState,
             final CassandraOfferRequirementProvider provider,

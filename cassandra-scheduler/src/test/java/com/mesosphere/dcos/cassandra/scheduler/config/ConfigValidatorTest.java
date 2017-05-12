@@ -18,8 +18,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class ConfigValidatorTest {
-  ConfigurationFactory<MutableSchedulerConfiguration> factory;
-  MutableSchedulerConfiguration configuration;
+  private ConfigurationFactory<MutableSchedulerConfiguration> factory;
+  private MutableSchedulerConfiguration configuration;
 
   @Before
   public void beforeEach() throws Exception {

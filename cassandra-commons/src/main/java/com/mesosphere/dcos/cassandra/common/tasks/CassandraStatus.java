@@ -27,29 +27,29 @@ import com.mesosphere.dcos.cassandra.common.util.JsonUtils;
 public class CassandraStatus {
 
     @JsonProperty("mode")
-    final CassandraMode mode;
+    private final CassandraMode mode;
     @JsonProperty("joined")
-    final boolean joined;
+    private final boolean joined;
     @JsonProperty("rpc_running")
-    final boolean rpcRunning;
+    private final boolean rpcRunning;
     @JsonProperty("native_transport_running")
-    final boolean nativeTransportRunning;
+    private final boolean nativeTransportRunning;
     @JsonProperty("gossip_initialized")
-    final boolean gossipInitialized;
+    private final boolean gossipInitialized;
     @JsonProperty("gossip_running")
-    final boolean gossipRunning;
+    private final boolean gossipRunning;
     @JsonProperty("host_id")
-    final String hostId;
+    private final String hostId;
     @JsonProperty("endpoint")
-    final String endpoint;
+    private final String endpoint;
     @JsonProperty("token_count")
-    final int tokenCount;
+    private final int tokenCount;
     @JsonProperty("data_center")
-    final String dataCenter;
+    private final String dataCenter;
     @JsonProperty("rack")
-    final String rack;
+    private final String rack;
     @JsonProperty("version")
-    final String version;
+    private final String version;
 
     /**
      * Creates a CassandraStatus.
@@ -147,7 +147,7 @@ public class CassandraStatus {
      * Gets the mode.
      * @return The mode of the Cassandra node.
      */
-    public CassandraMode getMode() {
+    private CassandraMode getMode() {
         return mode;
     }
 
@@ -155,7 +155,7 @@ public class CassandraStatus {
      * Gets the Cassandra version.
      * @return The version of Cassandra the node is running.
      */
-    public String getVersion() {
+    private String getVersion() {
         return version;
     }
 
@@ -163,7 +163,7 @@ public class CassandraStatus {
      * Test if the node is joined.
      * @return True if the node has joined the ring.
      */
-    public boolean isJoined() {
+    private boolean isJoined() {
         return joined;
     }
 
@@ -171,7 +171,7 @@ public class CassandraStatus {
      * Tests if RPC is running.
      * @return True if the node is running RPS transport.
      */
-    public boolean isRpcRunning() {
+    private boolean isRpcRunning() {
         return rpcRunning;
     }
 
@@ -179,7 +179,7 @@ public class CassandraStatus {
      * Tests if CQL is running
      * @return True if the node is running CQL transport.
      */
-    public boolean isNativeTransportRunning() {
+    private boolean isNativeTransportRunning() {
         return nativeTransportRunning;
     }
 
@@ -187,7 +187,7 @@ public class CassandraStatus {
      * Tests if the gossip is initialized.
      * @return True if the node has initialized Gossip.
      */
-    public boolean isGossipInitialized() {
+    private boolean isGossipInitialized() {
         return gossipInitialized;
     }
 
@@ -195,7 +195,7 @@ public class CassandraStatus {
      * Tests if gossip is running.
      * @return True if the node is gossiping within its cluster.
      */
-    public boolean isGossipRunning() {
+    private boolean isGossipRunning() {
         return gossipRunning;
     }
 
@@ -203,7 +203,7 @@ public class CassandraStatus {
      * Gets the node's host id.
      * @return The unique identifier of the node's host in the ring.
      */
-    public String getHostId() {
+    private String getHostId() {
         return hostId;
     }
 
@@ -211,7 +211,7 @@ public class CassandraStatus {
      * Gets the node's endpoint.
      * @return The endpoint assigned to the node in the ring.
      */
-    public String getEndpoint() {
+    private String getEndpoint() {
         return endpoint;
     }
 
@@ -219,7 +219,7 @@ public class CassandraStatus {
      * Gets the token count.
      * @return The number of tokens assigned to the node.
      */
-    public int getTokenCount() {
+    private int getTokenCount() {
         return tokenCount;
     }
 
@@ -227,7 +227,7 @@ public class CassandraStatus {
      * Gets the node's data center.
      * @return The data center in which the node is located.
      */
-    public String getDataCenter() {
+    private String getDataCenter() {
         return dataCenter;
     }
 
@@ -235,7 +235,7 @@ public class CassandraStatus {
      * Gets the node's rack.
      * @return The rack on which the node is located.
      */
-    public String getRack() {
+    private String getRack() {
         return rack;
     }
 
@@ -262,10 +262,8 @@ public class CassandraStatus {
         if (getDataCenter() != null ? !getDataCenter().equals(
                 that.getDataCenter()) : that.getDataCenter() != null)
             return false;
-        if (getRack() != null ? !getRack().equals(
-                that.getRack()) : that.getRack() != null) return false;
-        return getVersion() != null ? getVersion().equals(
-                that.getVersion()) : that.getVersion() == null;
+        return (getRack() != null ? getRack().equals(
+                that.getRack()) : that.getRack() == null) && (getVersion() != null ? getVersion().equals(that.getVersion()) : that.getVersion() == null);
 
     }
 

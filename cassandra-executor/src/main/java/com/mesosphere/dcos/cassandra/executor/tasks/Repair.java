@@ -35,7 +35,7 @@ import java.util.concurrent.Future;
  * Implements anti-entropy, primary range, sequential repair by executing
  * RepairTask by delegating repair to the CassandraDaemonProcess.
  */
-public class Repair implements ExecutorTask {
+class Repair implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(Repair.class);
 
     private final CassandraDaemonProcess daemon;

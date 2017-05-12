@@ -46,7 +46,7 @@ public class PageBlobOutputStream extends FilterOutputStream {
     this(pageBlob, PAGE_BLOB_PAGE_SIZE);
   }
 
-  public PageBlobOutputStream(CloudPageBlob pageBlob, long initialPageSize) throws StorageException {
+  private PageBlobOutputStream(CloudPageBlob pageBlob, long initialPageSize) throws StorageException {
     // to set the size we need to calc but that can't be the first line when we need to construct the super:(
     super(pageBlob.openWriteNew(initialPageSize));
     this.pageBlob = pageBlob;

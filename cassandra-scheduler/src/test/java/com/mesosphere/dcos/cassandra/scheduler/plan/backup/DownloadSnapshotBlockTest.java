@@ -26,8 +26,8 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class DownloadSnapshotBlockTest {
-    public static final String DOWNLOAD_NODE_0 = "download-node-0";
-    public static final String NODE_0 = "node-0";
+    private static final String DOWNLOAD_NODE_0 = "download-node-0";
+    private static final String NODE_0 = "node-0";
     @Mock
     private ClusterTaskOfferRequirementProvider provider;
     @Mock

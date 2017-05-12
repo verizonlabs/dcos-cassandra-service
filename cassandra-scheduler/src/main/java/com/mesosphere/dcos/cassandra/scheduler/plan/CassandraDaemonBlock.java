@@ -33,11 +33,11 @@ public class CassandraDaemonBlock extends DefaultObservable implements Block {
         return cassandraState.getOrCreateContainer(name);
     }
 
-    public static boolean isComplete(Protos.TaskStatus status) throws IOException {
+    public static boolean isComplete(Protos.TaskStatus status) {
         return isComplete(Optional.of(status));
     }
 
-    public static boolean isComplete(Optional<Protos.TaskStatus> status) throws IOException {
+    private static boolean isComplete(Optional<Protos.TaskStatus> status) {
         if (!status.isPresent()) {
             return false;
         }
@@ -77,7 +77,7 @@ public class CassandraDaemonBlock extends DefaultObservable implements Block {
     }
 
     private Optional<OfferRequirement> reconfigureTask(final CassandraDaemonTask task)
-            throws ConfigStoreException, PersistenceException {
+            throws ConfigStoreException {
         final CassandraTemplateTask templateTask = cassandraState
                 .getOrCreateTemplateTask(CassandraTemplateTask
                 .toTemplateTaskName(task.getName()), task);
@@ -85,7 +85,7 @@ public class CassandraDaemonBlock extends DefaultObservable implements Block {
                 cassandraState.createCassandraContainer(cassandraState.reconfigureDaemon(task), templateTask));
     }
 
-    private Optional<OfferRequirement> replaceTask(final CassandraDaemonTask task) throws PersistenceException {
+    private Optional<OfferRequirement> replaceTask(final CassandraDaemonTask task) {
         String templateTaskName = CassandraTemplateTask.toTemplateTaskName(task.getName());
         CassandraTemplateTask templateTask = cassandraState.getOrCreateTemplateTask(templateTaskName, task);
         return provider.getReplacementOfferRequirement(
@@ -103,7 +103,7 @@ public class CassandraDaemonBlock extends DefaultObservable implements Block {
                 cassandraState);
     }
 
-    public CassandraDaemonBlock(
+    private CassandraDaemonBlock(
             final String name,
             final PersistentOfferRequirementProvider provider,
             final CassandraState cassandraState) throws IOException {

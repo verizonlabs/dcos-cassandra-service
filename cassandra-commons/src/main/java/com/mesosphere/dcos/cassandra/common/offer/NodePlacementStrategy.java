@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class NodePlacementStrategy {
+class NodePlacementStrategy {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             NodePlacementStrategy.class);
 
-    private CassandraState cassandraState;
+    private final CassandraState cassandraState;
 
     public NodePlacementStrategy(CassandraState cassandraState) {
         this.cassandraState = cassandraState;
@@ -26,7 +26,7 @@ public class NodePlacementStrategy {
     public List<String> getAgentsToAvoid(Protos.TaskInfo taskInfo) {
         List<String> agentsToAvoid = new ArrayList<>();
         final List<Protos.TaskInfo> otherTaskInfos = getOtherTaskInfos(taskInfo);
-        otherTaskInfos.stream().forEach(otherTaskInfo -> {
+        otherTaskInfos.forEach(otherTaskInfo -> {
             final Protos.SlaveID slaveId = otherTaskInfo.getSlaveId();
 
             if (slaveId != null && slaveId.hasValue() && StringUtils.isNotBlank(slaveId.getValue())) {
@@ -46,12 +46,10 @@ public class NodePlacementStrategy {
         final String taskIdValue = taskId.getValue();
         final Map<String, CassandraDaemonTask> daemons = cassandraState.getDaemons();
 
-        final List<Protos.TaskInfo> others = daemons.values().stream()
+        return daemons.values().stream()
                 .filter(task -> !task.getId().equals(taskIdValue))
                 .map(task -> task.getTaskInfo())
                 .collect(Collectors.toList());
-
-        return others;
     }
 
 }

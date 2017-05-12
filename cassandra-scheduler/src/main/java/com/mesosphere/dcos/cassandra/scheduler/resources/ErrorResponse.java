@@ -21,11 +21,11 @@ public class ErrorResponse {
     @JsonProperty("message")
     private final String message;
 
-    public ErrorResponse(final String message) {
+    private ErrorResponse(final String message) {
         this.message = message;
     }
 
-    public String getMessage() {
+    private String getMessage() {
         return message;
     }
 

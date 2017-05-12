@@ -23,14 +23,14 @@ import java.io.OutputStream;
  * CompressionDriver is the interface to all Compression implementations that
  * compress and decompress snapshots during a Cassandra backup.
  */
-public interface CompressionDriver {
+interface CompressionDriver {
     /**
      * Compresses the file/directory denoted by {@code sourcePath}, and produces an archive at {@code destinationPath}.
      *
      * @param sourcePath      Source path to compress.
      * @param destinationPath Destination path.
      */
-    void compress(String sourcePath, String destinationPath) throws IOException;
+    void compress(String sourcePath, String destinationPath);
 
     /**
      * Decompresses the file/directory from source and stores it at destination.

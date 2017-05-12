@@ -9,13 +9,14 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class RepairContextTest {
     @Test
     public void testJSONSerializationWithSnakeCaseMembers() throws Exception {
         RepairContext context = new RepairContext(
-                Arrays.asList("node1"), Arrays.asList("keyspace1"), Arrays.asList("column_family1"));
+                Collections.singletonList("node1"), Collections.singletonList("keyspace1"), Collections.singletonList("column_family1"));
         ObjectMapper om = new ObjectMapper();
 
         String jsonContext = new String(RepairContext.JSON_SERIALIZER.serialize(context), "ISO-8859-1");
@@ -28,8 +29,8 @@ public class RepairContextTest {
         Assert.assertEquals(Arrays.asList("column_families", "key_spaces", "nodes"), keys);
 
         context = JsonUtils.MAPPER.readValue(jsonContext, RepairContext.class);
-        Assert.assertEquals(Arrays.asList("column_family1"), context.getColumnFamilies());
-        Assert.assertEquals(Arrays.asList("keyspace1"), context.getKeySpaces());
-        Assert.assertEquals(Arrays.asList("node1"), context.getNodes());
+        Assert.assertEquals(Collections.singletonList("column_family1"), context.getColumnFamilies());
+        Assert.assertEquals(Collections.singletonList("keyspace1"), context.getKeySpaces());
+        Assert.assertEquals(Collections.singletonList("node1"), context.getNodes());
     }
 }

@@ -24,8 +24,8 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class RestoreSnapshotBlockTest {
-    public static final String RESTORE_NODE_0 = "restore-node-0";
-    public static final String NODE_0 = "node-0";
+    private static final String RESTORE_NODE_0 = "restore-node-0";
+    private static final String NODE_0 = "node-0";
     @Mock
     private ClusterTaskOfferRequirementProvider provider;
     @Mock

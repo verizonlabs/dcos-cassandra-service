@@ -86,8 +86,7 @@ public class PageBlobInputStream extends FilterInputStream {
     }
 
     int readsize = getReadsize(len);
-    final int numberOfBytesRead = in.read(b, off, readsize);
-    return numberOfBytesRead;
+      return in.read(b, off, readsize);
   }
 
   private int getReadsize(int len) {

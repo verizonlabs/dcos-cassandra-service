@@ -41,7 +41,7 @@ import java.util.concurrent.Future;
  *
  * @TODO Why not just invoke the SSTableLoader class directly ins
  */
-public class RestoreSnapshot implements ExecutorTask {
+class RestoreSnapshot implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(
         RestoreSnapshot.class);
 

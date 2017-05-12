@@ -12,7 +12,7 @@ public class TemplateTaskStatus extends CassandraTaskStatus {
         return new TemplateTaskStatus(status);
     }
 
-    protected TemplateTaskStatus(final Protos.TaskStatus status) {
+    private TemplateTaskStatus(final Protos.TaskStatus status) {
         super(status);
     }
 }

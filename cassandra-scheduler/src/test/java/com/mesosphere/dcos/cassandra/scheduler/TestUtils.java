@@ -5,18 +5,18 @@ import com.mesosphere.dcos.cassandra.common.tasks.CassandraMode;
 import org.apache.mesos.Protos;
 import org.apache.mesos.offer.ResourceUtils;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.UUID;
 
 public class TestUtils {
-    public static final Protos.FrameworkID generateFrameworkId() {
+    public static Protos.FrameworkID generateFrameworkId() {
         return Protos.FrameworkID
                 .newBuilder()
                 .setValue(UUID.randomUUID().toString())
                 .build();
     }
 
-    public static final Protos.MasterInfo generateMasterInfo() {
+    public static Protos.MasterInfo generateMasterInfo() {
         return Protos.MasterInfo.newBuilder()
                 .setId(UUID.randomUUID().toString())
                 .setIp(ipToInt("127.0.0.1"))
@@ -24,7 +24,7 @@ public class TestUtils {
                 .build();
     }
 
-    public static int ipToInt(String ipAddress) {
+    private static int ipToInt(String ipAddress) {
         String[] ipAddressInArray = ipAddress.split("\\.");
 
         int result = 0;
@@ -48,7 +48,7 @@ public class TestUtils {
         return generateOffer(frameworkId, cpu, memory, disk, offerUUID, offerUUID);
     }
 
-    public static Protos.Offer generateOffer(
+    private static Protos.Offer generateOffer(
             String frameworkId,
             double cpu,
             int memory,
@@ -69,7 +69,7 @@ public class TestUtils {
                 .addAttributes(Protos.Attribute.newBuilder().setText(Protos.Value.Text.newBuilder().setValue("POD1")).setName("POD1").setType(Protos.Value.Type.TEXT))
                 .addResources(ResourceUtils.getUnreservedRanges(
                         "ports",
-                        Arrays.asList(Protos.Value.Range.newBuilder().setBegin(5000).setEnd(40000).build())))
+                        Collections.singletonList(Protos.Value.Range.newBuilder().setBegin(5000).setEnd(40000).build())))
                 .build();
     }
 
