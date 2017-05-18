@@ -45,7 +45,7 @@ public class CassandraPaths {
      *
      * @param version The version of Cassandra (e.g. 2.2.6)
      */
-    public CassandraPaths(final String version) {
+    private CassandraPaths(final String version) {
         root = Paths.get("apache-cassandra-" + version);
     }
 

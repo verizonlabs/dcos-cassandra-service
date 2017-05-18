@@ -40,7 +40,7 @@ public class BackupUploadTask extends CassandraTask {
     /**
      * The name prefix for BackupUploadTasks.
      */
-    public static final String NAME_PREFIX = "upload-";
+    private static final String NAME_PREFIX = "upload-";
 
     /**
      * Gets the name of a BackupUploadTask for a CassandraDaemonTask.
@@ -48,7 +48,7 @@ public class BackupUploadTask extends CassandraTask {
      * @param daemonName The name of the CassandraDaemonTask.
      * @return The name of the BackupUploadTask for daemonName.
      */
-    public static final String nameForDaemon(final String daemonName) {
+    public static String nameForDaemon(final String daemonName) {
         return NAME_PREFIX + daemonName;
     }
 
@@ -59,7 +59,7 @@ public class BackupUploadTask extends CassandraTask {
      *               uploaded.
      * @return The name of the BackupUploadTask for daemon.
      */
-    public static final String nameForDaemon(final CassandraDaemonTask daemon) {
+    public static String nameForDaemon(final CassandraDaemonTask daemon) {
         return nameForDaemon(daemon.getName());
     }
 
@@ -132,9 +132,7 @@ public class BackupUploadTask extends CassandraTask {
             Optional<String> message) {
 
         Protos.TaskStatus.Builder builder = getStatusBuilder();
-        if (message.isPresent()) {
-            builder.setMessage(message.get());
-        }
+        message.ifPresent(builder::setMessage);
 
         return BackupUploadStatus.create(builder
                 .setData(CassandraData.createBackupUploadStatusData().getBytes())

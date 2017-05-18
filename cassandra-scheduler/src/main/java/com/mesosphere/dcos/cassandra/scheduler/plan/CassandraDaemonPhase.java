@@ -61,7 +61,7 @@ public class CassandraDaemonPhase extends DefaultPhase {
 
     private final List<String> errors;
 
-    public static final CassandraDaemonPhase create(
+    public static CassandraDaemonPhase create(
             final CassandraState cassandraState,
             final PersistentOfferRequirementProvider provider,
             final SchedulerClient client,
@@ -81,7 +81,7 @@ public class CassandraDaemonPhase extends DefaultPhase {
     }
 
 
-    public CassandraDaemonPhase(
+    private CassandraDaemonPhase(
             final List<CassandraDaemonBlock> blocks,
             final List<String> errors) {
         super(UUID.randomUUID(), "Deploy", blocks);

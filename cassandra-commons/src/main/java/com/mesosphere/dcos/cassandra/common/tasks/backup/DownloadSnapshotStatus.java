@@ -29,7 +29,7 @@ public class DownloadSnapshotStatus extends CassandraTaskStatus {
         return new DownloadSnapshotStatus(status);
     }
 
-    protected DownloadSnapshotStatus(final Protos.TaskStatus status) {
+    private DownloadSnapshotStatus(final Protos.TaskStatus status) {
         super(status);
     }
 }

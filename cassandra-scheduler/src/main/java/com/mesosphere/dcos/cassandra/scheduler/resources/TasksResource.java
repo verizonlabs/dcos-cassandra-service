@@ -112,7 +112,7 @@ public class TasksResource {
         if (taskOption.isPresent()) {
             CassandraDaemonTask task = taskOption.get();
             CassandraScheduler.getTaskKiller().killTask(task.getName(), false);
-            return killResponse(Arrays.asList(task.getTaskInfo().getTaskId().getValue()));
+            return killResponse(Collections.singletonList(task.getTaskInfo().getTaskId().getValue()));
         } else {
             return Response.serverError().build();
         }
@@ -130,7 +130,7 @@ public class TasksResource {
             LOGGER.info("Moved container ExecutorInfo: {}",
                     TextFormat.shortDebugString(movedContainer.getExecutorInfo()));
             CassandraScheduler.getTaskKiller().killTask(task.getName(), true);
-            return killResponse(Arrays.asList(task.getTaskInfo().getTaskId().getValue()));
+            return killResponse(Collections.singletonList(task.getTaskInfo().getTaskId().getValue()));
         } else {
             return Response.serverError().build();
         }

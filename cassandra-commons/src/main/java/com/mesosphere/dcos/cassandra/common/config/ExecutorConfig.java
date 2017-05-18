@@ -10,16 +10,14 @@ import com.mesosphere.dcos.cassandra.common.serialization.Serializer;
 import com.mesosphere.dcos.cassandra.common.util.JsonUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
 public class ExecutorConfig {
-    public static Serializer<ExecutorConfig> JSON_SERIALIZER =
+    public static final Serializer<ExecutorConfig> JSON_SERIALIZER =
             new Serializer<ExecutorConfig>() {
                 @Override
                 public byte[] serialize(ExecutorConfig value)
@@ -105,14 +103,13 @@ public class ExecutorConfig {
             @JsonProperty("volume_driver") String volumeDriver,
             @JsonProperty("volume_name") String volumeName,
             @JsonProperty("host_path") String hostPath,
-            @JsonProperty("container_path") String containerPath)
-            throws URISyntaxException, UnsupportedEncodingException {
+            @JsonProperty("container_path") String containerPath) {
 
         if (dvdcli == null) {
             dvdcli = "";
         }
 
-        ExecutorConfig config = create(
+        return create(
                 command,
                 arguments,
                 cpus,
@@ -130,8 +127,6 @@ public class ExecutorConfig {
                 volumeName,
                 hostPath,
                 containerPath);
-
-        return config;
     }
 
     @JsonProperty("command")
@@ -266,9 +261,9 @@ public class ExecutorConfig {
         return memoryMb;
     }
 
-    public String getHostPath(){ return  hostPath; }
+    private String getHostPath(){ return  hostPath; }
 
-    public String getContainerPath(){ return containerPath; }
+    private String getContainerPath(){ return containerPath; }
 
     @JsonProperty("jre_location")
     public String getJreLocationString() {
@@ -304,7 +299,7 @@ public class ExecutorConfig {
 
     @JsonIgnore
     public Set<String> getURIs() {
-        Set<String> uris = new HashSet<String>();
+        Set<String> uris = new HashSet<>();
         if (!dvdcli.toString().isEmpty()) {
             uris.add(dvdcli.toString());
         }

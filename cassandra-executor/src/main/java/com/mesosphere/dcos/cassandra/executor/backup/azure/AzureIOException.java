@@ -4,7 +4,7 @@ import java.io.IOException;
 
 /**
  */
-public class AzureIOException extends IOException {
+class AzureIOException extends IOException {
 
   public AzureIOException(String message) {
     super(message);

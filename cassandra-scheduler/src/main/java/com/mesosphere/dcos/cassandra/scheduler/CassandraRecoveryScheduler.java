@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class CassandraRecoveryScheduler extends ChainedObserver {
+class CassandraRecoveryScheduler extends ChainedObserver {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             CassandraRecoveryScheduler.class);
 
@@ -77,7 +77,7 @@ public class CassandraRecoveryScheduler extends ChainedObserver {
                 }
 
 
-            } catch (PersistenceException | ConfigStoreException ex) {
+            } catch (ConfigStoreException ex) {
                 LOGGER.error(
                         String.format("Persistence error recovering " +
                                 "terminated task %s", terminatedOption),

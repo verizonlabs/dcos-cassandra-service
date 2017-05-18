@@ -49,13 +49,13 @@ import java.util.Optional;
 
 public abstract class CassandraTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(CassandraTask.class);
-    protected static Protos.SlaveID EMPTY_SLAVE_ID = Protos.SlaveID
+    private static final Protos.SlaveID EMPTY_SLAVE_ID = Protos.SlaveID
         .newBuilder().setValue("").build();
 
     /**
      * Serializer that serializes CassandraTasks to and from JSON Objects.
      */
-    public static Serializer<CassandraTask> PROTO_SERIALIZER = new
+    public static final Serializer<CassandraTask> PROTO_SERIALIZER = new
         Serializer<CassandraTask>() {
             @Override
             public byte[] serialize(CassandraTask value)
@@ -154,7 +154,7 @@ public abstract class CassandraTask {
      *
      * @return A universally unique identifier.
      */
-    public static Protos.TaskID createId(final String name) {
+    protected static Protos.TaskID createId(final String name) {
         return TaskUtils.toTaskId(name);
     }
 
@@ -173,10 +173,9 @@ public abstract class CassandraTask {
         return status;
     }
 
-    protected CassandraTask setTaskStatus(Protos.TaskStatus status) {
+    void setTaskStatus(Protos.TaskStatus status) {
         this.status = status;
 
-        return this;
     }
 
     public Protos.TaskState getState(){
@@ -224,7 +223,7 @@ public abstract class CassandraTask {
 
         String path = getDataDirectory(executor);
 
-        if (!path.equals(CassandraConfig.VOLUME_PATH)) {
+        if (path.equals(CassandraConfig.VOLUME_PATH)) {
             if (!volumeMode.equals(VolumeRequirement.VolumeMode.NONE)) {
                 if (volumeType.equals(VolumeRequirement.VolumeType.MOUNT)) {
                     builder.addResources(ResourceUtils.getDesiredMountVolume(role, principal, diskMb, path));
@@ -250,12 +249,12 @@ public abstract class CassandraTask {
         if (isDockerVolume == 0){
             return CassandraConfig.VOLUME_PATH;
         }
-        return ""; // We're using a rexray volume if we get here.
+        return CassandraConfig.EXTERNAL_VOLUME_PATH; // We're using a rexray volume if we get here.
     }
 
     /**
      * Gets the unique identifier for the task.
-     *
+     *K
      * @return The universally unique identifier for the task.
      */
     public String getId() {
@@ -276,9 +275,9 @@ public abstract class CassandraTask {
      *
      * @return The status associated with the task.
      */
-    public Protos.TaskStatus.Builder getStatusBuilder(
-        final Protos.TaskState state,
-        final Optional<String> message
+    Protos.TaskStatus.Builder getStatusBuilder(
+            final Protos.TaskState state,
+            final Optional<String> message
     ) {
         Protos.TaskStatus.Builder builder = Protos.TaskStatus.newBuilder()
             .setSlaveId(info.getSlaveId())

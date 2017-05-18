@@ -16,19 +16,18 @@ import org.apache.mesos.state.StateStoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class CleanupManager extends ChainedObserver implements ClusterTaskManager<CleanupRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(CleanupManager.class);
-    static final String CLEANUP_KEY = "cleanup";
+    private static final String CLEANUP_KEY = "cleanup";
 
     private final CassandraState cassandraState;
     private final ClusterTaskOfferRequirementProvider provider;
     private volatile CleanupPhase phase = null;
     private volatile CleanupContext activeContext = null;
-    private StateStore stateStore;
+    private final StateStore stateStore;
 
     @Inject
     public CleanupManager(
@@ -73,7 +72,7 @@ public class CleanupManager extends ChainedObserver implements ClusterTaskManage
             stateStore.storeProperty(CLEANUP_KEY, CleanupContext.JSON_SERIALIZER.serialize(context));
             this.phase = new CleanupPhase(context, cassandraState, provider);
             this.activeContext = context;
-        } catch (SerializationException | PersistenceException e) {
+        } catch (SerializationException e) {
             LOGGER.error(
                     "Error storing cleanup context into persistence store" +
                             ". Reason: ",
@@ -85,14 +84,8 @@ public class CleanupManager extends ChainedObserver implements ClusterTaskManage
 
     public void stop() {
         LOGGER.info("Stopping cleanup");
-        try {
-            stateStore.clearProperty(CLEANUP_KEY);
-            cassandraState.remove(cassandraState.getCleanupTasks().keySet());
-        } catch (PersistenceException e) {
-            LOGGER.error(
-                    "Error deleting cleanup context from persistence store. Reason: {}",
-                    e);
-        }
+        stateStore.clearProperty(CLEANUP_KEY);
+        cassandraState.remove(cassandraState.getCleanupTasks().keySet());
         this.activeContext = null;
 
         notifyObservers();
@@ -111,7 +104,7 @@ public class CleanupManager extends ChainedObserver implements ClusterTaskManage
         if (phase == null) {
             return Collections.emptyList();
         } else {
-            return Arrays.asList(phase);
+            return Collections.singletonList(phase);
         }
     }
 }

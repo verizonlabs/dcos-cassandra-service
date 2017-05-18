@@ -138,10 +138,10 @@ public class RestoreManagerTest {
 
         Mockito.when(daemonTask.getState()).thenReturn(Protos.TaskState.TASK_RUNNING);
         Map<String, DownloadSnapshotTask> previousDownloadTasks =
-                new HashMap<String, DownloadSnapshotTask>();
+                new HashMap<>();
         previousDownloadTasks.put("hey", DownloadSnapshotTask.parse(TaskInfo.getDefaultInstance()));
         Map<String, RestoreSnapshotTask> previousRestoreTasks =
-                new HashMap<String, RestoreSnapshotTask>();
+                new HashMap<>();
         previousRestoreTasks.put("hi", RestoreSnapshotTask.parse(TaskInfo.getDefaultInstance()));
         when(mockCassandraState.getDownloadSnapshotTasks()).thenReturn(previousDownloadTasks);
         when(mockCassandraState.getRestoreSnapshotTasks()).thenReturn(previousRestoreTasks);

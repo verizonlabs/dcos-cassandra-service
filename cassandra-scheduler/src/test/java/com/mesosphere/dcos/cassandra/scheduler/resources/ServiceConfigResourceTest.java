@@ -30,7 +30,6 @@ public class ServiceConfigResourceTest {
     private static TestingServer server;
     private static MutableSchedulerConfiguration config;
     private static ConfigurationManager configurationManager;
-    private static StateStore stateStore;
 
     @Rule
     public final ResourceTestRule resources = ResourceTestRule.builder()
@@ -68,7 +67,7 @@ public class ServiceConfigResourceTest {
                                 , (int) curatorConfig.getBackoffMs()) :
                         new RetryForever((int) curatorConfig.getBackoffMs());
 
-        stateStore = new CuratorStateStore(
+        StateStore stateStore = new CuratorStateStore(
                 config.createConfig().getServiceConfig().getName(),
                 server.getConnectString(),
                 retryPolicy);
@@ -82,7 +81,7 @@ public class ServiceConfigResourceTest {
                     server.getConnectString(),
                     configuration,
                     configValidator,
-                    stateStore);
+                            stateStore);
             Capabilities mockCapabilities = Mockito.mock(Capabilities.class);
             when(mockCapabilities.supportsNamedVips()).thenReturn(true);
             configurationManager = new ConfigurationManager(

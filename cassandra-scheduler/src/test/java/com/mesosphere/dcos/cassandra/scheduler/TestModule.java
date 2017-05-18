@@ -42,7 +42,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-public class TestModule extends AbstractModule {
+class TestModule extends AbstractModule {
     private final CassandraSchedulerConfiguration configuration;
     private final CuratorFrameworkConfig curatorConfig;
     private final MesosConfig mesosConfig;

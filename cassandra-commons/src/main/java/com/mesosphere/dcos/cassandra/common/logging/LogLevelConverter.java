@@ -4,7 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.pattern.ClassicConverter;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 
-public class LogLevelConverter extends ClassicConverter {
+class LogLevelConverter extends ClassicConverter {
 
     private static final String ALARM_LEVEL = "ALARM";
     private static final String ERROR_LEVEL = "ERROR";

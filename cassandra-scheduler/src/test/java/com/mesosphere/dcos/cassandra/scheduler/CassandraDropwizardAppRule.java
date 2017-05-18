@@ -1,10 +1,7 @@
 package com.mesosphere.dcos.cassandra.scheduler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import com.mesosphere.dcos.cassandra.common.config.MutableSchedulerConfiguration;
 import io.dropwizard.Application;
-import io.dropwizard.setup.Environment;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.DropwizardTestSupport;
 import io.dropwizard.testing.junit.DropwizardAppRule;
@@ -14,7 +11,7 @@ import org.apache.curator.utils.CloseableUtils;
 
 import javax.annotation.Nullable;
 
-public class CassandraDropwizardAppRule<C extends MutableSchedulerConfiguration> extends DropwizardAppRule {
+class CassandraDropwizardAppRule<C extends MutableSchedulerConfiguration> extends DropwizardAppRule {
     private TestingServer server = TestModule.createTestingServerQuietly();
     private CuratorFramework curator = TestModule.createClient(server);
 
@@ -35,21 +32,6 @@ public class CassandraDropwizardAppRule<C extends MutableSchedulerConfiguration>
     }
 
     @Override
-    public Environment getEnvironment() {
-        return super.getEnvironment();
-    }
-
-    @Override
-    public ObjectMapper getObjectMapper() {
-        return super.getObjectMapper();
-    }
-
-    @Override
-    public DropwizardTestSupport<C> getTestSupport() {
-        return super.getTestSupport();
-    }
-
-    @Override
     public MutableSchedulerConfiguration getConfiguration() {
         return (MutableSchedulerConfiguration) super.getConfiguration();
     }
@@ -60,7 +42,7 @@ public class CassandraDropwizardAppRule<C extends MutableSchedulerConfiguration>
             server.start();
             curator.start();
             super.before();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }

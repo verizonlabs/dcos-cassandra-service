@@ -34,6 +34,7 @@ import java.util.Objects;
  */
 public class CassandraConfig {
     public static final String VOLUME_PATH = "volume";
+    public static final String EXTERNAL_VOLUME_PATH = "external_volume";
 
     public static final ArrayList<String> hostFilterDefault = new ArrayList<String>() {{
         add("SDS");
@@ -531,7 +532,7 @@ public class CassandraConfig {
     private final int diskMb;
 
     @JsonProperty("disk_type")
-    private VolumeRequirement.VolumeType diskType;
+    private final VolumeRequirement.VolumeType diskType;
 
     @JsonProperty("replace_ip")
     private final String replaceIp;
@@ -697,7 +698,7 @@ public class CassandraConfig {
      */
     public boolean getPublishDiscoveryInfo() { return publishDiscoveryInfo; }
 
-    public String getFilepath() {
+    private String getFilepath() {
         return filepath;
     }
 

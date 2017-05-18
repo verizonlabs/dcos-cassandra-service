@@ -48,14 +48,8 @@ public class DaemonRunning extends HealthCheck {
         Optional<CassandraDaemonProcess> daemon =
                 executor.getCassandraDaemon();
 
-        if (daemon.isPresent()) {
-            return (daemon.get().isOpen()) ?
-                    Result.healthy() : Result.unhealthy("Cassandra Daemon is " +
-                    "not running");
-        } else {
-            return Result.unhealthy("Cassandra Daemon is " +
-                    "not running");
-        }
+        return daemon.filter(cassandraDaemonProcess -> (cassandraDaemonProcess.isOpen())).map(cassandraDaemonProcess -> Result.healthy()).orElseGet(() -> Result.unhealthy("Cassandra Daemon is " +
+                "not running"));
 
     }
 }

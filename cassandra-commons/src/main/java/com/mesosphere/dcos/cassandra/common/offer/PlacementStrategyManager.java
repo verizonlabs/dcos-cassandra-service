@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 
-public class PlacementStrategyManager {
+class PlacementStrategyManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             PlacementStrategyManager.class);
 
@@ -44,7 +44,7 @@ public class PlacementStrategyManager {
         }
     }
 
-    public static Optional<PlacementRuleGenerator> getPlacement(List<String> avoidAgents, List<String> colocateAgents) {
+    private static Optional<PlacementRuleGenerator> getPlacement(List<String> avoidAgents, List<String> colocateAgents) {
         LOGGER.info("Avoiding agents: {}", avoidAgents);
         LOGGER.info("Colocating with agents: {}", colocateAgents);
 

@@ -16,10 +16,10 @@ public class MesosConfig {
     @JsonProperty("refuse_seconds")
     private final int refuseSeconds;
 
-    public static MesosConfig create(String servers,
-                                     String path,
-                                     Duration timeout,
-                                     int refuseSeconds) {
+    private static MesosConfig create(String servers,
+                                      String path,
+                                      Duration timeout,
+                                      int refuseSeconds) {
 
         return new MesosConfig(servers, path, timeout, refuseSeconds);
     }
@@ -43,15 +43,15 @@ public class MesosConfig {
         this.refuseSeconds = refuseSeconds;
     }
 
-    public String getServers() {
+    private String getServers() {
         return servers;
     }
 
-    public String getPath() {
+    private String getPath() {
         return path;
     }
 
-    public Duration getTimeout() {
+    private Duration getTimeout() {
         return timeout;
     }
 
@@ -78,9 +78,7 @@ public class MesosConfig {
                 that.getServers()) : that.getServers() != null) return false;
         if (getPath() != null ? !getPath().equals(
                 that.getPath()) : that.getPath() != null) return false;
-        if (getRefuseSeconds() != that.getRefuseSeconds()) return false;
-        return getTimeout() != null ? getTimeout().equals(
-                that.getTimeout()) : that.getTimeout() == null;
+        return getRefuseSeconds() == that.getRefuseSeconds() && (getTimeout() != null ? getTimeout().equals(that.getTimeout()) : that.getTimeout() == null);
 
     }
 

@@ -30,7 +30,7 @@ public class BackupRestoreRequest implements ClusterTaskRequest {
   @JsonProperty("uses_emc")
   private Boolean usesEmc;
 
-  public String getName() {
+  private String getName() {
     return name;
   }
 
@@ -38,7 +38,7 @@ public class BackupRestoreRequest implements ClusterTaskRequest {
     this.name = name;
   }
 
-  public String getExternalLocation() {
+  private String getExternalLocation() {
     return externalLocation;
   }
 
@@ -46,7 +46,7 @@ public class BackupRestoreRequest implements ClusterTaskRequest {
     this.externalLocation = externalLocation;
   }
 
-  public String getS3AccessKey() {
+  private String getS3AccessKey() {
     return s3AccessKey;
   }
 
@@ -54,7 +54,7 @@ public class BackupRestoreRequest implements ClusterTaskRequest {
     this.s3AccessKey = s3AccessKey;
   }
 
-  public String getS3SecretKey() {
+  private String getS3SecretKey() {
     return s3SecretKey;
   }
 
@@ -62,7 +62,7 @@ public class BackupRestoreRequest implements ClusterTaskRequest {
     this.s3SecretKey = s3SecretKey;
   }
 
-  public String getAzureAccount() {
+  private String getAzureAccount() {
     return azureAccount;
   }
 
@@ -70,7 +70,7 @@ public class BackupRestoreRequest implements ClusterTaskRequest {
     this.azureAccount = azureAccount;
   }
 
-  public String getAzureKey() {
+  private String getAzureKey() {
     return azureKey;
   }
 
@@ -78,7 +78,7 @@ public class BackupRestoreRequest implements ClusterTaskRequest {
     this.azureKey = azureKey;
   }
 
-  public boolean usesEmc() {
+  private boolean usesEmc() {
     if (usesEmc != null) {
       return usesEmc;
     } else {

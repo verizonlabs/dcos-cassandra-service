@@ -9,18 +9,18 @@ import java.util.stream.Collectors;
 
 public class TaskUtils {
 
-    public static final String CPUS = "cpus";
-    public static final String MEM = "mem";
-    public static final String DISK = "disk";
-    public static final String PORTS = "ports";
+    private static final String CPUS = "cpus";
+    private static final String MEM = "mem";
+    private static final String DISK = "disk";
+    private static final String PORTS = "ports";
 
 
-    public static String createVolumeId() {
+    private static String createVolumeId() {
         return "volume-" + UUID.randomUUID();
     }
 
-    public static Environment createEnvironment(
-        final Map<String, String> env) {
+    private static Environment createEnvironment(
+            final Map<String, String> env) {
         return Environment.newBuilder()
             .addAllVariables(env.entrySet().stream()
                 .map(entry -> Environment.Variable.newBuilder()
@@ -30,8 +30,8 @@ public class TaskUtils {
             .build();
     }
 
-    public static Collection<CommandInfo.URI> createURIs(
-        final Set<String> uris) {
+    private static Collection<CommandInfo.URI> createURIs(
+            final Set<String> uris) {
 
         Collection<CommandInfo.URI> list = new ArrayList<>();
 
@@ -90,15 +90,15 @@ public class TaskUtils {
             .orElse("");
     }
 
-    public static boolean isCpus(final Resource resource) {
+    private static boolean isCpus(final Resource resource) {
         return resource.hasName() && resource.getName().equalsIgnoreCase(CPUS);
     }
 
-    public static boolean isMem(final Resource resource) {
+    private static boolean isMem(final Resource resource) {
         return resource.hasName() && resource.getName().equalsIgnoreCase(MEM);
     }
 
-    public static boolean isDisk(final Resource resource) {
+    private static boolean isDisk(final Resource resource) {
         return resource.hasName() && resource.getName().equalsIgnoreCase(DISK);
     }
 

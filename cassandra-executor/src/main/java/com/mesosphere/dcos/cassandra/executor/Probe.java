@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by gabriel on 9/20/16.
  */
-public class Probe {
+class Probe {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final CassandraDaemonTask task;
     private NodeProbe nodeProbe = null;
@@ -36,7 +36,7 @@ public class Probe {
                 logger.info("Connection to server failed backing off for 500 ms");
                 try {
                     Thread.sleep(500);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
         }

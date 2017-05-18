@@ -32,13 +32,13 @@ import java.util.concurrent.Future;
  * delegating download of the snapshotted tables to a BackupStorageDriver
  * implementation.
  */
-public class DownloadSnapshot implements ExecutorTask {
+class DownloadSnapshot implements ExecutorTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(
             DownloadSnapshot.class);
-    private ExecutorDriver driver;
-    private BackupRestoreContext context;
-    private DownloadSnapshotTask cassandraTask;
-    private BackupStorageDriver backupStorageDriver;
+    private final ExecutorDriver driver;
+    private final BackupRestoreContext context;
+    private final DownloadSnapshotTask cassandraTask;
+    private final BackupStorageDriver backupStorageDriver;
 
     private void sendStatus(ExecutorDriver driver,
                             Protos.TaskState state,

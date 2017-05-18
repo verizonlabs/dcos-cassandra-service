@@ -42,7 +42,7 @@ public class DownloadSnapshotBlock extends AbstractClusterTaskBlock<BackupRestor
                 context));
     }
 
-    public DownloadSnapshotBlock(
+    private DownloadSnapshotBlock(
             final String daemon,
             final CassandraState cassandraState,
             final CassandraOfferRequirementProvider provider,

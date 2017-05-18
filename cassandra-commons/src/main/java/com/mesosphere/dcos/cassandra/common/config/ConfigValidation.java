@@ -4,6 +4,6 @@ import org.apache.mesos.config.Configuration;
 
 import java.util.List;
 
-public interface ConfigValidation {
+interface ConfigValidation {
     List<ConfigValidationError> validate(Configuration oldConfig, Configuration newConfig);
 }

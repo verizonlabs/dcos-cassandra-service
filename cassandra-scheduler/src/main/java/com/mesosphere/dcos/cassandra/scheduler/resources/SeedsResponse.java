@@ -23,20 +23,20 @@ public class SeedsResponse {
         return new SeedsResponse(isSeed,seeds);
     }
 
-    public SeedsResponse(final boolean isSeed,
-                         final List<String> seeds){
+    private SeedsResponse(final boolean isSeed,
+                          final List<String> seeds){
 
         this.seeds = ImmutableList.copyOf(seeds);
         this.isSeed = isSeed;
     }
 
     @JsonIgnore
-    public boolean isSeed(){
+    private boolean isSeed(){
         return isSeed;
     }
 
     @JsonIgnore
-    public List<String> getSeeds(){
+    private List<String> getSeeds(){
         return seeds;
     }
 

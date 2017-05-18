@@ -23,12 +23,12 @@ public class RestoreManager extends ChainedObserver implements ClusterTaskManage
     private static final Logger LOGGER = LoggerFactory.getLogger(RestoreManager.class);
     static final String RESTORE_KEY = "restore";
 
-    private CassandraState cassandraState;
+    private final CassandraState cassandraState;
     private final ClusterTaskOfferRequirementProvider provider;
     private volatile BackupRestoreContext activeContext = null;
     private volatile DownloadSnapshotPhase download = null;
     private volatile RestoreSnapshotPhase restore = null;
-    private StateStore stateStore;
+    private final StateStore stateStore;
 
     @Inject
     public RestoreManager(
@@ -92,7 +92,7 @@ public class RestoreManager extends ChainedObserver implements ClusterTaskManage
             this.restore.subscribe(this);
             //this volatile signals that restore is started
             this.activeContext = context;
-        } catch (SerializationException | PersistenceException e) {
+        } catch (SerializationException e) {
             LOGGER.error(
                     "Error storing restore context into persistence store. Reason: ",
                     e);
@@ -104,16 +104,10 @@ public class RestoreManager extends ChainedObserver implements ClusterTaskManage
 
     public void stop() {
         LOGGER.info("Stopping restore");
-        try {
-            // TODO: Delete restore context from Property store
-            stateStore.clearProperty(RESTORE_KEY);
-            cassandraState.remove(cassandraState.getDownloadSnapshotTasks().keySet());
-            cassandraState.remove(cassandraState.getRestoreSnapshotTasks().keySet());
-        } catch (PersistenceException e) {
-            LOGGER.error(
-                    "Error deleting restore context from persistence store. Reason: {}",
-                    e);
-        }
+        // TODO: Delete restore context from Property store
+        stateStore.clearProperty(RESTORE_KEY);
+        cassandraState.remove(cassandraState.getDownloadSnapshotTasks().keySet());
+        cassandraState.remove(cassandraState.getRestoreSnapshotTasks().keySet());
         this.activeContext = null;
         this.download = null;
         this.restore = null;

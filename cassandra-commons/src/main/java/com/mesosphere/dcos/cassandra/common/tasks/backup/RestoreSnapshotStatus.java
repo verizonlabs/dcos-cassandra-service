@@ -28,7 +28,7 @@ public class RestoreSnapshotStatus extends CassandraTaskStatus {
         return new RestoreSnapshotStatus(status);
     }
 
-    protected RestoreSnapshotStatus(final Protos.TaskStatus status) {
+    private RestoreSnapshotStatus(final Protos.TaskStatus status) {
         super(status);
     }
 }

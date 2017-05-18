@@ -5,5 +5,5 @@ package com.mesosphere.dcos.cassandra.common.tasks;
  * against the cluster.
  */
 public interface ClusterTaskRequest {
-    public boolean isValid();
+    boolean isValid();
 }

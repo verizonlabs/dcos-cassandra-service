@@ -27,7 +27,7 @@ public class BackupSnapshotBlock extends AbstractClusterTaskBlock<BackupRestoreC
                 context);
     }
 
-    public BackupSnapshotBlock(
+    private BackupSnapshotBlock(
             final String daemon,
             final CassandraState cassandraState,
             final CassandraOfferRequirementProvider provider,

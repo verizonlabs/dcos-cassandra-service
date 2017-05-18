@@ -26,7 +26,7 @@ public class UploadBackupBlock extends AbstractClusterTaskBlock<BackupRestoreCon
         return new UploadBackupBlock(daemon, cassandraState, provider, context);
     }
 
-    public UploadBackupBlock(
+    private UploadBackupBlock(
             String daemon,
             CassandraState cassandraState,
             CassandraOfferRequirementProvider provider,

@@ -27,7 +27,7 @@ public class RepairBlock extends AbstractClusterTaskBlock<RepairContext> {
         return new RepairBlock(daemon, cassandraState, provider, context);
     }
 
-    public RepairBlock(
+    private RepairBlock(
             String daemon,
             CassandraState cassandraState,
             CassandraOfferRequirementProvider provider,

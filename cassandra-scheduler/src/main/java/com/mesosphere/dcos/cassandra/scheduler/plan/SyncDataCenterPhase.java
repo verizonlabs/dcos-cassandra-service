@@ -38,7 +38,7 @@ public class SyncDataCenterPhase extends DefaultPhase {
         return new SyncDataCenterPhase(createBlocks(seeds, executor));
     }
 
-    public SyncDataCenterPhase(List<SyncDataCenterBlock> blocks) {
+    private SyncDataCenterPhase(List<SyncDataCenterBlock> blocks) {
         super(UUID.randomUUID(), "Sync Datacenter", blocks);
     }
 }

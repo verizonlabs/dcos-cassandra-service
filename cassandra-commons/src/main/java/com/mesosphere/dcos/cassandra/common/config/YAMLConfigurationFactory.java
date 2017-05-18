@@ -9,8 +9,8 @@ import org.apache.mesos.config.ConfigStoreException;
 import org.apache.mesos.config.Configuration;
 import org.apache.mesos.config.ConfigurationFactory;
 
-public class YAMLConfigurationFactory implements ConfigurationFactory<Configuration> {
-    private Class<?> typeParameterClass;
+class YAMLConfigurationFactory implements ConfigurationFactory<Configuration> {
+    private final Class<?> typeParameterClass;
 
     public YAMLConfigurationFactory(Class<?> typeParameterClass) {
         this.typeParameterClass = typeParameterClass;

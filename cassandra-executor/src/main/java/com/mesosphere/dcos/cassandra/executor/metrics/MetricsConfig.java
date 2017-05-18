@@ -55,7 +55,7 @@ public class MetricsConfig {
      * Tests if metrics collection is enabled.
      * @return True if metrics collection is enabled.
      */
-    public static boolean metricsEnabled() {
+    private static boolean metricsEnabled() {
         return System.getenv(STATSD_HOST_ENV) != null &&
                 System.getenv(STATSD_PORT_ENV) != null;
     }

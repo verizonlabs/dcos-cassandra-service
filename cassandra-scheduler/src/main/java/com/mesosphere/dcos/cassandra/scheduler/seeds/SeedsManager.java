@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.mesosphere.dcos.cassandra.common.config.CassandraSchedulerConfiguration;
 import com.mesosphere.dcos.cassandra.common.config.DefaultConfigurationManager;
-import com.mesosphere.dcos.cassandra.common.persistence.PersistenceException;
 import com.mesosphere.dcos.cassandra.common.serialization.SerializationException;
 import com.mesosphere.dcos.cassandra.common.serialization.Serializer;
 import com.mesosphere.dcos.cassandra.common.tasks.CassandraDaemonTask;
@@ -38,9 +37,9 @@ public class SeedsManager implements Runnable {
     private static final String DATA_CENTERS_KEY = "datacenters";
     private volatile ImmutableMap<String, DataCenterInfo> dataCenters;
     private final SchedulerClient client;
-    private DefaultConfigurationManager configurationManager;
-    private StateStore stateStore;
-    private Serializer<DataCenterInfo> serializer;
+    private final DefaultConfigurationManager configurationManager;
+    private final StateStore stateStore;
+    private final Serializer<DataCenterInfo> serializer;
 
     private boolean putLocalInfo(String url) {
         try {
@@ -79,7 +78,7 @@ public class SeedsManager implements Runnable {
         }
     }
 
-    Optional<DataCenterInfo> getRemoteInfo(String url) {
+    private Optional<DataCenterInfo> getRemoteInfo(String url) {
         LOGGER.info("Retrieving info: url = {}", url);
         try {
             DataCenterInfo info = client.getDataCenterInfo(url)
@@ -109,7 +108,7 @@ public class SeedsManager implements Runnable {
         this.serializer = serializer;
         this.configurationManager = configurationManager;
         ImmutableMap.Builder<String, DataCenterInfo> builder =
-                ImmutableMap.<String, DataCenterInfo>builder();
+                ImmutableMap.builder();
         this.client = client;
         try {
             synchronized (stateStore) {
@@ -146,10 +145,10 @@ public class SeedsManager implements Runnable {
                 TimeUnit.MILLISECONDS);
     }
 
-    public List<String> getLocalSeeds() throws IOException {
+    private List<String> getLocalSeeds() throws IOException {
         final List<CassandraDaemonTask> active = tasks.getDaemons().values()
                 .stream()
-                .filter(daemon -> daemon.getMode() == CassandraMode.NORMAL && daemon.getHostname().isEmpty() == false)
+                .filter(daemon -> daemon.getMode() == CassandraMode.NORMAL && !daemon.getHostname().isEmpty())
                 .collect(Collectors.toList());
 
         for (CassandraDaemonTask daemonTask: tasks.getDaemons().values()) {
@@ -175,7 +174,7 @@ public class SeedsManager implements Runnable {
         return seeds;
     }
 
-    public int getConfiguredSeedsCount() throws ConfigStoreException {
+    private int getConfiguredSeedsCount() throws ConfigStoreException {
         return ((CassandraSchedulerConfiguration)configurationManager.getTargetConfig()).getSeeds();
     }
 
@@ -198,13 +197,13 @@ public class SeedsManager implements Runnable {
         return false;
     }
 
-    public List<String> getRemoteSeeds() {
+    private List<String> getRemoteSeeds() {
         return dataCenters.values().stream().map(
                 dc -> dc.getSeeds()).flatMap
                 (List::stream).collect(Collectors.toList());
     }
 
-    public void update(final DataCenterInfo info) throws PersistenceException, SerializationException {
+    public void update(final DataCenterInfo info) throws SerializationException {
         LOGGER.info("Updating data center {}", info);
         synchronized (stateStore) {
             final String propertyKey = DATA_CENTERS_KEY + "." + info.getDatacenter();
@@ -224,11 +223,11 @@ public class SeedsManager implements Runnable {
                 JsonUtils.toJsonString(dataCenters));
     }
 
-    public boolean tryUpdate(final DataCenterInfo info) {
+    private boolean tryUpdate(final DataCenterInfo info) {
         try {
             update(info);
             return true;
-        } catch (SerializationException | PersistenceException e) {
+        } catch (SerializationException e) {
             LOGGER.error(
                     String.format("Failed to update info: info = %s",
                             info),

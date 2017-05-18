@@ -16,19 +16,18 @@ import org.apache.mesos.state.StateStoreException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class RepairManager extends ChainedObserver implements ClusterTaskManager<RepairRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RepairManager.class);
-    static final String REPAIR_KEY = "repair";
+    private static final String REPAIR_KEY = "repair";
 
     private final CassandraState cassandraState;
     private final ClusterTaskOfferRequirementProvider provider;
     private volatile RepairPhase phase = null;
     private volatile RepairContext activeContext = null;
-    private StateStore stateStore;
+    private final StateStore stateStore;
 
     @Inject
     public RepairManager(
@@ -73,7 +72,7 @@ public class RepairManager extends ChainedObserver implements ClusterTaskManager
             this.phase = new RepairPhase(context, cassandraState, provider);
             this.phase.subscribe(this);
             this.activeContext = context;
-        } catch (SerializationException | PersistenceException e) {
+        } catch (SerializationException e) {
             LOGGER.error("Error storing repair context into persistence store. " +
                     "Reason: ", e);
 
@@ -84,15 +83,8 @@ public class RepairManager extends ChainedObserver implements ClusterTaskManager
 
     public void stop() {
         LOGGER.info("Stopping repair");
-        try {
-            stateStore.clearProperty(REPAIR_KEY);
-            cassandraState.remove(cassandraState.getRepairTasks().keySet());
-        } catch (PersistenceException e) {
-            LOGGER.error(
-                    "Error deleting repair context from persistence store. " +
-                            "Reason: {}",
-                    e);
-        }
+        stateStore.clearProperty(REPAIR_KEY);
+        cassandraState.remove(cassandraState.getRepairTasks().keySet());
         this.activeContext = null;
 
         notifyObservers();
@@ -111,7 +103,7 @@ public class RepairManager extends ChainedObserver implements ClusterTaskManager
         if (phase == null) {
             return Collections.emptyList();
         } else {
-            return Arrays.asList(phase);
+            return Collections.singletonList(phase);
         }
     }
 }
