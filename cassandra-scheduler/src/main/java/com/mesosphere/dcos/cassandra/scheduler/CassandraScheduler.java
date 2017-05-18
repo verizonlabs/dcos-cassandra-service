@@ -222,11 +222,12 @@ public class CassandraScheduler implements Scheduler, Managed, Observer {
 
             List<Protos.Offer> filtered_offers = offers;
 
+            // We default to the most specific.
             if (hostListFilter.isEmpty()){
                 for (String filter: filterList) {
                     filtered_offers = filterOffers(filtered_offers, filter);
                 }
-            } else if (!hostListFilter.isEmpty()){
+            } else {
                 filtered_offers = filterOffersByHostname(filtered_offers, hostListFilter);
             }
 
