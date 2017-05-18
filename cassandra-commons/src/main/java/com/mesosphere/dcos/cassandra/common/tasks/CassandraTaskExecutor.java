@@ -95,7 +95,7 @@ public class CassandraTaskExecutor {
         Protos.ExecutorInfo.Builder executorBuilder = Protos.ExecutorInfo.newBuilder();
         String commandString = config.getCommand();
 
-        String volumeName = name.replace("node-", config.getVolumeName() + "_").replace("_executor", "");
+        String volumeName = config.getVolumeName();
 
         Map<String, String> map = new HashMap<>();
         map.put("JAVA_HOME", config.getJavaHome());
@@ -113,10 +113,7 @@ public class CassandraTaskExecutor {
         Protos.ContainerInfo.Builder containerInfo = Protos.ContainerInfo.newBuilder()
                 .setType(Protos.ContainerInfo.Type.MESOS);
 
-        // Iterate over a list of approved docker volume drivers, or do we only want to support certain storage systems?
-        if (config.getVolumeDriver().equalsIgnoreCase("rexray")) {
-            containerInfo = addDockerVolumeToContainer(containerInfo, volumeName, config.getVolumeDriver());
-        } else if (config.getVolumeDriver().equalsIgnoreCase("pxd")) {
+        if (config.getVolumeDriver().equalsIgnoreCase("pxd")) {
             containerInfo = addDockerVolumeToContainer(containerInfo, volumeName, config.getVolumeDriver());
         }
 
